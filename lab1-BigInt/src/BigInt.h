@@ -1,6 +1,14 @@
 #pragma once
 
+#include <vector>
+#include <ostream>
+
 class BigInt {
+
+    private: 
+        std::vector<int> number;
+        char sign;
+
     public:
         BigInt();
         BigInt(int);
@@ -40,6 +48,8 @@ class BigInt {
         operator std::string() const;
 
         size_t size() const;  // size in bytes
+
+
 };
 
 BigInt operator+(const BigInt&, const BigInt&);

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libBigIntLib.a  CMakeFiles/BigIntLib.dir/BigInt.cpp.o
+/usr/bin/ranlib libBigIntLib.a
