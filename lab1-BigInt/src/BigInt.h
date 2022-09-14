@@ -3,10 +3,14 @@
 #include <vector>
 #include <ostream>
 
+
+
+
 class BigInt {
 
 private:
     std::vector<int> number;
+    int remainderLength = 0;
     char sign;
 
 public:

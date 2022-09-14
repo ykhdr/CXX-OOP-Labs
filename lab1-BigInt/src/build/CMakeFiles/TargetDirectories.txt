@@ -1,4 +1,4 @@
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/build/CMakeFiles/main.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/build/CMakeFiles/rebuild_cache.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/build/CMakeFiles/BigIntLib.dir
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/build/CMakeFiles/main.dir
