@@ -1,12 +1,19 @@
 #include <iostream>
 #include "BigInt.h"
 
-//TODO: подумать над тем, как реализоваывать хранение числа. Может создать структуру, где будет запись о длине каждой ячейки?
-//TODO: или же достаточно просто знать длину последнего слота
-
+/**
+ * ЯЧЕЙКА ХРАНИТ 9 СИМВОЛОВ \n
+ * ЕСЛИ ЕСТЬ ЗНАК, ТО ПЕРВАЯ ЯЧЕЙКА ХРАНИТ 8 СИМВОЛОВ
+ *
+ *
+ */
+//111111112
+//111111111
+//999999999999999999999
+//10000000000000000000000
 int main() {
-    std::string str = "90001110101"; // 9 chars
-    auto num = new BigInt(str);
-    auto num2 = new BigInt(*num);
-    std::cout << num2->size() <<" "<<num2->operator std::string();
+    std::string str = "999999999999999999999";//FIXME: переделывать всё.
+    BigInt num = BigInt(str);
+    ++num;
+    std::cout << num.size() << " " << num.operator std::string() << std::endl;
 }

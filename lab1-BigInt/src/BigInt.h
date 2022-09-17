@@ -4,14 +4,15 @@
 #include <ostream>
 
 
-
-
 class BigInt {
 
 private:
     std::vector<int> number;
     int remainderLength = 0;
     char sign;
+
+    static int countIntLength(int);
+    static bool isZeroCell(int);
 
 public:
     BigInt();
