@@ -9,11 +9,11 @@ class BigInt {
 private:
     std::vector<int> number;
     int remainderLength = 0;
-    char sign;
+    char sign = '+';
 
     static int countIntLength(int);
     static bool isZeroCell(int);
-
+    static bool vctcmp(const std::vector<int> &r, const std::vector<int> &);
 public:
     BigInt();
 

@@ -1,4 +1,3 @@
-project(BigInt)
 
 add_executable(main main.cpp)
 

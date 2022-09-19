@@ -1,1 +1,1 @@
-/usr/bin/c++    -rdynamic CMakeFiles/BigIntTest.dir/main.cpp.o CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o  -o BigIntTest  -lBigIntLib -lgtest 
+/usr/bin/c++    -rdynamic CMakeFiles/BigIntTest.dir/main.o CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o  -o BigIntTest  -lgtest -lBigIntLib 

@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp" "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o"
-  "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp" "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles/BigIntTest.dir/main.cpp.o"
+  "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp" "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o"
+  "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp" "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles/BigIntTest.dir/main.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

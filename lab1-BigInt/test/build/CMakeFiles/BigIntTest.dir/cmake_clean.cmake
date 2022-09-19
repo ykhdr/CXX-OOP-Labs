@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "BigIntTest"
   "BigIntTest.pdb"
-  "CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o"
-  "CMakeFiles/BigIntTest.dir/main.cpp.o"
+  "CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o"
+  "CMakeFiles/BigIntTest.dir/main.o"
 )
 
 # Per-language clean rules from dependency scanning.

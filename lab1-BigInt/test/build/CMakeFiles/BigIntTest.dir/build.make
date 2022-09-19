@@ -57,42 +57,42 @@ include CMakeFiles/BigIntTest.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/BigIntTest.dir/flags.make
 
-CMakeFiles/BigIntTest.dir/main.cpp.o: CMakeFiles/BigIntTest.dir/flags.make
-CMakeFiles/BigIntTest.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/BigIntTest.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/BigIntTest.dir/main.cpp.o -c /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp
+CMakeFiles/BigIntTest.dir/main.o: CMakeFiles/BigIntTest.dir/flags.make
+CMakeFiles/BigIntTest.dir/main.o: ../main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/BigIntTest.dir/main.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/BigIntTest.dir/main.o -c /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp
 
-CMakeFiles/BigIntTest.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BigIntTest.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp > CMakeFiles/BigIntTest.dir/main.cpp.i
+CMakeFiles/BigIntTest.dir/main.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BigIntTest.dir/main.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp > CMakeFiles/BigIntTest.dir/main.i
 
-CMakeFiles/BigIntTest.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BigIntTest.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp -o CMakeFiles/BigIntTest.dir/main.cpp.s
+CMakeFiles/BigIntTest.dir/main.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BigIntTest.dir/main.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp -o CMakeFiles/BigIntTest.dir/main.s
 
-CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o: CMakeFiles/BigIntTest.dir/flags.make
-CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o: ../UnaryOperatorsTest.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o -c /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp
+CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o: CMakeFiles/BigIntTest.dir/flags.make
+CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o: ../UnaryOperatorsTest.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o -c /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp
 
-CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp > CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.i
+CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp > CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.i
 
-CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp -o CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.s
+CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp -o CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.s
 
 # Object files for target BigIntTest
 BigIntTest_OBJECTS = \
-"CMakeFiles/BigIntTest.dir/main.cpp.o" \
-"CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o"
+"CMakeFiles/BigIntTest.dir/main.o" \
+"CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o"
 
 # External object files for target BigIntTest
 BigIntTest_EXTERNAL_OBJECTS =
 
-BigIntTest: CMakeFiles/BigIntTest.dir/main.cpp.o
-BigIntTest: CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o
+BigIntTest: CMakeFiles/BigIntTest.dir/main.o
+BigIntTest: CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o
 BigIntTest: CMakeFiles/BigIntTest.dir/build.make
 BigIntTest: CMakeFiles/BigIntTest.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable BigIntTest"

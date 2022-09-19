@@ -123,59 +123,35 @@ BigIntTest/fast:
 	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/build
 .PHONY : BigIntTest/fast
 
-UnaryOperatorsTest.o: UnaryOperatorsTest.cpp.o
-
+# target to build an object file
+UnaryOperatorsTest.o:
+	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.o
 .PHONY : UnaryOperatorsTest.o
 
-# target to build an object file
-UnaryOperatorsTest.cpp.o:
-	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.o
-.PHONY : UnaryOperatorsTest.cpp.o
-
-UnaryOperatorsTest.i: UnaryOperatorsTest.cpp.i
-
+# target to preprocess a source file
+UnaryOperatorsTest.i:
+	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.i
 .PHONY : UnaryOperatorsTest.i
 
-# target to preprocess a source file
-UnaryOperatorsTest.cpp.i:
-	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.i
-.PHONY : UnaryOperatorsTest.cpp.i
-
-UnaryOperatorsTest.s: UnaryOperatorsTest.cpp.s
-
+# target to generate assembly for a file
+UnaryOperatorsTest.s:
+	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.s
 .PHONY : UnaryOperatorsTest.s
 
-# target to generate assembly for a file
-UnaryOperatorsTest.cpp.s:
-	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/UnaryOperatorsTest.cpp.s
-.PHONY : UnaryOperatorsTest.cpp.s
-
-main.o: main.cpp.o
-
+# target to build an object file
+main.o:
+	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/main.o
 .PHONY : main.o
 
-# target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/main.cpp.o
-.PHONY : main.cpp.o
-
-main.i: main.cpp.i
-
+# target to preprocess a source file
+main.i:
+	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/main.i
 .PHONY : main.i
 
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
-
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/main.cpp.s
-.PHONY : main.cpp.s
+main.s:
+	$(MAKE) -f CMakeFiles/BigIntTest.dir/build.make CMakeFiles/BigIntTest.dir/main.s
+.PHONY : main.s
 
 # Help Target
 help:
