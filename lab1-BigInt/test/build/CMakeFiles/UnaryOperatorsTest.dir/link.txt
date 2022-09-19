@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/UnaryOperatorsTest.dir/main.cpp.o CMakeFiles/UnaryOperatorsTest.dir/UnaryOperatorsTest.cpp.o  -o UnaryOperatorsTest  -lBigIntLib -lgtest 

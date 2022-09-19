@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/BigInt.cpp
-BigInt.h
-/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/BigInt.h
-climits
--
-algorithm
--
-valarray
--
-
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/BigInt.h
 vector
 -
 ostream
+-
+
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/UnaryOperatorsTest.cpp
+gtest/gtest.h
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/gtest/gtest.h
+../src/BigInt.h
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/src/BigInt.h
+
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp
+gtest/gtest.h
 -
 

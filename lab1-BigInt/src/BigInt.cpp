@@ -96,7 +96,7 @@ BigInt BigInt::operator~() const {}
  *
  * А если перевернуть число? и работать уже с ним.
  * Пробуем
- *
+ * не пробуем.
  * */
 
 //TODO: блять пиздец сложно нахуй
@@ -109,7 +109,7 @@ BigInt &BigInt::operator++() {
         ++number[i];
 
         //TODO: упростить
-        if (i == number.size() - 1 && countIntLength(number[i]) > remainderLength && remainderLength) {
+        if (i == number.size() - 1 && number.size() > 1 && countIntLength(number[i]) > remainderLength && remainderLength) {
             number[i] /= static_cast<int>(pow(10, remainderLength + 1));
             continue;
         }
@@ -120,7 +120,7 @@ BigInt &BigInt::operator++() {
 
         if (!i) {
             ++remainderLength;
-            if (remainderLength == 9) {
+            if (remainderLength == 9 || remainderLength == 1) {
                 remainderLength = 1;
                 number.push_back(0);
             }
@@ -129,6 +129,11 @@ BigInt &BigInt::operator++() {
                 el = 0;
             }
             number[0] = CELL_LIMIT / 10;
+        }
+
+        if (countIntLength(number[i]) > MAX_OF_DIGITS) {
+            number[i] /= static_cast<int>(pow(10, MAX_OF_DIGITS + 1));
+            continue;
         }
     }
     return *this;
@@ -177,7 +182,8 @@ BigInt::operator std::string() const {
         for (int j = 0; j < MAX_OF_DIGITS - lengthOnNum; ++j)
             str += '0';
 
-        str.append(std::to_string(number[i]));
+        if (lengthOnNum!=0)
+            str.append(std::to_string(number[i]));
     }
 
     int lastNum = number[number.size() - 1];

@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/main.cpp
+gtest/gtest.h
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/gtest/gtest.h
+
