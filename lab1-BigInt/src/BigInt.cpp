@@ -110,16 +110,29 @@ BigInt &BigInt::operator++() {
 
 
     for (int i = static_cast<int>(number.size() - 1); i >= 0; --i) {
-        if (number[i] == 0 && number.size() == 1)
+        if (number[i] == 0 && number.size() == 1){
             ++number[i];
+            break;
+        }
 
-        if (isZeroCell(number[i]))
+
+        /* // хз зачем тут это вообще
+        if (isZeroCell(number[i])){
+            if(sign == '-'){
+                break;
+            }
             continue;
+        }*/
 
         sign == '+' ? ++number[i] : --number[i];
 
         if (sign == '-' && number[i] == 0)
             sign = '+';
+
+        if(number[i] == -1){
+            number[i]=9;
+            continue;
+        }
 
         //TODO: упростить
         if (i == number.size() - 1 && number.size() > 1 &&
@@ -150,11 +163,170 @@ BigInt &BigInt::operator++() {
             continue;
         }
     }
+
+
+
+   /* if (sign == '-') { //FIXME: не помню для чего это здесь
+        for (auto i = number.size()-1; isZeroCell(number[i]); --i) {
+            number.pop_back();
+        }
+        remainderLength = countIntLength(number[number.size()-1]);
+    }*/
+
     return *this;
 }
 
+BigInt& BigInt::operator--() {
+    for (int i = static_cast<int>(number.size() - 1); i >= 0; --i) {
+        if (number[i] == 0 && number.size() == 1){
+            ++number[i];
+            sign = '-';
+            break;
+        }
+
+        sign == '+' ? --number[i] : ++number[i];
+
+        if (sign == '+' && number[i] == 0)
+            sign = '-';
+
+        if(number[i] == -1){
+            number[i]=9;
+            continue;
+        }
+
+        //TODO: упростить
+        if (i == number.size() - 1 && number.size() > 1 &&
+            countIntLength(number[i]) > remainderLength && remainderLength) {
+
+            number[i] /= static_cast<int>(pow(10, remainderLength + 1));
+            continue;
+        }
+
+        if (number[i] != CELL_LIMIT)
+            break;
+
+        if (!i) {
+            ++remainderLength;
+            if (remainderLength == 9 || remainderLength == 1) {
+                remainderLength = 1;
+                number.push_back(0);
+            }
+
+            for (int &el: number)
+                el = 0;
+
+            number[0] = CELL_LIMIT / 10;
+        }
+
+        if (countIntLength(number[i]) > MAX_OF_DIGITS) {
+            number[i] /= static_cast<int>(pow(10, MAX_OF_DIGITS + 1));
+            continue;
+        }
+    }
+
+    return *this;
+}
+
+BigInt &BigInt::operator+=(const BigInt &num) {
+    for (int el : num.number) {
+        for (int j = 0; j < el; ++j) {
+            ++(*this);
+        }
+    }
+    return *this;
+}
+
+
 BigInt &BigInt::operator=(const BigInt &num) = default;
 
+
+BigInt BigInt::operator+() const {
+    return *this;
+}
+
+BigInt BigInt::operator-() const {}
+
+bool BigInt::operator==(const BigInt &num) const {
+    if (sign != num.sign)
+        return false;
+
+    if (remainderLength != num.remainderLength)
+        return false;
+
+    if (number.size() != num.number.size())
+        return false;
+
+    if (!vctcmp(number, num.number))
+        return false;
+
+    return true;
+}
+
+bool BigInt::operator!=(const BigInt &num) const {
+    return !operator==(num);
+}
+
+
+//FIXME: числа при знаке - дают хуйню
+bool BigInt::operator<(const BigInt &num) const {
+    if (sign < num.sign) // '-' - 55, '+' - 53
+        return false;
+
+    if (sign > num.sign)
+        return true;
+
+    if (number.size() > num.number.size()) {
+        if (sign == '+')
+            return false;
+        else
+            return true;
+    }
+
+    if (number.size() < num.size()) {
+        if (sign == '+')
+            return true;
+        else
+            return false;
+    }
+
+    if (vctcmp(number, num.number)) // maybe to delete
+        return false;
+
+    bool isBigger = false;
+    for (int i = 0; i < number.size(); ++i) {
+        if (number[i] > num.number[i]) {
+            isBigger = true;
+            break;
+        }
+    }
+
+    if (isBigger) {
+        if (sign == '+')
+            return false;
+        else
+            return true;
+    }
+
+    return true;
+}
+
+bool BigInt::operator>(const BigInt &num) const {
+    return !operator<(num);
+}
+
+bool BigInt::operator<=(const BigInt &num) const {
+    if (sign == num.sign && vctcmp(number, num.number))
+        return true;
+
+    return operator<(num);
+}
+
+bool BigInt::operator>=(const BigInt &num) const {
+    if (sign == num.sign && vctcmp(number, num.number))
+        return true;
+
+    return operator>(num);
+}
 
 BigInt::operator int() const {
     if (number.size() > 1)
@@ -222,77 +394,13 @@ BigInt::operator std::string() const {
     return str;
 }
 
-BigInt BigInt::operator+() const {
-    return *this;
-}
-
-BigInt BigInt::operator-() const {}
-
-bool BigInt::operator==(const BigInt &num) const {
-    if (sign != num.sign)
-        return false;
-
-    if (remainderLength != num.remainderLength)
-        return false;
-
-    if (number.size() != num.number.size())
-        return false;
-
-    if (!vctcmp(number, num.number))
-        return false;
-
-    return true;
-}
-
-bool BigInt::operator!=(const BigInt &num) const {
-    return !operator==(num);
-}
-
-
-//FIXME: числа при знаке - дают хуйню
-bool BigInt::operator<(const BigInt &num) const {
-    if(sign < num.sign) // '-' - 55, '+' - 53
-        return false;
-
-    if(sign > num.sign)
-        return true;
-
-    if(number.size() > num.number.size())
-        return false;
-
-    if(number.size() < num.size())
-        return true;
-
-    if(vctcmp(number,num.number)) // maybe to delete
-        return false;
-
-    bool isBigger = false;
-    for (int i = 0; i < number.size(); ++i) {
-        if(number[i]>num.number[i]){
-            isBigger = true;
-            break;
-        }
-    }
-
-    if(isBigger){
-        if(sign == '+')
-            return false;
-        else
-            return true;
-    }
-
-    return true;
-}
-
-bool BigInt::operator>(const BigInt &num) const {
-    return !operator<(num);
-}
-
-
-
 size_t BigInt::size() const {
     return number.size();
 }
+
+
+
+
 
 
 
