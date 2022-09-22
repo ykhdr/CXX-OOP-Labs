@@ -110,27 +110,18 @@ BigInt &BigInt::operator++() {
 
 
     for (int i = static_cast<int>(number.size() - 1); i >= 0; --i) {
-        if (number[i] == 0 && number.size() == 1){
+        if (number[i] == 0 && number.size() == 1) {
             ++number[i];
             break;
         }
-
-
-        /* // хз зачем тут это вообще
-        if (isZeroCell(number[i])){
-            if(sign == '-'){
-                break;
-            }
-            continue;
-        }*/
 
         sign == '+' ? ++number[i] : --number[i];
 
         if (sign == '-' && number[i] == 0)
             sign = '+';
 
-        if(number[i] == -1){
-            number[i]=9;
+        if (number[i] == -1) {
+            number[i] = 9;
             continue;
         }
 
@@ -164,21 +155,12 @@ BigInt &BigInt::operator++() {
         }
     }
 
-
-
-   /* if (sign == '-') { //FIXME: не помню для чего это здесь
-        for (auto i = number.size()-1; isZeroCell(number[i]); --i) {
-            number.pop_back();
-        }
-        remainderLength = countIntLength(number[number.size()-1]);
-    }*/
-
     return *this;
 }
 
-BigInt& BigInt::operator--() {
+BigInt &BigInt::operator--() {
     for (int i = static_cast<int>(number.size() - 1); i >= 0; --i) {
-        if (number[i] == 0 && number.size() == 1){
+        if (number[i] == 0 && number.size() == 1) {
             ++number[i];
             sign = '-';
             break;
@@ -189,8 +171,8 @@ BigInt& BigInt::operator--() {
         if (sign == '+' && number[i] == 0)
             sign = '-';
 
-        if(number[i] == -1){
-            number[i]=9;
+        if (number[i] == -1) {
+            number[i] = 9;
             continue;
         }
 
@@ -227,13 +209,85 @@ BigInt& BigInt::operator--() {
     return *this;
 }
 
-BigInt &BigInt::operator+=(const BigInt &num) {
-    for (int el : num.number) {
-        for (int j = 0; j < el; ++j) {
-            ++(*this);
+/*
+ *  прибавляем к this данное число
+ *
+ *
+ *
+ * */
+
+BigInt &BigInt::operator+=(const BigInt &num) { //FIXME: переделать
+
+    if (this->sign == '-') {
+        *this = -*this;
+        if (num.sign == '-') {
+            *this += (-num);
+            *this = -*this;
+            return *this;
+        }
+        *this -= (-num);
+        *this = -*this;
+        return *this;
+    }
+
+    if (num.sign == '-')
+        return *this -= (-num);
+
+
+    int overLimit = 0;
+
+    for (int i = 0; i < std::max(this->size(), num.size()); ++i) {
+        if (i == this->size())
+            number.push_back(0);
+
+        number[i] += overLimit + (i < num.size() ? num.number[i] : 0);
+        overLimit = number[i] >= CELL_LIMIT;
+
+        if (overLimit) {
+            number[i] -= CELL_LIMIT;
+            if (i == 0)
+                number.insert(number.begin(), CELL_LIMIT / 10);
+
         }
     }
+
     return *this;
+}
+
+BigInt &BigInt::operator-=(const BigInt &num) { //FIXME: переделать
+    if (num.sign == '-') {
+        *this += (-num);
+        return *this;
+    }
+
+    if (this->sign == '-') {
+        *this = -*this;
+        *this += num;
+        *this = -*this;
+        return *this;
+    }
+
+    if (*this < num) {
+        *this = -*this;
+        *this -= (-num);
+        return *this;
+    }
+
+    int overLimit = 0;
+
+    for (int i = 0; i < num.size() || overLimit; ++i) {
+        this->number[i] -= overLimit + (i < num.size() ? num.number[i] : 0);
+        overLimit = this->number[i] < 0;
+
+        if (overLimit)
+            this->number[i] += CELL_LIMIT;
+    }
+
+    while (this->number.size() > 1 && this->number.back() == 0) {
+        this->number.pop_back();
+        remainderLength = countIntLength(this->number.back());
+    }
+
 }
 
 
@@ -244,7 +298,11 @@ BigInt BigInt::operator+() const {
     return *this;
 }
 
-BigInt BigInt::operator-() const {}
+BigInt BigInt::operator-() const {
+    BigInt copy(*this);
+    copy.sign == '-' ? copy.sign = '+' : copy.sign = '-';
+    return copy;
+}
 
 bool BigInt::operator==(const BigInt &num) const {
     if (sign != num.sign)
@@ -399,9 +457,6 @@ size_t BigInt::size() const {
 }
 
 
+BigInt operator+(const BigInt &num1, const BigInt &num2) {
 
-
-
-
-
-
+}
