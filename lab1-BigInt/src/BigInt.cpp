@@ -12,6 +12,8 @@ int BigInt::countIntLength(int num) {
         num /= 10;
         ++lengthOfNum;
     }
+    if (lengthOfNum == 0)
+        ++lengthOfNum;
     return lengthOfNum;
 }
 
@@ -21,6 +23,14 @@ bool BigInt::isZeroCell(int num) {
 
 bool BigInt::vctcmp(const std::vector<int> &bigger, const std::vector<int> &smaller) {
     return std::search(bigger.begin(), bigger.end(), smaller.begin(), smaller.end()) != bigger.end();
+}
+
+
+void BigInt::removeZeros() {
+    while (number.back() == 0 && number.size() > 1)
+        number.pop_back();
+
+    remainderLength = countIntLength(number[0]);
 }
 
 BigInt::BigInt() : sign('+') {
@@ -33,58 +43,44 @@ BigInt::BigInt(int num) {
 }
 
 BigInt::BigInt(std::string str) {
-    number.push_back(0);
-    size_t length = str.size();
-    int id = 0;
 
-    {
-        int multiplier = CELL_LIMIT / 10;
-        bool isSigned = false;
-        int i = 0;
+    int multiplier = CELL_LIMIT / 10;
+    bool isSigned = false;
 
-        switch (str[0]) {
-            case '-':
-                sign = '-';
-                ++i;
-                isSigned = true;
-                break;
-            case '+':
-                sign = '+';
-                ++i;
-                isSigned = true;
-        }
+    switch (str[0]) {
+        case '-':
+            sign = '-';
+            isSigned = true;
+            break;
+        case '+':
+            sign = '+';
+            isSigned = true;
+    }
+    if (isSigned)
+        str = str.substr(1);
 
-        do {
+    for (char el: str)
+        if (el < '0' || el > '9')
+            throw std::invalid_argument("invalid input string");
 
-            if (!multiplier) {
-                number.push_back(0);
-                ++id;
-                multiplier = CELL_LIMIT / 10;
-            }
 
-            if (str[i] < '0' || str[i] > '9')
-                throw std::invalid_argument("invalid input string");
-
-            number[id] += multiplier * (str[i] - '0');
-
-            multiplier /= 10;
-            ++i;
-
-        } while (i < length);
-
-        if (isSigned)
-            --length;
+    for (int i = str.length(); i > 0; i -= 9) {
+        if (i < 9)
+            number.push_back(atoi(str.substr(0, i).c_str()));
+        else
+            number.push_back(atoi(str.substr(i - 9, 9).c_str()));
     }
 
+    removeZeros();
 
-    remainderLength = static_cast<int>(length %= MAX_OF_DIGITS);
+    remainderLength = static_cast<int>(str.length() % MAX_OF_DIGITS);
 
-    for (int i = 0; i < MAX_OF_DIGITS - remainderLength && remainderLength != 0; ++i)
-        number[id] /= 10;
+    if (remainderLength == 0)
+        remainderLength = 9;
 
 }
 
-BigInt::BigInt(const BigInt &num) : sign(num.sign), number(num.number) {}
+BigInt::BigInt(const BigInt &num) : sign(num.sign), number(num.number), remainderLength(num.remainderLength) {}
 
 BigInt::~BigInt() {
     number.clear();
@@ -216,39 +212,31 @@ BigInt &BigInt::operator--() {
  *
  * */
 
-BigInt &BigInt::operator+=(const BigInt &num) { //FIXME: переделать
-
-    if (this->sign == '-') {
-        *this = -*this;
-        if (num.sign == '-') {
-            *this += (-num);
-            *this = -*this;
-            return *this;
-        }
-        *this -= (-num);
-        *this = -*this;
-        return *this;
-    }
-
-    if (num.sign == '-')
-        return *this -= (-num);
-
-
+BigInt &BigInt::operator+=(const BigInt &num) {
     int overLimit = 0;
 
-    for (int i = 0; i < std::max(this->size(), num.size()); ++i) {
-        if (i == this->size())
-            number.push_back(0);
+    for (int i = 0; i < std::max(this->size(), num.size()) || overLimit != 0; ++i) {
+        // int len = countIntLength(this->number[i]);
 
-        number[i] += overLimit + (i < num.size() ? num.number[i] : 0);
-        overLimit = number[i] >= CELL_LIMIT;
-
-        if (overLimit) {
-            number[i] -= CELL_LIMIT;
-            if (i == 0)
-                number.insert(number.begin(), CELL_LIMIT / 10);
-
+        if (i == this->number.size()) {
+            this->number.push_back(0);
         }
+
+        this->number[i] += overLimit + (i < num.number.size() ? num.number[i] : 0);
+
+
+//        if (i == 0) {
+//            int numberLenDif = countIntLength(this->number[i]) - len;
+//            overLimit += (this->number[i] - (this->number[i] %= static_cast<int>(pow(10, len + 1)))) /
+//                         static_cast<int>(pow(10, len));
+//            // this->number[i] %= static_cast<int>(pow(10, countIntLength(number[i]) - 1)); //testing
+//            continue;
+//        } else
+
+        overLimit = this->number[i] >= CELL_LIMIT;
+
+        if (overLimit != 0)
+            this->number[i] -= CELL_LIMIT;
     }
 
     return *this;
@@ -291,7 +279,16 @@ BigInt &BigInt::operator-=(const BigInt &num) { //FIXME: переделать
 }
 
 
-BigInt &BigInt::operator=(const BigInt &num) = default;
+BigInt &BigInt::operator=(const BigInt &num) {
+    if (this == &num)
+        return *this;
+
+    this->number = num.number;
+    this->sign = num.sign;
+    this->remainderLength = num.remainderLength;
+
+    return *this;
+};
 
 
 BigInt BigInt::operator+() const {
@@ -398,56 +395,23 @@ BigInt::operator int() const {
     return num;
 }
 
-//FIXME: ошибка при 000000000000000005
+
 BigInt::operator std::string() const {
     std::string str;
-    bool isInt = false;
-    bool isSignedFirstNumber = false;
 
-    if (size() == 1 && countIntLength(number[0]) < INT_MAX)
-        isInt = true;
-
-    if (isInt && isZeroCell(number[0])) {
-        return "0";
-    }
-
-    if (sign == '-') {
+    if (sign == '-')
         str += '-';
-        isSignedFirstNumber = true;
-    }
 
-    for (int i = 0; i < number.size() - 1; ++i) {
+    str.append(std::to_string(number[number.size() - 1]));
+
+    for (int i = number.size() - 2; i >= 0; --i) {
         int lengthOnNum = countIntLength(number[i]);
-
-        if (isSignedFirstNumber) {
-            ++lengthOnNum;
-            isSignedFirstNumber = false;
-        }
 
         for (int j = 0; j < MAX_OF_DIGITS - lengthOnNum; ++j)
             str += '0';
 
-        if (lengthOnNum != 0)
-            str.append(std::to_string(number[i]));
+        str.append(std::to_string(number[i]));
     }
-
-    int lastNum = number[number.size() - 1];
-
-    if (isZeroCell(lastNum) && !remainderLength)
-        return str;
-
-    if (isZeroCell(lastNum)) {
-        for (int i = 0; i < remainderLength; ++i) {
-            str += '0';
-        }
-        return str;
-    }
-
-    if (!isInt)
-        for (int i = 0; i < (remainderLength - countIntLength(lastNum)) && remainderLength; ++i)
-            str += '0';
-
-    str.append(std::to_string(number[number.size() - 1]));
 
     return str;
 }

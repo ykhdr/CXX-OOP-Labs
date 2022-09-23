@@ -15,6 +15,8 @@ private:
     static bool isZeroCell(int);
     static bool vctcmp(const std::vector<int> &, const std::vector<int> &);
 
+    void removeZeros();
+    void shiftNum();
 public:
     BigInt();
 
