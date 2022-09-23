@@ -73,7 +73,7 @@ BigInt::BigInt(std::string str) {
 
     removeZeros();
 
-    remainderLength = static_cast<int>(str.length() % MAX_OF_DIGITS);
+    remainderLength = countIntLength(number.back());
 
     if (remainderLength == 0)
         remainderLength = 9;
@@ -103,136 +103,60 @@ BigInt BigInt::operator~() const {}
 //TODO: блять пиздец сложно нахуй
 //TODO: переделываем все для минуса
 BigInt &BigInt::operator++() {
+    return (*this += 1);
+}
 
+const BigInt BigInt::operator++(int num) const {
+    BigInt tmp = BigInt(num);
+    tmp+=1;
 
-    for (int i = static_cast<int>(number.size() - 1); i >= 0; --i) {
-        if (number[i] == 0 && number.size() == 1) {
-            ++number[i];
-            break;
-        }
-
-        sign == '+' ? ++number[i] : --number[i];
-
-        if (sign == '-' && number[i] == 0)
-            sign = '+';
-
-        if (number[i] == -1) {
-            number[i] = 9;
-            continue;
-        }
-
-        //TODO: упростить
-        if (i == number.size() - 1 && number.size() > 1 &&
-            countIntLength(number[i]) > remainderLength && remainderLength) {
-
-            number[i] /= static_cast<int>(pow(10, remainderLength + 1));
-            continue;
-        }
-
-        if (number[i] != CELL_LIMIT)
-            break;
-
-        if (!i) {
-            ++remainderLength;
-            if (remainderLength == 9 || remainderLength == 1) {
-                remainderLength = 1;
-                number.push_back(0);
-            }
-
-            for (int &el: number)
-                el = 0;
-
-            number[0] = CELL_LIMIT / 10;
-        }
-
-        if (countIntLength(number[i]) > MAX_OF_DIGITS) {
-            number[i] /= static_cast<int>(pow(10, MAX_OF_DIGITS + 1));
-            continue;
-        }
-    }
-
-    return *this;
+    return tmp;
 }
 
 BigInt &BigInt::operator--() {
-    for (int i = static_cast<int>(number.size() - 1); i >= 0; --i) {
-        if (number[i] == 0 && number.size() == 1) {
-            ++number[i];
-            sign = '-';
-            break;
-        }
-
-        sign == '+' ? --number[i] : ++number[i];
-
-        if (sign == '+' && number[i] == 0)
-            sign = '-';
-
-        if (number[i] == -1) {
-            number[i] = 9;
-            continue;
-        }
-
-        //TODO: упростить
-        if (i == number.size() - 1 && number.size() > 1 &&
-            countIntLength(number[i]) > remainderLength && remainderLength) {
-
-            number[i] /= static_cast<int>(pow(10, remainderLength + 1));
-            continue;
-        }
-
-        if (number[i] != CELL_LIMIT)
-            break;
-
-        if (!i) {
-            ++remainderLength;
-            if (remainderLength == 9 || remainderLength == 1) {
-                remainderLength = 1;
-                number.push_back(0);
-            }
-
-            for (int &el: number)
-                el = 0;
-
-            number[0] = CELL_LIMIT / 10;
-        }
-
-        if (countIntLength(number[i]) > MAX_OF_DIGITS) {
-            number[i] /= static_cast<int>(pow(10, MAX_OF_DIGITS + 1));
-            continue;
-        }
-    }
-
-    return *this;
+    return (*this -= 1);
 }
 
-/*
- *  прибавляем к this данное число
- *
- *
- *
- * */
+const BigInt BigInt::operator--(int num) const {
+    BigInt tmp = BigInt(num);
+    tmp-=1;
+
+    return tmp;
+}
 
 BigInt &BigInt::operator+=(const BigInt &num) {
+    if(this->sign=='-'){
+        if(num.sign == '-'){
+            *this = -*this;
+            BigInt tmp = -num;
+            *this+=tmp;
+            *this = -*this;
+
+            return *this;
+        }
+
+        *this = -*this;
+        *this -=num;
+        *this = -*this;
+
+        return *this;
+    }
+
+    if(num.sign=='-'){
+        BigInt tmp = -num;
+        *this -= tmp;
+
+        return *this;
+    }
+
     int overLimit = 0;
 
     for (int i = 0; i < std::max(this->size(), num.size()) || overLimit != 0; ++i) {
-        // int len = countIntLength(this->number[i]);
 
-        if (i == this->number.size()) {
+        if (i == this->number.size())
             this->number.push_back(0);
-        }
 
         this->number[i] += overLimit + (i < num.number.size() ? num.number[i] : 0);
-
-
-//        if (i == 0) {
-//            int numberLenDif = countIntLength(this->number[i]) - len;
-//            overLimit += (this->number[i] - (this->number[i] %= static_cast<int>(pow(10, len + 1)))) /
-//                         static_cast<int>(pow(10, len));
-//            // this->number[i] %= static_cast<int>(pow(10, countIntLength(number[i]) - 1)); //testing
-//            continue;
-//        } else
-
         overLimit = this->number[i] >= CELL_LIMIT;
 
         if (overLimit != 0)
@@ -255,7 +179,7 @@ BigInt &BigInt::operator-=(const BigInt &num) { //FIXME: переделать
         return *this;
     }
 
-    if (*this < num) {
+    if (*this < num) { //
         *this = -*this;
         *this -= (-num);
         return *this;
@@ -271,11 +195,9 @@ BigInt &BigInt::operator-=(const BigInt &num) { //FIXME: переделать
             this->number[i] += CELL_LIMIT;
     }
 
-    while (this->number.size() > 1 && this->number.back() == 0) {
-        this->number.pop_back();
-        remainderLength = countIntLength(this->number.back());
-    }
+    removeZeros();
 
+    return *this;
 }
 
 
@@ -321,8 +243,6 @@ bool BigInt::operator!=(const BigInt &num) const {
     return !operator==(num);
 }
 
-
-//FIXME: числа при знаке - дают хуйню
 bool BigInt::operator<(const BigInt &num) const {
     if (sign < num.sign) // '-' - 55, '+' - 53
         return false;
@@ -419,6 +339,8 @@ BigInt::operator std::string() const {
 size_t BigInt::size() const {
     return number.size();
 }
+
+
 
 
 BigInt operator+(const BigInt &num1, const BigInt &num2) {
