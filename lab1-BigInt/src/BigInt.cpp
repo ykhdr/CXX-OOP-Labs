@@ -1,7 +1,7 @@
-#include "BigInt.h"
+#include "BigInt/BigInt.h"
 #include <climits>
 #include <algorithm>
-#include <valarray>
+
 
 #define CELL_LIMIT 1000000000
 #define MAX_OF_DIGITS 9
@@ -17,14 +17,9 @@ int BigInt::countIntLength(int num) {
     return lengthOfNum;
 }
 
-bool BigInt::isZeroCell(int num) {
-    return num == 0;
-}
-
 bool BigInt::vctcmp(const std::vector<int> &bigger, const std::vector<int> &smaller) {
     return std::search(bigger.begin(), bigger.end(), smaller.begin(), smaller.end()) != bigger.end();
 }
-
 
 void BigInt::removeZeros() {
     while (number.back() == 0 && number.size() > 1)
@@ -33,18 +28,21 @@ void BigInt::removeZeros() {
     remainderLength = countIntLength(number[0]);
 }
 
-BigInt::BigInt() : sign('+') {
+BigInt::BigInt() : sign('+'), remainderLength(1) {
     number.push_back(0);
 }
 
 BigInt::BigInt(int num) {
-    number.push_back(abs(num));
+    if (num >= CELL_LIMIT) {
+        number.push_back(abs(num) % CELL_LIMIT);
+        number.push_back(abs(num) / CELL_LIMIT);
+    } else
+        number.push_back(abs(num));
+
     (num < 0) ? this->sign = '-' : this->sign = '+';
 }
 
 BigInt::BigInt(std::string str) {
-
-    int multiplier = CELL_LIMIT / 10;
     bool isSigned = false;
 
     switch (str[0]) {
@@ -69,6 +67,8 @@ BigInt::BigInt(std::string str) {
             number.push_back(atoi(str.substr(0, i).c_str()));
         else
             number.push_back(atoi(str.substr(i - 9, 9).c_str()));
+
+
     }
 
     removeZeros();
@@ -90,25 +90,14 @@ BigInt::~BigInt() {
 BigInt BigInt::operator~() const {}
 
 
-/* Сначала нужно посмотреть на последнее число, добавить единицу. Если оно првератилось
- * в CELL_LIMIT, то продолжаем, заполняя нулями это число. Если же у нас число не превариталось
- * в CELL_LIMIT, то просто все сохраняем. Если самое первое число преваритлось в CELL LIMIT,
- * то заменяем ВСЁ число на 1х0.
- *
- * А если перевернуть число? и работать уже с ним.
- * Пробуем
- * не пробуем.
- * */
-
-//TODO: блять пиздец сложно нахуй
-//TODO: переделываем все для минуса
 BigInt &BigInt::operator++() {
     return (*this += 1);
 }
 
-const BigInt BigInt::operator++(int num) const {
-    BigInt tmp = BigInt(num);
-    tmp+=1;
+const BigInt BigInt::operator++(int) const {
+    BigInt tmp = *this;
+
+
 
     return tmp;
 }
@@ -118,31 +107,31 @@ BigInt &BigInt::operator--() {
 }
 
 const BigInt BigInt::operator--(int num) const {
-    BigInt tmp = BigInt(num);
-    tmp-=1;
+    BigInt tmp = *this;
+    tmp -= 1;
 
     return tmp;
 }
 
 BigInt &BigInt::operator+=(const BigInt &num) {
-    if(this->sign=='-'){
-        if(num.sign == '-'){
+    if (this->sign == '-') {
+        if (num.sign == '-') {
             *this = -*this;
             BigInt tmp = -num;
-            *this+=tmp;
+            *this += tmp;
             *this = -*this;
 
             return *this;
         }
 
         *this = -*this;
-        *this -=num;
+        *this -= num;
         *this = -*this;
 
         return *this;
     }
 
-    if(num.sign=='-'){
+    if (num.sign == '-') {
         BigInt tmp = -num;
         *this -= tmp;
 
@@ -166,7 +155,38 @@ BigInt &BigInt::operator+=(const BigInt &num) {
     return *this;
 }
 
-BigInt &BigInt::operator-=(const BigInt &num) { //FIXME: переделать
+BigInt &BigInt::operator*=(const BigInt &num) {
+    BigInt result;
+    result.number.resize(this->number.size() + num.number.size());
+
+    for (int i = 0; i < this->number.size(); ++i) {
+        int overLimit = 0;
+        for (int j = 0; j < num.number.size(); ++j) {
+            long long tmpRes = result.number[i + j] +
+                               static_cast<long long>(this->number[i] * (j < num.number.size() ? num.number[j] : 0) +
+                                                      overLimit);
+            result.number[i + j] = static_cast<int>(tmpRes % CELL_LIMIT);
+            overLimit = static_cast<int>(tmpRes / CELL_LIMIT);
+        }
+
+    }
+
+    if (this->sign == '-' && num.sign == '+')
+        result.sign = '-';
+
+    if (num.sign == '-' && this->sign == '+')
+        result.sign = '-';
+
+    result.removeZeros();
+    this->number.clear();
+
+    *this = result;
+
+    return *this;
+}
+
+
+BigInt &BigInt::operator-=(const BigInt &num) {
     if (num.sign == '-') {
         *this += (-num);
         return *this;
@@ -198,6 +218,15 @@ BigInt &BigInt::operator-=(const BigInt &num) { //FIXME: переделать
     removeZeros();
 
     return *this;
+}
+
+
+BigInt &BigInt::operator/=(const BigInt &num) {
+    if (num == BigInt(0))
+        throw std::invalid_argument("Division by zero")
+
+
+
 }
 
 
@@ -341,8 +370,23 @@ size_t BigInt::size() const {
 }
 
 
-
-
 BigInt operator+(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp += num2;
 
+    return tmp;
+}
+
+BigInt operator-(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp -= num2;
+
+    return tmp;
+}
+
+BigInt operator*(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp *= num2;
+
+    return tmp;
 }

@@ -155,7 +155,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Project
+CMAKE_PROJECT_NAME:STATIC=Test
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -230,6 +230,12 @@ Project_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab
 
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test
+
+//Value Computed by CMake
+Test_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build
+
+//Value Computed by CMake
+Test_SOURCE_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test
 
 
 ########################

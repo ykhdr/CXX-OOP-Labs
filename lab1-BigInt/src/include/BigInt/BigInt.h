@@ -21,13 +21,14 @@ public:
     BigInt(int);
 
     BigInt(std::string); // бросать исключение std::invalid_argument при ошибке
+
     BigInt(const BigInt &);
 
     ~BigInt();
 
     BigInt &operator=(const BigInt &);  //возможно присваивание самому себе!
 
-    BigInt operator~() const;
+    BigInt operator~() const; // побитовый оператор не
 
     BigInt &operator++();
 
@@ -45,7 +46,7 @@ public:
 
     BigInt &operator/=(const BigInt &);
 
-    BigInt &operator^=(const BigInt &);
+    BigInt &operator^=(const BigInt &); // xor
 
     BigInt &operator%=(const BigInt &);
 
@@ -85,7 +86,7 @@ BigInt operator*(const BigInt &, const BigInt &);
 
 BigInt operator/(const BigInt &, const BigInt &);
 
-BigInt operator^(const BigInt &, const BigInt &);
+BigInt operator^(const BigInt &, const BigInt &); // xor
 
 BigInt operator%(const BigInt &, const BigInt &);
 
