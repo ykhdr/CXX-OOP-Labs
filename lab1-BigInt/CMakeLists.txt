@@ -4,8 +4,6 @@ project(BigInt)
 
 set(CMAKE_CXX_STANDARD 14)
 
-enable_testing()
-
-add_subdirectory(lib)
+add_subdirectory(lib/googletest)
 add_subdirectory(src)
 add_subdirectory(test)

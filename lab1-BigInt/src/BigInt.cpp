@@ -1,4 +1,4 @@
-#include "BigInt/BigInt.h"
+#include "BigInt.h"
 #include <climits>
 #include <algorithm>
 
@@ -21,11 +21,38 @@ bool BigInt::vctcmp(const std::vector<int> &bigger, const std::vector<int> &smal
     return std::search(bigger.begin(), bigger.end(), smaller.begin(), smaller.end()) != bigger.end();
 }
 
+void BigInt::shiftRight() {
+    if (number.empty()) {
+        number.push_back(0);
+        return;
+    }
+    number.push_back(number[number.size() - 1]);
+    for (int i = number.size() - 2; i > 0; --i)
+        number[i] = number[i - 1];
+
+    number[0] = 0;
+}
+
+
 void BigInt::removeZeros() {
     while (number.back() == 0 && number.size() > 1)
         number.pop_back();
 
     remainderLength = countIntLength(number[0]);
+}
+
+// returns true if str1 > str2
+bool BigInt::strCompare(std::string str1, std::string str2) {
+    if(str1.size() < str2.size())
+        return false;
+
+
+    for (int i = 0; i < str1.size(); ++i) {
+        if((str1[i] -'0') < (str2[i] -'0'))
+            return false;
+    }
+
+    return true;
 }
 
 BigInt::BigInt() : sign('+'), remainderLength(1) {
@@ -96,7 +123,6 @@ BigInt &BigInt::operator++() {
 
 const BigInt BigInt::operator++(int) const {
     BigInt tmp = *this;
-
 
 
     return tmp;
@@ -199,7 +225,7 @@ BigInt &BigInt::operator-=(const BigInt &num) {
         return *this;
     }
 
-    if (*this < num) { //
+    if (*this < num) {
         *this = -*this;
         *this -= (-num);
         return *this;
@@ -221,14 +247,117 @@ BigInt &BigInt::operator-=(const BigInt &num) {
 }
 
 
-BigInt &BigInt::operator/=(const BigInt &num) {
-    if (num == BigInt(0))
-        throw std::invalid_argument("Division by zero")
+BigInt &BigInt::operator/=(const BigInt &num) { //TODO: придумать решение
+    if (num.number.back() == 0) //FIXME: не работает
+        throw std::invalid_argument("Division by zero");
 
+    if (this->number.back() == 0) //maybe to delete
+        return *this;
+
+    std::string str = static_cast<std::string>(*this);
+    std::string str2 = static_cast<std::string>(num);
+
+
+    if (str2.size() > str.size())
+        return (*this = 0);
+
+    std::string ans;
+    std::string dividend;
+    std::string divider = str2;
+    int zeroesCounter = 0;
+
+    for (char c: str) {
+        dividend += c;
+
+        if (dividend == "0") {
+            ans += "0";
+            dividend.clear();
+            continue;
+        }
+
+        if (dividend.size() < divider.size()) {
+            ++zeroesCounter;
+            continue;
+        }
+
+        // dividend - делимое
+        // divider - делитель
+        // если размер делителя больше -- скип
+        int counter = 0;
+        std::string prevDivider = "0";
+        while (divider.size() <= dividend.size() && dividend.compare(divider) >= 0) {
+            ++counter;
+            BigInt divBI(divider);
+            divBI += str2;
+            prevDivider = divider;
+            divider = static_cast<std::string>(divBI);
+        }
+
+        BigInt dif = (BigInt(dividend) - BigInt(prevDivider));
+        dividend = static_cast<std::string>(dif);
+        divider = str2;
+        zeroesCounter = 0;
+
+        ans += std::to_string(counter);
+    }
+
+    for (int i = 0; i < zeroesCounter; ++i) {
+        ans += '0';
+    }
+
+    *this = BigInt(ans);
+    removeZeros();
+
+    return *this;
+}
+
+BigInt &BigInt::operator^=(const BigInt &num) {
+    for (int i = 0; i < std::min(this->number.size(), num.number.size()); ++i) {
+        this->number[i] = this->number[i] ^ num.number[i];
+    }
+    if (this->sign == '-')
+        num.sign == '+' ? this->sign = '-' : this->sign = '+';
+    else
+        num.sign == '-' ? this->sign = '-' : this->sign = '+';
+
+    removeZeros();
+
+    return *this;
+}
+
+BigInt &BigInt::operator%=(const BigInt &num) {
 
 
 }
 
+BigInt &BigInt::operator&=(const BigInt &num) {
+    for (int i = 0; i < std::min(this->number.size(), num.number.size()); ++i) {
+        this->number[i] = this->number[i] & num.number[i];
+    }
+
+    if (this->sign == '-')
+        num.sign == '-' ? this->sign = '-' : this->sign = '+';
+    else
+        this->sign = '+';
+
+    removeZeros();
+
+    return *this;
+
+}
+
+BigInt &BigInt::operator|=(const BigInt &num) {
+    for (int i = 0; i < std::min(this->number.size(), num.number.size()); ++i) {
+        this->number[i] = this->number[i] | num.number[i];
+    }
+
+    if (this->sign == '+')
+        num.sign == '-' ? this->sign = '-' : this->sign = '+';
+
+    removeZeros();
+
+    return *this;
+}
 
 BigInt &BigInt::operator=(const BigInt &num) {
     if (this == &num)
@@ -249,6 +378,7 @@ BigInt BigInt::operator+() const {
 BigInt BigInt::operator-() const {
     BigInt copy(*this);
     copy.sign == '-' ? copy.sign = '+' : copy.sign = '-';
+
     return copy;
 }
 
@@ -370,6 +500,8 @@ size_t BigInt::size() const {
 }
 
 
+
+
 BigInt operator+(const BigInt &num1, const BigInt &num2) {
     BigInt tmp = num1;
     tmp += num2;
@@ -387,6 +519,41 @@ BigInt operator-(const BigInt &num1, const BigInt &num2) {
 BigInt operator*(const BigInt &num1, const BigInt &num2) {
     BigInt tmp = num1;
     tmp *= num2;
+
+    return tmp;
+}
+
+BigInt operator/(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp /= num2;
+
+    return tmp;
+}
+
+BigInt operator^(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp ^= num2;
+
+    return tmp;
+}
+
+BigInt operator%(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp %= num2;
+
+    return tmp;
+}
+
+BigInt operator&(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp &= num2;
+
+    return tmp;
+}
+
+BigInt operator|(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
+    tmp |= num2;
 
     return tmp;
 }

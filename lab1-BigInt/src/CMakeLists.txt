@@ -1,6 +1,4 @@
-add_library(BigIntLib BigInt.cpp)
-
-target_include_directories(BigIntLib PUBLIC include)
+add_library(BigIntLib BigInt.cpp BigInt.h)
 
 add_executable(main main.cpp)
 

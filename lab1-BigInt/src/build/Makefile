@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named BigIntLib
-
-# Build rule for target.
-BigIntLib: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 BigIntLib
-.PHONY : BigIntLib
-
-# fast build rule for target.
-BigIntLib/fast:
-	$(MAKE) -f CMakeFiles/BigIntLib.dir/build.make CMakeFiles/BigIntLib.dir/build
-.PHONY : BigIntLib/fast
-
-#=============================================================================
 # Target rules for targets named main
 
 # Build rule for target.
@@ -135,6 +122,19 @@ main: cmake_check_build_system
 main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
+
+#=============================================================================
+# Target rules for targets named BigIntLib
+
+# Build rule for target.
+BigIntLib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 BigIntLib
+.PHONY : BigIntLib
+
+# fast build rule for target.
+BigIntLib/fast:
+	$(MAKE) -f CMakeFiles/BigIntLib.dir/build.make CMakeFiles/BigIntLib.dir/build
+.PHONY : BigIntLib/fast
 
 BigInt.o: BigInt.cpp.o
 
@@ -197,9 +197,9 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... main"
 	@echo "... rebuild_cache"
 	@echo "... BigIntLib"
-	@echo "... main"
 	@echo "... BigInt.o"
 	@echo "... BigInt.i"
 	@echo "... BigInt.s"

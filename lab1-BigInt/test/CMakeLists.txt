@@ -1,4 +1,5 @@
-project(Test)
+project(BigIntTest)
+
 
 add_executable(BigIntTest main.cpp UnaryOperatorsTest.cpp)
 

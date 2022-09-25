@@ -15,6 +15,12 @@
 ########################
 
 //Value Computed by CMake
+BigIntTest_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build
+
+//Value Computed by CMake
+BigIntTest_SOURCE_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test
+
+//Value Computed by CMake
 BigInt_tests_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/test/build
 
 //Value Computed by CMake
@@ -155,7 +161,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Test
+CMAKE_PROJECT_NAME:STATIC=BigIntTest
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
