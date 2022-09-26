@@ -258,19 +258,37 @@ BigInt &BigInt::operator-=(const BigInt &num) {
 }
 
 
-BigInt &BigInt::operator/=(const BigInt &num) { //TODO: придумать решение
-    if (num.number.back() == 0)
+BigInt &BigInt::operator/=(const BigInt &num2) { //TODO: придумать решение
+    if (num2.number.back() == 0)
         throw std::invalid_argument("Division by zero");
 
     if (this->number.back() == 0) //maybe to delete
         return *this;
 
     std::string str = static_cast<std::string>(*this);
-    std::string str2 = static_cast<std::string>(num);
-
+    std::string str2 = static_cast<std::string>(num2);
 
     if (str2.size() > str.size())
         return (*this = 0);
+
+    if(str[0]=='-')
+        str.erase(0,1);
+    if(str2[0]=='-')
+        str2.erase(0,1);
+
+
+    bool isNegative = false;
+
+    if(this->sign == '-' && num2.sign == '+') {
+        isNegative = true;
+        this->sign = '+';
+    }
+    else if(this->sign == '+' && num2.sign == '-')
+        isNegative = true;
+
+    BigInt num = num2;
+    if(num.sign == '-')
+        num.sign = '+';
 
     std::string ans;
     std::string dividend;
@@ -335,6 +353,9 @@ BigInt &BigInt::operator/=(const BigInt &num) { //TODO: придумать ре�
 
     *this = BigInt(ans);
     removeZeros();
+
+    if(isNegative)
+        this->sign = '-';
 
     return *this;
 }
