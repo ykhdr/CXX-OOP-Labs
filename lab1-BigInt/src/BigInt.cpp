@@ -43,13 +43,17 @@ void BigInt::removeZeros() {
 
 // returns true if str1 > str2
 bool BigInt::strCompare(std::string str1, std::string str2) {
-    if(str1.size() < str2.size())
+    if (str1.size() < str2.size())
         return false;
 
+    if (str1.size() > str2.size())
+        return true;
 
     for (int i = 0; i < str1.size(); ++i) {
-        if((str1[i] -'0') < (str2[i] -'0'))
+        if ((str1[i] - '0') < (str2[i] - '0'))
             return false;
+        if ((str1[i] - '0') > (str2[i] - '0'))
+            return true;
     }
 
     return true;
@@ -80,7 +84,11 @@ BigInt::BigInt(std::string str) {
         case '+':
             sign = '+';
             isSigned = true;
+            break;
+        default:
+            sign = '+';
     }
+
     if (isSigned)
         str = str.substr(1);
 
@@ -225,9 +233,12 @@ BigInt &BigInt::operator-=(const BigInt &num) {
         return *this;
     }
 
-    if (*this < num) {
-        *this = -*this;
-        *this -= (-num);
+    if (*this < num) { // ошибка здесь.
+        BigInt tmp = (num - *this);
+        *this = -tmp;
+//        *this = -*this;
+//        BigInt numCopy = -num;
+//        *this -= numCopy;
         return *this;
     }
 
@@ -248,7 +259,7 @@ BigInt &BigInt::operator-=(const BigInt &num) {
 
 
 BigInt &BigInt::operator/=(const BigInt &num) { //TODO: придумать решение
-    if (num.number.back() == 0) //FIXME: не работает
+    if (num.number.back() == 0)
         throw std::invalid_argument("Division by zero");
 
     if (this->number.back() == 0) //maybe to delete
@@ -277,27 +288,44 @@ BigInt &BigInt::operator/=(const BigInt &num) { //TODO: придумать ре�
 
         if (dividend.size() < divider.size()) {
             ++zeroesCounter;
+            while (dividend[0] == '0')
+                dividend.substr(0, 1);
             continue;
         }
 
         // dividend - делимое
         // divider - делитель
         // если размер делителя больше -- скип
+
         int counter = 0;
         std::string prevDivider = "0";
-        while (divider.size() <= dividend.size() && dividend.compare(divider) >= 0) {
+        while (strCompare(dividend, divider)) { // здесь траблы
             ++counter;
             BigInt divBI(divider);
-            divBI += str2;
+            divBI += num;
             prevDivider = divider;
             divider = static_cast<std::string>(divBI);
         }
+        BigInt dif(0);
+        //SIGMFAULT
+        // слишком много вызовов, stackoveflow
+        {
+            BigInt dividendBI(dividend);
+            BigInt prevDividerBI(prevDivider);
+            // из 3 вычитает 8, чтоо
+            dif = (dividendBI -= prevDividerBI);
 
-        BigInt dif = (BigInt(dividend) - BigInt(prevDivider));
-        dividend = static_cast<std::string>(dif);
+        }
+        if (dif.number.back() != 0)
+            dividend = static_cast<std::string>(dif);
+        else
+            dividend = "";
+
         divider = str2;
+        for (int i = 0; i < zeroesCounter; ++i) {
+            ans += "0";
+        }
         zeroesCounter = 0;
-
         ans += std::to_string(counter);
     }
 
@@ -498,8 +526,6 @@ BigInt::operator std::string() const {
 size_t BigInt::size() const {
     return number.size();
 }
-
-
 
 
 BigInt operator+(const BigInt &num1, const BigInt &num2) {

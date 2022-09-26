@@ -10,12 +10,15 @@
  * REMAINDER_LENGTH ДЛЯ ВЫСШИХ РАЗРЯДОВ \n
  */
 
-//21312312321340000000 -- don't work
+//21312312321340000000 -- work
 //11213123231287
+
+//6497725788823911
+//6497725788823911
 int main() {
-    std::string str = "21312312321340000000";
+    std::string str = "-123456789987654321"; //don't work with minus
     BigInt num = BigInt(str);
-    BigInt num2 = BigInt("11213123231287");
+    BigInt num2 = BigInt("11111111111111");
     num /= num2;
 
     std::cout << num.size() << "    " << static_cast<std::string>(num) << std::endl;

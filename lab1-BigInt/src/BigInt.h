@@ -17,6 +17,7 @@ private:
     void shiftRight();
     void removeZeros();
     bool strCompare(std::string,std::string);
+
 public:
     BigInt();
 
