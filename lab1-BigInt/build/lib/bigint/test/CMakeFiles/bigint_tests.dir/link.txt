@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/bigint_tests.dir/test_bigint.cpp.o  -o bigint_tests  ../../libgtest.a ../../libgtest_main.a ../libbigint.a ../../libgtest.a -lpthread 

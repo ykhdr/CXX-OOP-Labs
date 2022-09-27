@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/BigInt.dir/src/main.cpp.o  -o BigInt  -lgoogletest lib/bigint/libbigint.a 
