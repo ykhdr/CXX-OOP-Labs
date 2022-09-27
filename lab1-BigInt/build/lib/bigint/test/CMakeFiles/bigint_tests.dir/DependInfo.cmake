@@ -19,7 +19,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/googletest/googletest/CMakeFiles/gtest.dir/DependInfo.cmake"
   "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/googletest/googletest/CMakeFiles/gtest_main.dir/DependInfo.cmake"
-  "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/CMakeFiles/bigint.dir/DependInfo.cmake"
+  "/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/CMakeFiles/bigint_lib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

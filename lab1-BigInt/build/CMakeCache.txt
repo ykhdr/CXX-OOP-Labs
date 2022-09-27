@@ -18,10 +18,10 @@
 BUILD_GMOCK:BOOL=ON
 
 //Value Computed by CMake
-BigInt_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint
+BigIntPr_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint
 
 //Value Computed by CMake
-BigInt_SOURCE_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/lib/bigint
+BigIntPr_SOURCE_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/lib/bigint
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
@@ -202,7 +202,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=BigInt
+CMAKE_PROJECT_NAME:STATIC=BigIntPr
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=1.12.1
@@ -485,7 +485,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -536,6 +536,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
 //ADVANCED property for variable: _Python_EXECUTABLE
 _Python_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: _Python_INTERPRETER_SIGNATURE
+_Python_INTERPRETER_SIGNATURE-ADVANCED:INTERNAL=1
 _Python_INTERPRETER_SIGNATURE:INTERNAL=60fbcba4d3ec42cb22d9b25de2c7c03a
 cmake_package_name:INTERNAL=GTest
 generated_dir:INTERNAL=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/googletest/googletest/generated

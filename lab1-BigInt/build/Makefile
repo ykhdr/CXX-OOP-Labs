@@ -157,17 +157,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named BigInt
+# Target rules for targets named bigint_lib
 
 # Build rule for target.
-BigInt: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 BigInt
-.PHONY : BigInt
+bigint_lib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bigint_lib
+.PHONY : bigint_lib
 
 # fast build rule for target.
-BigInt/fast:
-	$(MAKE) -f CMakeFiles/BigInt.dir/build.make CMakeFiles/BigInt.dir/build
-.PHONY : BigInt/fast
+bigint_lib/fast:
+	$(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/build
+.PHONY : bigint_lib/fast
+
+#=============================================================================
+# Target rules for targets named bigint_tests
+
+# Build rule for target.
+bigint_tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bigint_tests
+.PHONY : bigint_tests
+
+# fast build rule for target.
+bigint_tests/fast:
+	$(MAKE) -f lib/bigint/test/CMakeFiles/bigint_tests.dir/build.make lib/bigint/test/CMakeFiles/bigint_tests.dir/build
+.PHONY : bigint_tests/fast
 
 #=============================================================================
 # Target rules for targets named gmock_main
@@ -221,59 +234,6 @@ gtest/fast:
 	$(MAKE) -f lib/googletest/googletest/CMakeFiles/gtest.dir/build.make lib/googletest/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
-#=============================================================================
-# Target rules for targets named bigint
-
-# Build rule for target.
-bigint: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bigint
-.PHONY : bigint
-
-# fast build rule for target.
-bigint/fast:
-	$(MAKE) -f lib/bigint/CMakeFiles/bigint.dir/build.make lib/bigint/CMakeFiles/bigint.dir/build
-.PHONY : bigint/fast
-
-#=============================================================================
-# Target rules for targets named bigint_tests
-
-# Build rule for target.
-bigint_tests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bigint_tests
-.PHONY : bigint_tests
-
-# fast build rule for target.
-bigint_tests/fast:
-	$(MAKE) -f lib/bigint/test/CMakeFiles/bigint_tests.dir/build.make lib/bigint/test/CMakeFiles/bigint_tests.dir/build
-.PHONY : bigint_tests/fast
-
-src/main.o: src/main.cpp.o
-
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/BigInt.dir/build.make CMakeFiles/BigInt.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/BigInt.dir/build.make CMakeFiles/BigInt.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/BigInt.dir/build.make CMakeFiles/BigInt.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -286,16 +246,12 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... BigInt"
+	@echo "... bigint_lib"
+	@echo "... bigint_tests"
 	@echo "... gmock_main"
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... bigint"
-	@echo "... bigint_tests"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
 .PHONY : help
 
 

@@ -39,8 +39,8 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/googletest/cmake_install.cmake")
   include("/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/cmake_install.cmake")
+  include("/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/googletest/cmake_install.cmake")
 
 endif()
 

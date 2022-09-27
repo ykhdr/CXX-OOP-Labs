@@ -56,18 +56,6 @@ CMAKE_BINARY_DIR = /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigIn
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -124,6 +112,18 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # The main all target
 all: cmake_check_build_system
 	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/CMakeFiles/progress.marks
@@ -157,19 +157,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-lib/bigint/CMakeFiles/bigint.dir/rule:
-	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f CMakeFiles/Makefile2 lib/bigint/CMakeFiles/bigint.dir/rule
-.PHONY : lib/bigint/CMakeFiles/bigint.dir/rule
+lib/bigint/CMakeFiles/bigint_lib.dir/rule:
+	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f CMakeFiles/Makefile2 lib/bigint/CMakeFiles/bigint_lib.dir/rule
+.PHONY : lib/bigint/CMakeFiles/bigint_lib.dir/rule
 
 # Convenience name for target.
-bigint: lib/bigint/CMakeFiles/bigint.dir/rule
+bigint_lib: lib/bigint/CMakeFiles/bigint_lib.dir/rule
 
-.PHONY : bigint
+.PHONY : bigint_lib
 
 # fast build rule for target.
-bigint/fast:
-	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint.dir/build.make lib/bigint/CMakeFiles/bigint.dir/build
-.PHONY : bigint/fast
+bigint_lib/fast:
+	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/build
+.PHONY : bigint_lib/fast
 
 src/big_int.o: src/big_int.cpp.o
 
@@ -177,7 +177,7 @@ src/big_int.o: src/big_int.cpp.o
 
 # target to build an object file
 src/big_int.cpp.o:
-	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint.dir/build.make lib/bigint/CMakeFiles/bigint.dir/src/big_int.cpp.o
+	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/src/big_int.cpp.o
 .PHONY : src/big_int.cpp.o
 
 src/big_int.i: src/big_int.cpp.i
@@ -186,7 +186,7 @@ src/big_int.i: src/big_int.cpp.i
 
 # target to preprocess a source file
 src/big_int.cpp.i:
-	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint.dir/build.make lib/bigint/CMakeFiles/bigint.dir/src/big_int.cpp.i
+	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/src/big_int.cpp.i
 .PHONY : src/big_int.cpp.i
 
 src/big_int.s: src/big_int.cpp.s
@@ -195,7 +195,7 @@ src/big_int.s: src/big_int.cpp.s
 
 # target to generate assembly for a file
 src/big_int.cpp.s:
-	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint.dir/build.make lib/bigint/CMakeFiles/bigint.dir/src/big_int.cpp.s
+	cd /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build && $(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/src/big_int.cpp.s
 .PHONY : src/big_int.cpp.s
 
 # Help Target
@@ -204,13 +204,13 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... bigint"
+	@echo "... install/strip"
+	@echo "... bigint_lib"
 	@echo "... src/big_int.o"
 	@echo "... src/big_int.i"
 	@echo "... src/big_int.s"

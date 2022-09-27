@@ -4,7 +4,7 @@
 #include <ostream>
 
 
-class big_int {
+class BigInt {
 
 private:
     std::vector<int> number_;
@@ -17,58 +17,58 @@ private:
     bool strCompare(std::string,std::string);
 
 public:
-    big_int();
+    BigInt();
 
-    big_int(int);
+    BigInt(int);
 
-    big_int(std::string); // бросать исключение std::invalid_argument при ошибке
+    BigInt(std::string); // бросать исключение std::invalid_argument при ошибке
 
-    big_int(const big_int &);
+    BigInt(const BigInt &);
 
-    ~big_int();
+    ~BigInt();
 
-    big_int &operator=(const big_int &);  //возможно присваивание самому себе!
+    BigInt &operator=(const BigInt &);  //возможно присваивание самому себе!
 
-    big_int operator~() const; // побитовый оператор не
+    BigInt operator~() const; // побитовый оператор не
 
-    big_int &operator++();
+    BigInt &operator++();
 
-    const big_int operator++(int) const;
+    const BigInt operator++(int) const;
 
-    big_int &operator--();
+    BigInt &operator--();
 
-    const big_int operator--(int) const;
+    const BigInt operator--(int) const;
 
-    big_int &operator+=(const big_int &);
+    BigInt &operator+=(const BigInt &);
 
-    big_int &operator*=(const big_int &);
+    BigInt &operator*=(const BigInt &);
 
-    big_int &operator-=(const big_int &);
+    BigInt &operator-=(const BigInt &);
 
-    big_int &operator/=(const big_int &);
+    BigInt &operator/=(const BigInt &);
 
-    big_int &operator^=(const big_int &); // xor
+    BigInt &operator^=(const BigInt &); // xor
 
-    big_int &operator%=(const big_int &);
+    BigInt &operator%=(const BigInt &);
 
-    big_int &operator&=(const big_int &);
+    BigInt &operator&=(const BigInt &);
 
-    big_int &operator|=(const big_int &);
+    BigInt &operator|=(const BigInt &);
 
-    big_int operator+() const;  // unary +
-    big_int operator-() const;  // unary -
+    BigInt operator+() const;  // unary +
+    BigInt operator-() const;  // unary -
 
-    bool operator==(const big_int &) const;
+    bool operator==(const BigInt &) const;
 
-    bool operator!=(const big_int &) const;
+    bool operator!=(const BigInt &) const;
 
-    bool operator<(const big_int &) const;
+    bool operator<(const BigInt &) const;
 
-    bool operator>(const big_int &) const;
+    bool operator>(const BigInt &) const;
 
-    bool operator<=(const big_int &) const;
+    bool operator<=(const BigInt &) const;
 
-    bool operator>=(const big_int &) const;
+    bool operator>=(const BigInt &) const;
 
     operator int() const;
 
@@ -79,21 +79,21 @@ public:
 
 };
 
-big_int operator+(const big_int &, const big_int &);
+BigInt operator+(const BigInt &, const BigInt &);
 
-big_int operator-(const big_int &, const big_int &);
+BigInt operator-(const BigInt &, const BigInt &);
 
-big_int operator*(const big_int &, const big_int &);
+BigInt operator*(const BigInt &, const BigInt &);
 
-big_int operator/(const big_int &, const big_int &);
+BigInt operator/(const BigInt &, const BigInt &);
 
-big_int operator^(const big_int &, const big_int &); // xor
+BigInt operator^(const BigInt &, const BigInt &); // xor
 
-big_int operator%(const big_int &, const big_int &);
+BigInt operator%(const BigInt &, const BigInt &);
 
-big_int operator&(const big_int &, const big_int &);
+BigInt operator&(const BigInt &, const BigInt &);
 
-big_int operator|(const big_int &, const big_int &);
+BigInt operator|(const BigInt &, const BigInt &);
 
 
-std::ostream &operator<<(std::ostream &o, const big_int &i);
+std::ostream &operator<<(std::ostream &o, const BigInt &i);

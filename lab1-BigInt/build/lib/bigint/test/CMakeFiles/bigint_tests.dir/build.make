@@ -81,7 +81,7 @@ lib/bigint/test/bigint_tests: lib/bigint/test/CMakeFiles/bigint_tests.dir/test_b
 lib/bigint/test/bigint_tests: lib/bigint/test/CMakeFiles/bigint_tests.dir/build.make
 lib/bigint/test/bigint_tests: lib/libgtest.a
 lib/bigint/test/bigint_tests: lib/libgtest_main.a
-lib/bigint/test/bigint_tests: lib/bigint/libbigint.a
+lib/bigint/test/bigint_tests: lib/bigint/libbigint_lib.a
 lib/bigint/test/bigint_tests: lib/libgtest.a
 lib/bigint/test/bigint_tests: lib/bigint/test/CMakeFiles/bigint_tests.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable bigint_tests"

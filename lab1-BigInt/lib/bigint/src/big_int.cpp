@@ -7,7 +7,7 @@
 #define CELL_LIMIT 1000000000
 #define MAX_OF_DIGITS 9
 
-int big_int::countIntLength(int num) {
+int BigInt::countIntLength(int num) {
     int lengthOfNum = 0;
 
     while (num) {
@@ -21,17 +21,17 @@ int big_int::countIntLength(int num) {
     return lengthOfNum;
 }
 
-bool big_int::vctcmp(const std::vector<int> &bigger, const std::vector<int> &smaller) {
+bool BigInt::vctcmp(const std::vector<int> &bigger, const std::vector<int> &smaller) {
     return std::search(bigger.begin(), bigger.end(), smaller.begin(), smaller.end()) != bigger.end();
 }
 
-void big_int::removeZeros() {
+void BigInt::removeZeros() {
     while (number_.back() == 0 && number_.size() > 1)
         number_.pop_back();
 }
 
 // returns true if str1 > str2
-bool big_int::strCompare(std::string str1, std::string str2) {
+bool BigInt::strCompare(std::string str1, std::string str2) {
     if (str1.size() < str2.size())
         return false;
 
@@ -48,11 +48,11 @@ bool big_int::strCompare(std::string str1, std::string str2) {
     return true;
 }
 
-big_int::big_int() : sign_('+') {
+BigInt::BigInt() : sign_('+') {
     number_.push_back(0);
 }
 
-big_int::big_int(int num) {
+BigInt::BigInt(int num) {
     if (num >= CELL_LIMIT) {
         number_.push_back(abs(num) % CELL_LIMIT);
         number_.push_back(abs(num) / CELL_LIMIT);
@@ -62,7 +62,7 @@ big_int::big_int(int num) {
     (num < 0) ? this->sign_ = '-' : this->sign_ = '+';
 }
 
-big_int::big_int(std::string str) {
+BigInt::BigInt(std::string str) {
     bool isSigned = false;
 
     switch (str[0]) {
@@ -99,15 +99,15 @@ big_int::big_int(std::string str) {
 
 }
 
-big_int::big_int(const big_int &num) : sign_(num.sign_), number_(num.number_) {}
+BigInt::BigInt(const BigInt &num) : sign_(num.sign_), number_(num.number_) {}
 
-big_int::~big_int() {
+BigInt::~BigInt() {
     number_.clear();
 }
 
 //TODO: понять как сделать
-big_int big_int::operator~() const {
-    big_int copy = *this;
+BigInt BigInt::operator~() const {
+    BigInt copy = *this;
 
     for (int el: copy.number_) {
         el = ~el;
@@ -119,33 +119,33 @@ big_int big_int::operator~() const {
 }
 
 
-big_int &big_int::operator++() {
+BigInt &BigInt::operator++() {
     return (*this += 1);
 }
 
-const big_int big_int::operator++(int) const {
-    big_int tmp = *this;
+const BigInt BigInt::operator++(int) const {
+    BigInt tmp = *this;
     tmp += 1;
 
     return tmp;
 }
 
-big_int &big_int::operator--() {
+BigInt &BigInt::operator--() {
     return (*this -= 1);
 }
 
-const big_int big_int::operator--(int) const {
-    big_int tmp = *this;
+const BigInt BigInt::operator--(int) const {
+    BigInt tmp = *this;
     tmp -= 1;
 
     return tmp;
 }
 
-big_int &big_int::operator+=(const big_int &num) {
+BigInt &BigInt::operator+=(const BigInt &num) {
     if (this->sign_ == '-') {
         if (num.sign_ == '-') {
             *this = -*this;
-            big_int tmp = -num;
+            BigInt tmp = -num;
             *this += tmp;
             *this = -*this;
 
@@ -160,7 +160,7 @@ big_int &big_int::operator+=(const big_int &num) {
     }
 
     if (num.sign_ == '-') {
-        big_int tmp = -num;
+        BigInt tmp = -num;
         *this -= tmp;
 
         return *this;
@@ -183,8 +183,8 @@ big_int &big_int::operator+=(const big_int &num) {
     return *this;
 }
 
-big_int &big_int::operator*=(const big_int &num) {
-    big_int result;
+BigInt &BigInt::operator*=(const BigInt &num) {
+    BigInt result;
     result.number_.resize(this->number_.size() + num.number_.size());
 
     for (int i = 0; i < this->number_.size(); ++i) {
@@ -214,7 +214,7 @@ big_int &big_int::operator*=(const big_int &num) {
 }
 
 
-big_int &big_int::operator-=(const big_int &num) {
+BigInt &BigInt::operator-=(const BigInt &num) {
     if (num.sign_ == '-') {
         *this += (-num);
         return *this;
@@ -228,7 +228,7 @@ big_int &big_int::operator-=(const big_int &num) {
     }
 
     if (*this < num) {
-        big_int tmp = (num - *this);
+        BigInt tmp = (num - *this);
         *this = -tmp;
 
         return *this;
@@ -250,7 +250,7 @@ big_int &big_int::operator-=(const big_int &num) {
 }
 
 
-big_int &big_int::operator/=(const big_int &num2) { //TODO: придумать решение
+BigInt &BigInt::operator/=(const BigInt &num2) { //TODO: придумать решение
     if (num2.number_.back() == 0)
         throw std::invalid_argument("Division by zero");
 
@@ -277,7 +277,7 @@ big_int &big_int::operator/=(const big_int &num2) { //TODO: придумать �
     } else if (this->sign_ == '+' && num2.sign_ == '-')
         isNegative = true;
 
-    big_int num = num2;
+    BigInt num = num2;
     if (num.sign_ == '-')
         num.sign_ = '+';
 
@@ -310,14 +310,14 @@ big_int &big_int::operator/=(const big_int &num2) { //TODO: придумать �
         std::string prevDivider = "0";
         while (strCompare(dividend, divider)) { // здесь траблы
             ++counter;
-            big_int divBI(divider);
+            BigInt divBI(divider);
             divBI += num;
             prevDivider = divider;
             divider = static_cast<std::string>(divBI);
         }
-        big_int dif(0);
-        big_int dividendBI(dividend);
-        big_int prevDividerBI(prevDivider);
+        BigInt dif(0);
+        BigInt dividendBI(dividend);
+        BigInt prevDividerBI(prevDivider);
         dif = (dividendBI -= prevDividerBI);
 
         if (dif.number_.back() != 0)
@@ -337,7 +337,7 @@ big_int &big_int::operator/=(const big_int &num2) { //TODO: придумать �
         ans += '0';
     }
 
-    *this = big_int(ans);
+    *this = BigInt(ans);
     removeZeros();
 
     if (isNegative)
@@ -346,7 +346,7 @@ big_int &big_int::operator/=(const big_int &num2) { //TODO: придумать �
     return *this;
 }
 
-big_int &big_int::operator^=(const big_int &num) {
+BigInt &BigInt::operator^=(const BigInt &num) {
     for (int i = 0; i < std::min(this->number_.size(), num.number_.size()); ++i) {
         this->number_[i] = this->number_[i] ^ num.number_[i];
     }
@@ -360,10 +360,10 @@ big_int &big_int::operator^=(const big_int &num) {
     return *this;
 }
 
-big_int &big_int::operator%=(const big_int &num) { // переделать
-    big_int q = (*this / num);
-    big_int s = q * num;
-    big_int res = *this - s;
+BigInt &BigInt::operator%=(const BigInt &num) { // переделать
+    BigInt q = (*this / num);
+    BigInt s = q * num;
+    BigInt res = *this - s;
 
     if (res.sign_ == '-')
         res += num;
@@ -373,7 +373,7 @@ big_int &big_int::operator%=(const big_int &num) { // переделать
     return *this;
 }
 
-big_int &big_int::operator&=(const big_int &num) {
+BigInt &BigInt::operator&=(const BigInt &num) {
     for (int i = 0; i < std::min(this->number_.size(), num.number_.size()); ++i) {
         this->number_[i] = this->number_[i] & num.number_[i];
     }
@@ -389,7 +389,7 @@ big_int &big_int::operator&=(const big_int &num) {
 
 }
 
-big_int &big_int::operator|=(const big_int &num) {
+BigInt &BigInt::operator|=(const BigInt &num) {
     for (int i = 0; i < std::min(this->number_.size(), num.number_.size()); ++i) {
         this->number_[i] = this->number_[i] | num.number_[i];
     }
@@ -402,7 +402,7 @@ big_int &big_int::operator|=(const big_int &num) {
     return *this;
 }
 
-big_int &big_int::operator=(const big_int &num) {
+BigInt &BigInt::operator=(const BigInt &num) {
     if (this == &num)
         return *this;
 
@@ -412,18 +412,18 @@ big_int &big_int::operator=(const big_int &num) {
     return *this;
 };
 
-big_int big_int::operator+() const {
+BigInt BigInt::operator+() const {
     return *this;
 }
 
-big_int big_int::operator-() const {
-    big_int copy(*this);
+BigInt BigInt::operator-() const {
+    BigInt copy(*this);
     copy.sign_ == '-' ? copy.sign_ = '+' : copy.sign_ = '-';
 
     return copy;
 }
 
-bool big_int::operator==(const big_int &num) const {
+bool BigInt::operator==(const BigInt &num) const {
     if (sign_ != num.sign_)
         return false;
 
@@ -436,11 +436,11 @@ bool big_int::operator==(const big_int &num) const {
     return true;
 }
 
-bool big_int::operator!=(const big_int &num) const {
+bool BigInt::operator!=(const BigInt &num) const {
     return !operator==(num);
 }
 
-bool big_int::operator<(const big_int &num) const {
+bool BigInt::operator<(const BigInt &num) const {
     if (sign_ < num.sign_) // '-' - 55, '+' - 53
         return false;
 
@@ -482,25 +482,25 @@ bool big_int::operator<(const big_int &num) const {
     return true;
 }
 
-bool big_int::operator>(const big_int &num) const {
+bool BigInt::operator>(const BigInt &num) const {
     return !operator<(num);
 }
 
-bool big_int::operator<=(const big_int &num) const {
+bool BigInt::operator<=(const BigInt &num) const {
     if (sign_ == num.sign_ && vctcmp(number_, num.number_))
         return true;
 
     return operator<(num);
 }
 
-bool big_int::operator>=(const big_int &num) const {
+bool BigInt::operator>=(const BigInt &num) const {
     if (sign_ == num.sign_ && vctcmp(number_, num.number_))
         return true;
 
     return operator>(num);
 }
 
-big_int::operator int() const {
+BigInt::operator int() const {
     if (number_.size() > 1)
         throw std::length_error("Number exceeds int limit");
 
@@ -513,7 +513,7 @@ big_int::operator int() const {
 }
 
 
-big_int::operator std::string() const {
+BigInt::operator std::string() const {
     std::string str;
 
     if (sign_ == '-')
@@ -533,62 +533,62 @@ big_int::operator std::string() const {
     return str;
 }
 
-size_t big_int::size() const {
+size_t BigInt::size() const {
     return number_.size();
 }
 
 
-big_int operator+(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator+(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp += num2;
 
     return tmp;
 }
 
-big_int operator-(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator-(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp -= num2;
 
     return tmp;
 }
 
-big_int operator*(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator*(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp *= num2;
 
     return tmp;
 }
 
-big_int operator/(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator/(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp /= num2;
 
     return tmp;
 }
 
-big_int operator^(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator^(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp ^= num2;
 
     return tmp;
 }
 
-big_int operator%(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator%(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp %= num2;
 
     return tmp;
 }
 
-big_int operator&(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator&(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp &= num2;
 
     return tmp;
 }
 
-big_int operator|(const big_int &num1, const big_int &num2) {
-    big_int tmp = num1;
+BigInt operator|(const BigInt &num1, const BigInt &num2) {
+    BigInt tmp = num1;
     tmp |= num2;
 
     return tmp;
