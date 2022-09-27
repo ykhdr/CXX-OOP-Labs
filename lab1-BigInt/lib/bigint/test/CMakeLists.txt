@@ -11,6 +11,6 @@ endif()
 
 add_executable(${TEST_PROJECT_NAME} ${LIBRARY_TESTS_SOURCE})
 
-target_link_libraries(${TEST_PROJECT_NAME} gtest gtest_main ${LIBRARY_NAME})
+target_link_libraries(${TEST_PROJECT_NAME} gtest gtest_main ${LIBRARY_NAME} )
 
 add_test(${TEST_PROJECT_NAME} ${TEST_PROJECT_NAME})
