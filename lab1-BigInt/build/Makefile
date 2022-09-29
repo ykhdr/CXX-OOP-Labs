@@ -157,6 +157,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named Lab1-BigInt
+
+# Build rule for target.
+Lab1-BigInt: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Lab1-BigInt
+.PHONY : Lab1-BigInt
+
+# fast build rule for target.
+Lab1-BigInt/fast:
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/build
+.PHONY : Lab1-BigInt/fast
+
+#=============================================================================
 # Target rules for targets named bigint_lib
 
 # Build rule for target.
@@ -234,6 +247,33 @@ gtest/fast:
 	$(MAKE) -f lib/googletest/googletest/CMakeFiles/gtest.dir/build.make lib/googletest/googletest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
+src/main.o: src/main.cpp.o
+
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -246,12 +286,16 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... Lab1-BigInt"
 	@echo "... bigint_lib"
 	@echo "... bigint_tests"
 	@echo "... gmock_main"
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 

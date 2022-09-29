@@ -202,7 +202,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=BigIntPr
+CMAKE_PROJECT_NAME:STATIC=Lab1-BigInt
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=1.12.1
@@ -284,6 +284,12 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Enable installation of googletest. (Projects embedding googletest
 // may want to turn this OFF.)
 INSTALL_GTEST:BOOL=ON
+
+//Value Computed by CMake
+Lab1-BigInt_BINARY_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint
+
+//Value Computed by CMake
+Lab1-BigInt_SOURCE_DIR:STATIC=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/lib/bigint
 
 //Path to a program.
 _Python_EXECUTABLE:FILEPATH=/usr/bin/python3.8

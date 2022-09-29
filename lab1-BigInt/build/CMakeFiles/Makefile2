@@ -53,6 +53,7 @@ CMAKE_BINARY_DIR = /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigIn
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/Lab1-BigInt.dir/all
 all: lib/bigint/all
 all: lib/googletest/all
 
@@ -65,6 +66,7 @@ preinstall: lib/googletest/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/Lab1-BigInt.dir/clean
 clean: lib/bigint/clean
 clean: lib/googletest/clean
 
@@ -169,13 +171,40 @@ lib/googletest/googletest/clean: lib/googletest/googletest/CMakeFiles/gtest.dir/
 .PHONY : lib/googletest/googletest/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/Lab1-BigInt.dir
+
+# All Build rule for target.
+CMakeFiles/Lab1-BigInt.dir/all:
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/depend
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=1,2 "Built target Lab1-BigInt"
+.PHONY : CMakeFiles/Lab1-BigInt.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Lab1-BigInt.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Lab1-BigInt.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles 0
+.PHONY : CMakeFiles/Lab1-BigInt.dir/rule
+
+# Convenience name for target.
+Lab1-BigInt: CMakeFiles/Lab1-BigInt.dir/rule
+
+.PHONY : Lab1-BigInt
+
+# clean rule for target.
+CMakeFiles/Lab1-BigInt.dir/clean:
+	$(MAKE) -f CMakeFiles/Lab1-BigInt.dir/build.make CMakeFiles/Lab1-BigInt.dir/clean
+.PHONY : CMakeFiles/Lab1-BigInt.dir/clean
+
+#=============================================================================
 # Target rules for target lib/bigint/CMakeFiles/bigint_lib.dir
 
 # All Build rule for target.
 lib/bigint/CMakeFiles/bigint_lib.dir/all:
 	$(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/depend
 	$(MAKE) -f lib/bigint/CMakeFiles/bigint_lib.dir/build.make lib/bigint/CMakeFiles/bigint_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=1,2 "Built target bigint_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=3,4 "Built target bigint_lib"
 .PHONY : lib/bigint/CMakeFiles/bigint_lib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -199,12 +228,12 @@ lib/bigint/CMakeFiles/bigint_lib.dir/clean:
 # Target rules for target lib/bigint/test/CMakeFiles/bigint_tests.dir
 
 # All Build rule for target.
+lib/bigint/test/CMakeFiles/bigint_tests.dir/all: lib/bigint/CMakeFiles/bigint_lib.dir/all
 lib/bigint/test/CMakeFiles/bigint_tests.dir/all: lib/googletest/googletest/CMakeFiles/gtest_main.dir/all
 lib/bigint/test/CMakeFiles/bigint_tests.dir/all: lib/googletest/googletest/CMakeFiles/gtest.dir/all
-lib/bigint/test/CMakeFiles/bigint_tests.dir/all: lib/bigint/CMakeFiles/bigint_lib.dir/all
 	$(MAKE) -f lib/bigint/test/CMakeFiles/bigint_tests.dir/build.make lib/bigint/test/CMakeFiles/bigint_tests.dir/depend
 	$(MAKE) -f lib/bigint/test/CMakeFiles/bigint_tests.dir/build.make lib/bigint/test/CMakeFiles/bigint_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=3,4 "Built target bigint_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=5,6 "Built target bigint_tests"
 .PHONY : lib/bigint/test/CMakeFiles/bigint_tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -228,11 +257,11 @@ lib/bigint/test/CMakeFiles/bigint_tests.dir/clean:
 # Target rules for target lib/googletest/googlemock/CMakeFiles/gmock_main.dir
 
 # All Build rule for target.
-lib/googletest/googlemock/CMakeFiles/gmock_main.dir/all: lib/googletest/googletest/CMakeFiles/gtest.dir/all
 lib/googletest/googlemock/CMakeFiles/gmock_main.dir/all: lib/googletest/googlemock/CMakeFiles/gmock.dir/all
+lib/googletest/googlemock/CMakeFiles/gmock_main.dir/all: lib/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f lib/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make lib/googletest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f lib/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make lib/googletest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=7,8 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=9,10 "Built target gmock_main"
 .PHONY : lib/googletest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -259,7 +288,7 @@ lib/googletest/googlemock/CMakeFiles/gmock_main.dir/clean:
 lib/googletest/googlemock/CMakeFiles/gmock.dir/all: lib/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f lib/googletest/googlemock/CMakeFiles/gmock.dir/build.make lib/googletest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f lib/googletest/googlemock/CMakeFiles/gmock.dir/build.make lib/googletest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=5,6 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=7,8 "Built target gmock"
 .PHONY : lib/googletest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -286,7 +315,7 @@ lib/googletest/googlemock/CMakeFiles/gmock.dir/clean:
 lib/googletest/googletest/CMakeFiles/gtest_main.dir/all: lib/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f lib/googletest/googletest/CMakeFiles/gtest_main.dir/build.make lib/googletest/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f lib/googletest/googletest/CMakeFiles/gtest_main.dir/build.make lib/googletest/googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=11,12 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=13,14 "Built target gtest_main"
 .PHONY : lib/googletest/googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -313,7 +342,7 @@ lib/googletest/googletest/CMakeFiles/gtest_main.dir/clean:
 lib/googletest/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f lib/googletest/googletest/CMakeFiles/gtest.dir/build.make lib/googletest/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f lib/googletest/googletest/CMakeFiles/gtest.dir/build.make lib/googletest/googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=9,10 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=11,12 "Built target gtest"
 .PHONY : lib/googletest/googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.

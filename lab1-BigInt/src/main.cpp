@@ -19,7 +19,7 @@ int main() {
     std::string str = "10";
     BigInt num = BigInt(str);
     BigInt num2 = BigInt("7");
-    num = ~num;
+    num /= num2;
 
     std::cout << num.size() << "    " << static_cast<std::string>(num) << std::endl;
     return 0;

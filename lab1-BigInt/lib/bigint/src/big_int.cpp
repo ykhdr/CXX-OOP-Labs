@@ -81,6 +81,9 @@ BigInt::BigInt(std::string str) {
     if (isSigned)
         str = str.substr(1);
 
+    if(str.empty())
+        throw std::invalid_argument("invalid input string");
+
     for (char el: str)
         if (el < '0' || el > '9')
             throw std::invalid_argument("invalid input string");
@@ -92,14 +95,12 @@ BigInt::BigInt(std::string str) {
         else
             number_.push_back(atoi(str.substr(i - 9, 9).c_str()));
 
-
     }
 
     removeZeros();
-
 }
 
-BigInt::BigInt(const BigInt &num) : sign_(num.sign_), number_(num.number_) {}
+BigInt::BigInt(const BigInt &num) = default;
 
 BigInt::~BigInt() {
     number_.clear();
@@ -123,9 +124,9 @@ BigInt &BigInt::operator++() {
     return (*this += 1);
 }
 
-const BigInt BigInt::operator++(int) const {
+const BigInt BigInt::operator++(int) {
     BigInt tmp = *this;
-    tmp += 1;
+    ++(*this);
 
     return tmp;
 }
@@ -134,9 +135,9 @@ BigInt &BigInt::operator--() {
     return (*this -= 1);
 }
 
-const BigInt BigInt::operator--(int) const {
+const BigInt BigInt::operator--(int) {
     BigInt tmp = *this;
-    tmp -= 1;
+    --(*this);
 
     return tmp;
 }
@@ -308,7 +309,7 @@ BigInt &BigInt::operator/=(const BigInt &num2) { //TODO: придумать ре
 
         int counter = 0;
         std::string prevDivider = "0";
-        while (strCompare(dividend, divider)) { // здесь траблы
+        while (strCompare(dividend, divider)) {
             ++counter;
             BigInt divBI(divider);
             divBI += num;
@@ -534,7 +535,7 @@ BigInt::operator std::string() const {
 }
 
 size_t BigInt::size() const {
-    return number_.size();
+    return sizeof(int)*number_.size();
 }
 
 

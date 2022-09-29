@@ -4,6 +4,7 @@
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles/list_install_components.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles/rebuild_cache.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles/Lab1-BigInt.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/CMakeFiles/install/local.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/CMakeFiles/install.dir
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/lib/bigint/CMakeFiles/list_install_components.dir
