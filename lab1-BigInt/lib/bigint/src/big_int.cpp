@@ -2,6 +2,7 @@
 
 #include <climits>
 #include <algorithm>
+#include <bitset>
 
 
 #define CELL_LIMIT 1000000000
@@ -80,8 +81,8 @@ BigInt::BigInt(std::string str) {
 
     if (isSigned)
         str = str.substr(1);
-    
-    if(str.empty())
+
+    if (str.empty())
         throw std::invalid_argument("invalid input string");
 
     for (char el: str)
@@ -99,7 +100,7 @@ BigInt::BigInt(std::string str) {
 
     removeZeros();
 
-    if(number_.back()==0)
+    if (number_.back() == 0)
         sign_ = '+';
 }
 
@@ -113,10 +114,12 @@ BigInt::~BigInt() {
 BigInt BigInt::operator~() const {
     BigInt copy = *this;
 
-    for (int el: copy.number_) {
+    for (int &el: copy.number_) {
         el = ~el;
-        el *= -1;
+        el*=-1;
     }
+
+    copy.sign_ == '+' ? copy.sign_ = '-' : copy.sign_ = '+';
 
     copy.removeZeros();
     return copy;
@@ -489,7 +492,7 @@ bool BigInt::operator<(const BigInt &num) const {
 }
 
 bool BigInt::operator>(const BigInt &num) const {
-    if(vctcmp(number_,num.number_))
+    if (vctcmp(number_, num.number_))
         return false;
     return !operator<(num);
 }
@@ -542,7 +545,7 @@ BigInt::operator std::string() const {
 }
 
 size_t BigInt::size() const {
-    return sizeof(int)*number_.size();
+    return (sizeof(int) * number_.size() + 1);
 }
 
 
@@ -602,7 +605,8 @@ BigInt operator|(const BigInt &num1, const BigInt &num2) {
     return tmp;
 }
 
-std::ostream &operator<<(std::ostream &out, const BigInt &num){
+std::ostream &operator<<(std::ostream &out, const BigInt &num) {
     out << static_cast<std::string>(num);
+
     return out;
 }

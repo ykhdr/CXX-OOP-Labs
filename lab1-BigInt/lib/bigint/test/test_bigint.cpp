@@ -7,8 +7,9 @@ TEST(TestConstructors, ConstructorWithoutArgs) {
 }
 
 TEST(TestConstructors, ConstructorWithIntArg) {
-    int num = 10;
+    int num;
 
+    num = 10;
     BigInt obj(num);
     EXPECT_EQ(static_cast<int>(obj), num);
 
@@ -74,9 +75,18 @@ TEST(TestConstructors, CopyConstructor) {
     EXPECT_NE(&src, &dest);
 
 }
-//TODO: написать
-TEST(TestBitwiseNot, BitwiseNot) {
 
+TEST(TestBitwiseNot, BitwiseNot) {
+    BigInt obj;
+
+    obj = BigInt(654);
+    EXPECT_EQ(static_cast<int>(~obj),-655);
+
+    obj = BigInt(65393);
+    EXPECT_EQ(static_cast<int>(~obj),-65394);
+
+    //obj = BigInt("787878787878787878");
+    //EXPECT_STREQ(static_cast<std::string>(~obj).data(),"-1301584641");
 }
 
 TEST(TestAddition, PrefixIncrement) {
@@ -642,6 +652,16 @@ TEST(TestTypeConversionOperators,StringConversion){
 
 }
 
+TEST(TestCountSize,CountSize){
+    BigInt obj;
+
+    obj = BigInt(1);
+    EXPECT_EQ(obj.size(),5);
+
+    obj = BigInt("111111111111111111");
+    EXPECT_EQ(obj.size(),9);
+}
+
 TEST(TestOutputOperator,Output){
     std::ostringstream out;
     out << BigInt("-2133231235454");
@@ -650,5 +670,6 @@ TEST(TestOutputOperator,Output){
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
+
     return RUN_ALL_TESTS();
 }
