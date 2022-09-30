@@ -30,7 +30,6 @@ TEST(TestConstructors, ConstructorWithStringArg) {
     obj = BigInt(str);
     EXPECT_STREQ(static_cast<std::string>(obj).data(), str.data());
 
-    //FIXME: возможны проблемы, почему работает...
     str += "00000000000000000000";
     obj = BigInt(str);
     EXPECT_STREQ(static_cast<std::string>(obj).data(), str.data());
@@ -389,6 +388,264 @@ TEST(TestDivision,Division){
     } catch (std::invalid_argument const& ex) {
         EXPECT_STREQ(ex.what(), "Division by zero");
     }
+}
+
+TEST(TestXOR,XORWithAssigment){
+    BigInt obj;
+
+    obj = BigInt(87);                           // 0 01010111
+    obj ^= BigInt(170);                         // 0 10101010
+    EXPECT_EQ(static_cast<int>(obj),253);       // 0 11111101
+
+    obj = BigInt(21847);                        // 0 01010101 01010111
+    obj ^= BigInt(170);                         // 0          10101010
+    EXPECT_EQ(static_cast<int>(obj),22013);     // 0 01010101 11111101
+
+    obj = BigInt(21847);                        // 0 01010101 01010111
+    obj ^= BigInt(-21930);                      // 1 01010101 10101010
+    EXPECT_EQ(static_cast<int>(obj),-253);      // 1          11111101
+
+}
+
+TEST(TestXOR,XOR){
+    BigInt result;
+    BigInt num1;
+    BigInt num2;
+
+    num1 = BigInt(87);
+    num2 = BigInt(170);
+    result = num1 ^ num2;
+    EXPECT_EQ(static_cast<int>(result),253);
+
+    num1 = BigInt(-21847);
+    num2 = BigInt(-21930);
+    result = num1 ^ num2;
+    EXPECT_EQ(static_cast<int>(result),253);
+}
+
+TEST(TestPercentageOfDivision,PercentageOfDivisionWithAssigment){
+    BigInt obj;
+
+    obj = BigInt(32);
+    obj %= BigInt(2);
+    EXPECT_EQ(static_cast<int>(obj),0);
+
+    obj = BigInt(-20302);
+    obj %= BigInt(73);
+    EXPECT_EQ(static_cast<int>(obj),65);
+
+    obj = BigInt("3233211123323");
+    obj %= BigInt(2442);
+    EXPECT_EQ(static_cast<int>(obj),5);
+
+}
+
+TEST(TestPercentageOfDivision,PercentageOfDivision){
+    BigInt result;
+    BigInt num1;
+    BigInt num2;
+
+    num1 = BigInt(22);
+    num2 = BigInt(1);
+    result = num1 % num2;
+    EXPECT_EQ(static_cast<int>(result),0);
+
+    num1 = BigInt(0);
+    num2 = BigInt(23332);
+    result = num1 % num2;
+    EXPECT_EQ(static_cast<int>(result),0);
+
+    num1 = BigInt("233333221123");
+    num2 = BigInt("22222222222222");
+    result = num1 % num2;
+    EXPECT_STREQ(static_cast<std::string>(result).data(),"233333221123");
+}
+
+TEST(TestBiwiseAND,BitwiseANDWithAssigment){
+    BigInt obj;
+
+    obj = BigInt(87);                           // 0 01010111
+    obj &= BigInt(170);                         // 0 10101010
+    EXPECT_EQ(static_cast<int>(obj),2);         // 0 00000010
+
+    obj = BigInt(21847);                        // 0 01010101 01010111
+    obj &= BigInt(170);                         // 0          10101010
+    EXPECT_EQ(static_cast<int>(obj),2);         // 0          00000010
+
+    obj = BigInt(21847);                        // 0 01010101 01010111
+    obj &= BigInt(-21930);                      // 1 01010101 10101010
+    EXPECT_EQ(static_cast<int>(obj),21762);     // 0 01010101 00000010
+}
+
+TEST(TestBitwiseAND,BitwiseAND){
+    BigInt result;
+    BigInt num1;
+    BigInt num2;
+
+    num1 = BigInt(87);
+    num2 = BigInt(170);
+    result = num1 & num2;
+    EXPECT_EQ(static_cast<int>(result),2);
+
+    num1 = BigInt(-21847);
+    num2 = BigInt(-21930);
+    result = num1 & num2;
+    EXPECT_EQ(static_cast<int>(result),-21762);
+}
+
+TEST(TestBitwiseOR,BitwiseORWithAssigment){
+    BigInt obj;
+
+    obj = BigInt(87);                           // 0 01010111
+    obj |= BigInt(170);                         // 0 10101010
+    EXPECT_EQ(static_cast<int>(obj),255);       // 0 11111111
+
+    obj = BigInt(21847);                        // 0 01010101 01010111
+    obj |= BigInt(170);                         // 0          10101010
+    EXPECT_EQ(static_cast<int>(obj),22015);     // 0 01010101 11111111
+
+    obj = BigInt(21847);                        // 0 01010101 01010111
+    obj |= BigInt(-21930);                      // 1 01010101 10101010
+    EXPECT_EQ(static_cast<int>(obj),-22015);    // 1 01010101 11111111
+}
+
+TEST(TestBitwiseOR,BitwiseOR){
+    BigInt result;
+    BigInt num1;
+    BigInt num2;
+
+    num1 = BigInt(87);
+    num2 = BigInt(170);
+    result = num1 | num2;
+    EXPECT_EQ(static_cast<int>(result),255);
+
+    num1 = BigInt(21847);
+    num2 = BigInt(21930);
+    result = num1 | num2;
+    EXPECT_EQ(static_cast<int>(result),22015);
+}
+
+TEST(TestUnaryPlus,UnaryPlus){
+    BigInt obj;
+
+    obj = +BigInt(10);
+    EXPECT_EQ(static_cast<int>(obj),10);
+
+    obj = +BigInt(-2555);
+    EXPECT_EQ(static_cast<int>(obj),-2555);
+
+    obj = +BigInt(0);
+    EXPECT_EQ(static_cast<int>(obj),0);
+
+    obj = +BigInt("87421872487241123");
+    EXPECT_STREQ(static_cast<std::string>(obj).data(),"87421872487241123");
+}
+
+TEST(TestUnaryMinus,UnaryMinus){
+    BigInt obj;
+
+    obj = -BigInt(10);
+    EXPECT_EQ(static_cast<int>(obj),-10);
+
+    obj = -BigInt(-2555);
+    EXPECT_EQ(static_cast<int>(obj),2555);
+
+    obj = -BigInt(0);
+    EXPECT_EQ(static_cast<int>(obj),0);
+
+    obj = -BigInt("87421872487241123");
+    EXPECT_STREQ(static_cast<std::string>(obj).data(),"-87421872487241123");
+}
+
+TEST(TestBoolEquality,Equality){
+    EXPECT_TRUE(BigInt(10)==BigInt(10));
+    EXPECT_TRUE(BigInt(-2133321)==BigInt(-2133321));
+    EXPECT_TRUE(BigInt(0)==BigInt(0));
+    EXPECT_FALSE(BigInt(1)==BigInt(-1));
+    EXPECT_FALSE(BigInt("642184380130193820")==BigInt("642184380130193821"));
+    EXPECT_FALSE(BigInt(4444444)==BigInt(333333));
+}
+
+TEST(TestBoolEquality,NotEquality){
+    EXPECT_TRUE(BigInt(10)!=BigInt(23));
+    EXPECT_TRUE(BigInt(2133321)!=BigInt(-2133321));
+    EXPECT_TRUE(BigInt(0)!=BigInt(92333333));
+    EXPECT_FALSE(BigInt(-1)!=BigInt(-1));
+    EXPECT_FALSE(BigInt("642184380130193820")!=BigInt("642184380130193820"));
+    EXPECT_FALSE(BigInt(333333)!=BigInt(333333));
+}
+
+TEST(TestBoolLess,Less){
+    EXPECT_TRUE(BigInt(-232)<BigInt(-231));
+    EXPECT_TRUE(BigInt(0)<BigInt(1));
+    EXPECT_TRUE(BigInt("2333333333333333")<BigInt("2333333333333334"));
+    EXPECT_FALSE(BigInt(-1)<BigInt(-1));
+    EXPECT_FALSE(BigInt("642184380130193820")<BigInt("-642184380130193820"));
+    EXPECT_FALSE(BigInt(333333)<BigInt(33333));
+}
+
+TEST(TestBoolLess,LessWithEquality){
+    EXPECT_TRUE(BigInt(-232)<=BigInt(-231));
+    EXPECT_TRUE(BigInt(0)<=BigInt(1));
+    EXPECT_TRUE(BigInt("2333333333333333")<=BigInt("2333333333333333"));
+    EXPECT_FALSE(BigInt(1)<=BigInt(0));
+    EXPECT_FALSE(BigInt("642184380130193820")<=BigInt("-642184380130193820"));
+    EXPECT_FALSE(BigInt(333333)<=BigInt(33332));
+}
+
+TEST(TestBoolGreater,Greater){
+    EXPECT_TRUE(BigInt(-230)>BigInt(-231));
+    EXPECT_TRUE(BigInt(1)>BigInt(0));
+    EXPECT_TRUE(BigInt("2333333333333335")>BigInt("2333333333333334"));
+    EXPECT_FALSE(BigInt(-1)>BigInt(-1));
+    EXPECT_FALSE(BigInt("642184380130193820")>BigInt("-642184380130193820"));
+    EXPECT_FALSE(BigInt(-333333)>BigInt(33333));
+}
+
+TEST(TestBoolGreater,GreaterWithEquality){
+    EXPECT_TRUE(BigInt(-230)>=BigInt(-231));
+    EXPECT_TRUE(BigInt(1)>=BigInt(1));
+    EXPECT_TRUE(BigInt("2333333333333335")>=BigInt("2333333333333334"));
+    EXPECT_FALSE(BigInt(-2)>=BigInt(-1));
+    EXPECT_FALSE(BigInt("642184380130193810")>=BigInt("642184380130193820"));
+    EXPECT_FALSE(BigInt(-333333)>=BigInt(33333));
+}
+
+TEST(TestTypeConversionOperators,IntConversion){
+    BigInt obj;
+
+    obj = BigInt(111);
+    EXPECT_EQ(static_cast<int>(obj),111);
+
+    obj = BigInt(-32);
+    EXPECT_EQ(static_cast<int>(obj),-32);
+
+    try {
+        obj = BigInt("3000000000000");
+        int num = static_cast<int>(obj);
+    } catch (std::length_error const& ex) {
+        EXPECT_STREQ(ex.what(),"Number exceeds int limit");
+    }
+}
+
+TEST(TestTypeConversionOperators,StringConversion){
+    BigInt obj;
+
+    obj = BigInt(111);
+    EXPECT_STREQ(static_cast<std::string>(obj).data(),"111");
+
+    obj = BigInt("-323232232232323233232");
+    EXPECT_STREQ(static_cast<std::string>(obj).data(),"-323232232232323233232");
+
+    obj = BigInt("-0");
+    EXPECT_STREQ(static_cast<std::string>(obj).data(),"0");
+
+}
+
+TEST(TestOutputOperator,Output){
+    std::ostringstream out;
+    out << BigInt("-2133231235454");
+    EXPECT_STREQ(out.str().data(),"-2133231235454");
 }
 
 int main(int argc, char *argv[]) {

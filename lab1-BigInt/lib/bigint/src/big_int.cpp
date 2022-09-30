@@ -80,7 +80,7 @@ BigInt::BigInt(std::string str) {
 
     if (isSigned)
         str = str.substr(1);
-
+    
     if(str.empty())
         throw std::invalid_argument("invalid input string");
 
@@ -98,6 +98,9 @@ BigInt::BigInt(std::string str) {
     }
 
     removeZeros();
+
+    if(number_.back()==0)
+        sign_ = '+';
 }
 
 BigInt::BigInt(const BigInt &num) = default;
@@ -118,7 +121,6 @@ BigInt BigInt::operator~() const {
     copy.removeZeros();
     return copy;
 }
-
 
 BigInt &BigInt::operator++() {
     return (*this += 1);
@@ -480,10 +482,15 @@ bool BigInt::operator<(const BigInt &num) const {
             return true;
     }
 
-    return true;
+    if (sign_ == '+')
+        return true;
+    else
+        return false;
 }
 
 bool BigInt::operator>(const BigInt &num) const {
+    if(vctcmp(number_,num.number_))
+        return false;
     return !operator<(num);
 }
 
@@ -593,4 +600,9 @@ BigInt operator|(const BigInt &num1, const BigInt &num2) {
     tmp |= num2;
 
     return tmp;
+}
+
+std::ostream &operator<<(std::ostream &out, const BigInt &num){
+    out << static_cast<std::string>(num);
+    return out;
 }
