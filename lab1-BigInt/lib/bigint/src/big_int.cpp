@@ -169,7 +169,7 @@ BigInt &BigInt::operator+=(const BigInt &num) {
 
     int overLimit = 0;
 
-    for (int i = 0; i < std::max(this->size(), num.size()) || overLimit != 0; ++i) {
+    for (int i = 0; i < std::max(this->number_.size(), num.number_.size()) || overLimit != 0; ++i) {
 
         if (i == this->number_.size())
             this->number_.push_back(0);
@@ -237,8 +237,8 @@ BigInt &BigInt::operator-=(const BigInt &num) {
 
     int overLimit = 0;
 
-    for (int i = 0; i < num.size() || overLimit; ++i) {
-        this->number_[i] -= overLimit + (i < num.size() ? num.number_[i] : 0);
+    for (int i = 0; i < num.number_.size() || overLimit; ++i) {
+        this->number_[i] -= overLimit + (i < num.number_.size() ? num.number_[i] : 0);
         overLimit = this->number_[i] < 0;
 
         if (overLimit)
@@ -455,7 +455,7 @@ bool BigInt::operator<(const BigInt &num) const {
             return true;
     }
 
-    if (number_.size() < num.size()) {
+    if (number_.size() < num.number_.size()) {
         if (sign_ == '+')
             return true;
         else
