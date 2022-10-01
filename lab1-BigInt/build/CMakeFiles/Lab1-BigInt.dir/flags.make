@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/lib/bigint/include 
 

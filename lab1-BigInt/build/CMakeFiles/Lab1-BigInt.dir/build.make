@@ -79,6 +79,7 @@ Lab1__BigInt_EXTERNAL_OBJECTS =
 
 Lab1-BigInt: CMakeFiles/Lab1-BigInt.dir/src/main.cpp.o
 Lab1-BigInt: CMakeFiles/Lab1-BigInt.dir/build.make
+Lab1-BigInt: lib/bigint/libbigint_lib.a
 Lab1-BigInt: CMakeFiles/Lab1-BigInt.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Lab1-BigInt"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Lab1-BigInt.dir/link.txt --verbose=$(VERBOSE)

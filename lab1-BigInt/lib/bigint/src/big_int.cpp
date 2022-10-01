@@ -4,10 +4,12 @@
 #include <algorithm>
 #include <bitset>
 
+namespace {
 
-#define CELL_LIMIT 1000000000
-#define MAX_OF_DIGITS 9
+    constexpr int CELL_LIMIT = 1000000000;
+    constexpr int MAX_OF_DIGITS = 9;
 
+}
 int BigInt::countIntLength(int num) {
     int lengthOfNum = 0;
 
@@ -117,8 +119,10 @@ BigInt BigInt::operator~() const {
     for (int &el: copy.number_) {
         el = ~el;
         el*=-1;
+        --el;
     }
-
+    
+    ++copy.number_[0];
     copy.sign_ == '+' ? copy.sign_ = '-' : copy.sign_ = '+';
 
     copy.removeZeros();

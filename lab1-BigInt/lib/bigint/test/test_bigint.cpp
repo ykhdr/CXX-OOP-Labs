@@ -85,8 +85,8 @@ TEST(TestBitwiseNot, BitwiseNot) {
     obj = BigInt(65393);
     EXPECT_EQ(static_cast<int>(~obj),-65394);
 
-    //obj = BigInt("787878787878787878");
-    //EXPECT_STREQ(static_cast<std::string>(~obj).data(),"-1301584641");
+    obj = BigInt("787878787878787878");
+    EXPECT_STREQ(static_cast<std::string>(~obj).data(),"-787878787878787879");
 }
 
 TEST(TestAddition, PrefixIncrement) {
