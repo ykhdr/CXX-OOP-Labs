@@ -5,6 +5,7 @@
 
 # Cmake-build files
 **cmake-build-debug
+build
 
 # Node artifact files
 node_modules/
