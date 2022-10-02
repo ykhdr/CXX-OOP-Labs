@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/Lab1-BigInt.dir/src/main.cpp.o  -o Lab1-BigInt  lib/bigint/libbigint_lib.a 

@@ -9,10 +9,9 @@ class BigInt {
 
 private:
     std::vector<int32_t> number_;
-    char sign_ = '+';
+    bool isNegative = false;
 
     static int countIntLength(int);
-    static bool vctcmp(const std::vector<int32_t> &, const std::vector<int32_t> &);
 
     void removeZeros();
     bool strCompare(std::string,std::string);
