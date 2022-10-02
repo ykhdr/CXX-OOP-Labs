@@ -3,15 +3,16 @@
 #include <vector>
 #include <ostream>
 
+#include <cstdint>
 
 class BigInt {
 
 private:
-    std::vector<int> number_;
+    std::vector<int32_t> number_;
     char sign_ = '+';
 
     static int countIntLength(int);
-    static bool vctcmp(const std::vector<int> &, const std::vector<int> &);
+    static bool vctcmp(const std::vector<int32_t> &, const std::vector<int32_t> &);
 
     void removeZeros();
     bool strCompare(std::string,std::string);

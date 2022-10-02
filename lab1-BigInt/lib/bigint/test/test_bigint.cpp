@@ -7,25 +7,32 @@ TEST(TestConstructors, ConstructorWithoutArgs) {
 }
 
 TEST(TestConstructors, ConstructorWithIntArg) {
-    int num;
+    BigInt obj;
 
-    num = 10;
-    BigInt obj(num);
-    EXPECT_EQ(static_cast<int>(obj), num);
+    obj = BigInt(10);
+    EXPECT_EQ(static_cast<int>(obj), 10);
 
-    num = -1999999999;
-    BigInt obj2(num);
-    EXPECT_EQ(static_cast<int>(obj2), num);
+    obj = BigInt(-1999999999);
+    EXPECT_EQ(static_cast<int>(obj), -1999999999);
 
+    obj = BigInt(INT32_MAX);
+    EXPECT_EQ(static_cast<int>(obj), INT32_MAX);
+
+    obj = BigInt(INT32_MIN);
+    EXPECT_EQ(static_cast<int>(obj), INT32_MIN);
 }
 
 TEST(TestConstructors, ConstructorWithStringArg) {
     std::string str;
     BigInt obj;
 
+    str="-000000000000000000000000000000000000";
+    obj = BigInt(str);
+    EXPECT_EQ(static_cast<int>(obj), 0);
+
     str = "100";
     obj = BigInt(str);
-    EXPECT_EQ((int) obj, 100);
+    EXPECT_EQ(static_cast<int>(obj), 100);
 
     str += "9999";
     obj = BigInt(str);
@@ -38,6 +45,13 @@ TEST(TestConstructors, ConstructorWithStringArg) {
     str = "-999999999999999999999";
     obj = BigInt(str);
     EXPECT_STREQ(static_cast<std::string>(obj).data(), str.data());
+
+    // empty str
+    try{
+        BigInt newNum("");
+    } catch (std::invalid_argument const &ex){
+        EXPECT_STREQ(ex.what(), "invalid input string");
+    }
 
     // minus
     try {

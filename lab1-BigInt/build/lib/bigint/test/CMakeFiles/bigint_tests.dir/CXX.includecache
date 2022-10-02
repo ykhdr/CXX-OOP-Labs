@@ -11,6 +11,8 @@ vector
 -
 ostream
 -
+cstdint
+-
 
 ../lib/googletest/googletest/include/gtest/gtest-assertion-result.h
 memory

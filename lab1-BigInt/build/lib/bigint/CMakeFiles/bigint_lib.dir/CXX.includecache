@@ -11,6 +11,8 @@ vector
 -
 ostream
 -
+cstdint
+-
 
 /mnt/c/Users/User/CLionProjects/21210-khudorozhkov/lab1-BigInt/lib/bigint/src/big_int.cpp
 big_int.h
@@ -18,7 +20,5 @@ big_int.h
 climits
 -
 algorithm
--
-bitset
 -
 
