@@ -45,7 +45,7 @@ bool BigInt::strCompare(std::string str1, std::string str2) {
     return true;
 }
 
-BigInt::BigInt() : isNegative(false) {
+BigInt::BigInt() : isNegative_(false) {
     number_.push_back(0);
 }
 
@@ -56,7 +56,7 @@ BigInt::BigInt(int num) {
     } else
         number_.push_back(abs(num));
 
-    (num < 0) ? isNegative = true : isNegative = false;
+    (num < 0) ? isNegative_ = true : isNegative_ = false;
 }
 
 BigInt::BigInt(std::string str) {
@@ -67,15 +67,15 @@ BigInt::BigInt(std::string str) {
 
     switch (str[0]) {
         case '-':
-            isNegative = true;
+            isNegative_ = true;
             isSigned = true;
             break;
         case '+':
-            isNegative = false;
+            isNegative_ = false;
             isSigned = true;
             break;
         default:
-            isNegative = false;
+            isNegative_ = false;
     }
 
     if (isSigned)
@@ -99,7 +99,7 @@ BigInt::BigInt(std::string str) {
     removeZeros();
 
     if (number_.back() == 0)
-        isNegative = false;
+        isNegative_ = false;
 }
 
 BigInt::BigInt(const BigInt &num) = default;
@@ -118,7 +118,7 @@ BigInt BigInt::operator~() const {
 
     ++copy.number_[0];
 
-    copy.isNegative = !copy.isNegative;
+    copy.isNegative_ = !copy.isNegative_;
 
     copy.removeZeros();
     return copy;
@@ -147,8 +147,8 @@ const BigInt BigInt::operator--(int) {
 }
 
 BigInt &BigInt::operator+=(const BigInt &num) {
-    if (isNegative) {
-        if (num.isNegative) {
+    if (isNegative_) {
+        if (num.isNegative_) {
             *this = -*this;
             BigInt tmp = -num;
             *this += tmp;
@@ -164,7 +164,7 @@ BigInt &BigInt::operator+=(const BigInt &num) {
         return *this;
     }
 
-    if (num.isNegative) {
+    if (num.isNegative_) {
         BigInt tmp = -num;
         *this -= tmp;
 
@@ -203,7 +203,7 @@ BigInt &BigInt::operator*=(const BigInt &num) {
 
     }
 
-    result.isNegative = isNegative != num.isNegative;
+    result.isNegative_ = isNegative_ != num.isNegative_;
 
     result.removeZeros();
 
@@ -214,12 +214,12 @@ BigInt &BigInt::operator*=(const BigInt &num) {
 
 
 BigInt &BigInt::operator-=(const BigInt &num) {
-    if (num.isNegative) {
+    if (num.isNegative_) {
         *this += (-num);
         return *this;
     }
 
-    if (isNegative) {
+    if (isNegative_) {
         *this = -*this;
         *this += num;
         *this = -*this;
@@ -267,12 +267,12 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
 
     bool isNegativeRes = false;
 
-    isNegativeRes = isNegative != num2.isNegative;
-    isNegative = true;
+    isNegativeRes = isNegative_ != num2.isNegative_;
+    isNegative_ = true;
 
     BigInt num = num2;
 
-    num.isNegative = false;
+    num.isNegative_ = false;
 
     std::string ans;
     std::string dividend;
@@ -334,7 +334,7 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
     removeZeros();
 
     if (isNegativeRes)
-        isNegative = true;
+        isNegative_ = true;
 
     return *this;
 }
@@ -344,7 +344,7 @@ BigInt &BigInt::operator^=(const BigInt &num) {
         number_[i] = number_[i] ^ num.number_[i];
     }
 
-    isNegative = num.isNegative != isNegative;
+    isNegative_ = num.isNegative_ != isNegative_;
 
     removeZeros();
 
@@ -356,7 +356,7 @@ BigInt &BigInt::operator%=(const BigInt &num) {
     BigInt s = q * num;
     BigInt res = *this - s;
 
-    if (res.isNegative)
+    if (res.isNegative_)
         res += num;
 
     *this = res;
@@ -369,7 +369,7 @@ BigInt &BigInt::operator&=(const BigInt &num) {
         number_[i] = number_[i] & num.number_[i];
     }
 
-    isNegative = num.isNegative & isNegative;
+    isNegative_ = num.isNegative_ & isNegative_;
 
     removeZeros();
 
@@ -382,7 +382,7 @@ BigInt &BigInt::operator|=(const BigInt &num) {
         number_[i] = number_[i] | num.number_[i];
     }
 
-    isNegative = num.isNegative & !isNegative;
+    isNegative_ = num.isNegative_ & !isNegative_;
 
     removeZeros();
 
@@ -394,7 +394,7 @@ BigInt &BigInt::operator=(const BigInt &num) {
         return *this;
 
     number_ = num.number_;
-    isNegative = num.isNegative;
+    isNegative_ = num.isNegative_;
 
     return *this;
 };
@@ -405,13 +405,13 @@ BigInt BigInt::operator+() const {
 
 BigInt BigInt::operator-() const {
     BigInt copy(*this);
-    copy.isNegative = !copy.isNegative;
+    copy.isNegative_ = !copy.isNegative_;
 
     return copy;
 }
 
 bool BigInt::operator==(const BigInt &num) const {
-    if (isNegative != num.isNegative)
+    if (isNegative_ != num.isNegative_)
         return false;
 
     if (number_.size() != num.number_.size())
@@ -429,21 +429,21 @@ bool BigInt::operator!=(const BigInt &num) const {
 }
 
 bool BigInt::operator<(const BigInt &num) const {
-    if (!isNegative & num.isNegative)
+    if (!isNegative_ & num.isNegative_)
         return false;
 
-    if (isNegative & !num.isNegative)
+    if (isNegative_ & !num.isNegative_)
         return true;
 
     if (number_.size() > num.number_.size()) {
-        if (!isNegative)
+        if (!isNegative_)
             return false;
         else
             return true;
     }
 
     if (number_.size() < num.number_.size()) {
-        if (!isNegative)
+        if (!isNegative_)
             return true;
         else
             return false;
@@ -460,13 +460,13 @@ bool BigInt::operator<(const BigInt &num) const {
     }
 
     if (isBigger) {
-        if (!isNegative)
+        if (!isNegative_)
             return false;
         else
             return true;
     }
 
-    if (!isNegative)
+    if (!isNegative_)
         return true;
     else
         return false;
@@ -480,14 +480,14 @@ bool BigInt::operator>(const BigInt &num) const {
 }
 
 bool BigInt::operator<=(const BigInt &num) const {
-    if (isNegative == num.isNegative && number_==num.number_)
+    if (isNegative_ == num.isNegative_ && number_ == num.number_)
        return true;
 
     return operator<(num);
 }
 
 bool BigInt::operator>=(const BigInt &num) const {
- if (isNegative == num.isNegative && number_==num.number_)
+ if (isNegative_ == num.isNegative_ && number_ == num.number_)
         return true;
 
     return operator>(num);
@@ -501,7 +501,7 @@ BigInt::operator int() const {
 
     if (number_.size() > 1) {
         num = number_[0] + number_[1] * CELL_LIMIT;
-        if (!isNegative) {
+        if (!isNegative_) {
             if (num > INT32_MAX)
                 throw std::length_error("Number exceeds int limit");
         } else if (num > (INT32_MAX + 1LL))
@@ -509,7 +509,7 @@ BigInt::operator int() const {
     } else
         num = number_[0];
 
-    if (isNegative)
+    if (isNegative_)
         num *= -1;
 
     return static_cast<int>(num);
@@ -519,7 +519,7 @@ BigInt::operator int() const {
 BigInt::operator std::string() const {
     std::string str;
 
-    if (isNegative)
+    if (isNegative_)
         str += '-';
 
     str.append(std::to_string(number_[number_.size() - 1]));

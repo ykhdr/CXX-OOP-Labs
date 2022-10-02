@@ -9,7 +9,7 @@ class BigInt {
 
 private:
     std::vector<int32_t> number_;
-    bool isNegative = false;
+    bool isNegative_ = false;
 
     static int countIntLength(int);
 
