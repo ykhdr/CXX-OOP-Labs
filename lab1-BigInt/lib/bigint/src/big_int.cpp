@@ -537,7 +537,7 @@ BigInt::operator std::string() const {
 }
 
 size_t BigInt::size() const {
-    return (sizeof(int) * number_.size() + 1);
+    return (sizeof(int32_t) * number_.size() + 1);
 }
 
 
