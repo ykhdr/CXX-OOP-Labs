@@ -11,14 +11,7 @@ project(${PROJECT_NAME} CXX)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 
-# foreach(LIBRARY ${LIBRARY})
-#     add_subdirectory(${LIBRARY_DIR}/${LIBRARY})
-#     message(STATUS "Add subdirectory ${LIBRARY_DIR}/${LIBRARY}")
-# endforeach(LIBRARY)
-
 add_subdirectory(lib/bigint)
 add_subdirectory(lib/googletest)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC bigint_lib)
-
-# target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBRARY})

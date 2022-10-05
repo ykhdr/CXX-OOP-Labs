@@ -1,0 +1,3 @@
+[submodule "lab1-BigInt/lib/googletest"]
+	path = lab1-BigInt/lib/googletest
+	url = https://github.com/google/googletest.git

@@ -11,10 +11,7 @@ private:
     std::vector<int32_t> number_;
     bool isNegative_ = false;
 
-    static int countIntLength(int);
-
     void removeZeros();
-    bool strCompare(std::string,std::string);
 
 public:
     BigInt();
@@ -24,8 +21,6 @@ public:
     BigInt(std::string); // бросать исключение std::invalid_argument при ошибке
 
     BigInt(const BigInt &);
-
-    ~BigInt();
 
     BigInt &operator=(const BigInt &);  //возможно присваивание самому себе!
 

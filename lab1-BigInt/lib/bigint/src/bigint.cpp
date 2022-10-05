@@ -1,14 +1,35 @@
-#include "big_int.h"
-
-#include <climits>
+#include <limits>
 #include <algorithm>
 
+#include "bigint.h"
+
 namespace {
-    constexpr int CELL_LIMIT = 1000000000;
-    constexpr int MAX_OF_DIGITS = 9;
+constexpr int CELL_LIMIT = 1000000000;
+constexpr int MAX_OF_DIGITS = 9;
+
+// returns true if str1 > str2
+bool strCompare(std::string& str1, std::string& str2) {
+    if (str1.size() < str2.size()) {
+        return false;
+    }
+
+    if (str1.size() > str2.size()) {
+        return true;
+    }
+
+    for (int i = 0; i < str1.size(); ++i) {
+        if ((str1[i]) < (str2[i])) {
+            return false;
+        }
+        if ((str1[i]) > (str2[i])) {
+            return true;
+        }
+    }
+
+    return true;
 }
 
-int BigInt::countIntLength(int num) {
+int countIntLength(int num) {
     int lengthOfNum = 0;
 
     while (num) {
@@ -16,101 +37,89 @@ int BigInt::countIntLength(int num) {
         ++lengthOfNum;
     }
 
-    if (lengthOfNum == 0)
+    if (lengthOfNum == 0) {
         ++lengthOfNum;
+    }
 
     return lengthOfNum;
 }
 
+}
+
 void BigInt::removeZeros() {
-    while (number_.size() > 1 && number_.back() == 0)
+    while (number_.size() > 1 && number_.back() == 0) {
         number_.pop_back();
-}
-
-// returns true if str1 > str2
-bool BigInt::strCompare(std::string str1, std::string str2) {
-    if (str1.size() < str2.size())
-        return false;
-
-    if (str1.size() > str2.size())
-        return true;
-
-    for (int i = 0; i < str1.size(); ++i) {
-        if ((str1[i] - '0') < (str2[i] - '0'))
-            return false;
-        if ((str1[i] - '0') > (str2[i] - '0'))
-            return true;
     }
-
-    return true;
 }
 
-BigInt::BigInt() : isNegative_(false) {
-    number_.push_back(0);
-}
+BigInt::BigInt() : number_(1, 0), isNegative_(false) {}
 
 BigInt::BigInt(int num) {
     if (abs(num) >= CELL_LIMIT) {
         number_.push_back(abs(num) % CELL_LIMIT);
         number_.push_back(abs(num) / CELL_LIMIT);
-    } else
+    } else {
         number_.push_back(abs(num));
+    }
 
-    (num < 0) ? isNegative_ = true : isNegative_ = false;
+    isNegative_ = (num < 0);
 }
 
 BigInt::BigInt(std::string str) {
     bool isSigned = false;
 
-    if (str.empty())
+    if (str.empty()) {
         throw std::invalid_argument("invalid input string");
-
-    switch (str[0]) {
-        case '-':
-            isNegative_ = true;
-            isSigned = true;
-            break;
-        case '+':
-            isNegative_ = false;
-            isSigned = true;
-            break;
-        default:
-            isNegative_ = false;
     }
 
-    if (isSigned)
+    switch (str[0]) {
+    case '-':
+        isNegative_ = true;
+        isSigned = true;
+        break;
+    case '+':
+        isNegative_ = false;
+        isSigned = true;
+        break;
+    default:
+        isNegative_ = false;
+    }
+
+    if (isSigned) {
         str = str.substr(1);
+    }
 
-    if (str.empty())
+    if (str.empty()) {
         throw std::invalid_argument("invalid input string");
+    }
 
-    for (char el: str)
+    for (char el : str) {
         if (el < '0' || el > '9')
             throw std::invalid_argument("invalid input string");
-
+    }
 
     for (int i = str.length(); i > 0; i -= 9) {
-        if (i < 9)
+        if (i < 9) {
             number_.push_back(atoi(str.substr(0, i).c_str()));
-        else
+        }
+        else {
             number_.push_back(atoi(str.substr(i - 9, 9).c_str()));
+        }
     }
 
     removeZeros();
 
-    if (number_.back() == 0)
+    if (number_.back() == 0) {
         isNegative_ = false;
+    }
 }
 
 BigInt::BigInt(const BigInt &num) = default;
 
-BigInt::~BigInt() = default;
-
-//TODO: понять как сделать
 BigInt BigInt::operator~() const {
     BigInt copy = *this;
 
-    for (int32_t &el: copy.number_) {
+    for (int32_t &el : copy.number_) {
         el = ~el;
         el *= -1;
         --el;
@@ -121,6 +130,7 @@ BigInt BigInt::operator~() const {
     copy.isNegative_ = !copy.isNegative_;
 
     copy.removeZeros();
+
     return copy;
 }
 
@@ -175,14 +185,16 @@ BigInt &BigInt::operator+=(const BigInt &num) {
 
     for (int i = 0; i < std::max(number_.size(), num.number_.size()) || overLimit != 0; ++i) {
 
-        if (i == number_.size())
+        if (i == number_.size()) {
             number_.push_back(0);
+        }
 
         number_[i] += overLimit + (i < num.number_.size() ? num.number_[i] : 0);
         overLimit = number_[i] >= CELL_LIMIT;
 
-        if (overLimit != 0)
+        if (overLimit != 0) {
             number_[i] -= CELL_LIMIT;
+        }
     }
 
     return *this;
@@ -200,7 +212,6 @@ BigInt &BigInt::operator*=(const BigInt &num) {
             result.number_[i + j] = static_cast<int>(tmpRes % CELL_LIMIT);
             overLimit = static_cast<int>(tmpRes / CELL_LIMIT);
         }
-
     }
 
     result.isNegative_ = isNegative_ != num.isNegative_;
@@ -211,7 +222,6 @@ BigInt &BigInt::operator*=(const BigInt &num) {
 
     return *this;
 }
-
 
 BigInt &BigInt::operator-=(const BigInt &num) {
     if (num.isNegative_) {
@@ -239,8 +249,9 @@ BigInt &BigInt::operator-=(const BigInt &num) {
         number_[i] -= overLimit + (i < num.number_.size() ? num.number_[i] : 0);
         overLimit = number_[i] < 0; //ломается из-за uint.
 
-        if (overLimit)
+        if (overLimit) {
             number_[i] += CELL_LIMIT;
+        }
     }
 
     removeZeros();
@@ -248,21 +259,24 @@ BigInt &BigInt::operator-=(const BigInt &num) {
     return *this;
 }
 
-
 BigInt &BigInt::operator/=(const BigInt &num2) {
-    if (num2.number_.back() == 0)
+    if (num2.number_.back() == 0) {
         throw std::invalid_argument("Division by zero");
+    }
 
     std::string str = static_cast<std::string>(*this);
     std::string str2 = static_cast<std::string>(num2);
 
-    if (str2.size() > str.size())
+    if (str2.size() > str.size()) {
         return (*this = 0);
+    }
 
-    if (str[0] == '-')
+    if (str[0] == '-') {
         str.erase(0, 1);
-    if (str2[0] == '-')
+    }
+    if (str2[0] == '-') {
         str2.erase(0, 1);
+    }
 
 
     bool isNegativeRes = false;
@@ -279,7 +293,7 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
     std::string divider = str2;
     int zeroesCounter = 0;
 
-    for (char c: str) {
+    for (char c : str) {
         dividend += c;
 
         if (dividend == "0") {
@@ -290,8 +304,9 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
 
         if (dividend.size() < divider.size()) {
             ++zeroesCounter;
-            while (dividend[0] == '0')
+            while (dividend[0] == '0') {
                 dividend.substr(0, 1);
+            }
             continue;
         }
 
@@ -301,6 +316,7 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
 
         int counter = 0;
         std::string prevDivider = "0";
+
         while (strCompare(dividend, divider)) {
             ++counter;
             BigInt divBI(divider);
@@ -308,15 +324,18 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
             prevDivider = divider;
             divider = static_cast<std::string>(divBI);
         }
+
         BigInt dif(0);
         BigInt dividendBI(dividend);
         BigInt prevDividerBI(prevDivider);
         dif = (dividendBI - prevDividerBI);
 
-        if (dif.number_.back() != 0)
+        if (dif.number_.back() != 0) {
             dividend = static_cast<std::string>(dif);
-        else
+        }
+        else {
             dividend = "";
+        }
 
         divider = str2;
         for (int i = 0; i < zeroesCounter; ++i) {
@@ -333,8 +352,9 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
     *this = BigInt(ans);
     removeZeros();
 
-    if (isNegativeRes)
+    if (isNegativeRes) {
         isNegative_ = true;
+    }
 
     return *this;
 }
@@ -356,8 +376,9 @@ BigInt &BigInt::operator%=(const BigInt &num) {
     BigInt s = q * num;
     BigInt res = *this - s;
 
-    if (res.isNegative_)
+    if (res.isNegative_) {
         res += num;
+    }
 
     *this = res;
 
@@ -411,42 +432,34 @@ BigInt BigInt::operator-() const {
 }
 
 bool BigInt::operator==(const BigInt &num) const {
-    if (isNegative_ != num.isNegative_)
-        return false;
-
-    if (number_.size() != num.number_.size())
-        return false;
-
-
-    if (number_ != num.number_)
-        return false;
-
-    return true;
+    return isNegative_ == num.isNegative_ && number_ == num.number_;
 }
 
 bool BigInt::operator!=(const BigInt &num) const {
-    return !operator==(num);
+    return !(*this == num);
 }
 
 bool BigInt::operator<(const BigInt &num) const {
-    if (!isNegative_ & num.isNegative_)
-        return false;
-
-    if (isNegative_ & !num.isNegative_)
-        return true;
+    if (isNegative_ != num.isNegative_) {
+        return isNegative_;
+    }
 
     if (number_.size() > num.number_.size()) {
-        if (!isNegative_)
+        if (!isNegative_) {
             return false;
-        else
+        }
+        else {
             return true;
+        }
     }
 
     if (number_.size() < num.number_.size()) {
-        if (!isNegative_)
+        if (!isNegative_) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
     if (number_ == num.number_)
         return false;
@@ -460,67 +473,77 @@ bool BigInt::operator<(const BigInt &num) const {
     }
 
     if (isBigger) {
-        if (!isNegative_)
+        if (!isNegative_) {
             return false;
-        else
+        }
+        else {
             return true;
+        }
     }
 
-    if (!isNegative_)
+    if (!isNegative_) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 }
 
 bool BigInt::operator>(const BigInt &num) const {
-    if (number_ == num.number_)
-        return false;
+    if (number_ == num.number_) {
+        if (isNegative_ == num.isNegative_) {
+            return false;
+        }
+        else {
+            return num.isNegative_;
+        }
+    }
 
-    return !operator<(num);
+    return !(*this < num);
 }
 
 bool BigInt::operator<=(const BigInt &num) const {
-    if (isNegative_ == num.isNegative_ && number_ == num.number_)
-       return true;
-
-    return operator<(num);
+    return (*this == num) || (*this < num);
 }
 
 bool BigInt::operator>=(const BigInt &num) const {
- if (isNegative_ == num.isNegative_ && number_ == num.number_)
-        return true;
-
-    return operator>(num);
+    return (*this == num) || (*this > num);
 }
 
 BigInt::operator int() const {
-    if (number_.size() > 1 && number_.back() > 2)
-        throw std::length_error("Number exceeds int limit");
-
     long long num = 0;
 
     if (number_.size() > 1) {
         num = number_[0] + number_[1] * CELL_LIMIT;
-        if (!isNegative_) {
-            if (num > INT32_MAX)
-                throw std::length_error("Number exceeds int limit");
-        } else if (num > (INT32_MAX + 1LL))
-            throw std::length_error("Number exceeds int limit");
-    } else
-        num = number_[0];
 
-    if (isNegative_)
+        if (!isNegative_) {
+            if (num > std::numeric_limits<int>::max()) {
+                throw std::length_error("Number exceeds int limit");
+            }
+        }
+        else {
+            if (num > (std::numeric_limits<int>::max() + 1LL)) {
+                throw std::length_error("Number exceeds int limit");
+            }
+        }
+    }
+    else {
+        num = number_[0];
+    }
+
+    if (isNegative_) {
         num *= -1;
+    }
 
     return static_cast<int>(num);
 }
 
-
 BigInt::operator std::string() const {
     std::string str;
 
-    if (isNegative_)
+    if (isNegative_) {
         str += '-';
+    }
 
     str.append(std::to_string(number_[number_.size() - 1]));
 
@@ -539,7 +562,6 @@ BigInt::operator std::string() const {
 size_t BigInt::size() const {
     return (sizeof(int32_t) * number_.size() + 1);
 }
-
 
 BigInt operator+(const BigInt &num1, const BigInt &num2) {
     BigInt tmp = num1;

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "big_int.h"
+#include "bigint.h"
 
 TEST(TestConstructors, ConstructorWithoutArgs) {
     BigInt obj;
@@ -639,7 +639,7 @@ TEST(TestBoolEquality, NotEquality) {
 
 TEST(TestBoolLess, Less) {
     EXPECT_TRUE(BigInt(-232) < BigInt(-231));
-    EXPECT_TRUE(BigInt(0) < BigInt(1));
+    EXPECT_TRUE(BigInt(-1) < BigInt(1));
     EXPECT_TRUE(BigInt("2333333333333333") < BigInt("2333333333333334"));
 
     EXPECT_FALSE(BigInt(-1) < BigInt(-1));
@@ -659,17 +659,17 @@ TEST(TestBoolLess, LessWithEquality) {
 
 TEST(TestBoolGreater, Greater) {
     EXPECT_TRUE(BigInt(-230) > BigInt(-231));
-    EXPECT_TRUE(BigInt(1) > BigInt(0));
+    EXPECT_TRUE(BigInt(1) > BigInt(-1));
     EXPECT_TRUE(BigInt("2333333333333335") > BigInt("2333333333333334"));
 
     EXPECT_FALSE(BigInt(-1) > BigInt(-1));
-    EXPECT_FALSE(BigInt("642184380130193820") > BigInt("-642184380130193820"));
+    EXPECT_FALSE(BigInt("-642184380130193820") > BigInt("642184380130193820"));
     EXPECT_FALSE(BigInt(-333333) > BigInt(33333));
 }
 
 TEST(TestBoolGreater, GreaterWithEquality) {
     EXPECT_TRUE(BigInt(-230) >= BigInt(-231));
-    EXPECT_TRUE(BigInt(1) >= BigInt(1));
+    EXPECT_TRUE(BigInt(1) >= BigInt(-1));
     EXPECT_TRUE(BigInt("2333333333333335") >= BigInt("2333333333333334"));
     
     EXPECT_FALSE(BigInt(-2) >= BigInt(-1));

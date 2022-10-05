@@ -1,7 +1,7 @@
 #include <iostream>
 #include <valarray>
 
-#include "big_int.h"
+#include "bigint.h"
 
 /**
  * ЯЧЕЙКА ХРАНИТ 9 СИМВОЛОВ \n
@@ -10,11 +10,7 @@
  */
 
 int main() {
-    std::string str = "10";
-    BigInt num = BigInt(str);
-    BigInt num2 = BigInt("7");
-    num /= num2;
-
-    std::cout << num.size() << "    " << static_cast<std::string>(num) << std::endl;
+    
     return 0;
+
 }
