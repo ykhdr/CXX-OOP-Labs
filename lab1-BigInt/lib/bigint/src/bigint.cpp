@@ -7,28 +7,6 @@ namespace {
 constexpr int CELL_LIMIT = 1000000000;
 constexpr int MAX_OF_DIGITS = 9;
 
-// returns true if str1 > str2
-bool strCompare(std::string& str1, std::string& str2) {
-    if (str1.size() < str2.size()) {
-        return false;
-    }
-
-    if (str1.size() > str2.size()) {
-        return true;
-    }
-
-    for (int i = 0; i < str1.size(); ++i) {
-        if ((str1[i]) < (str2[i])) {
-            return false;
-        }
-        if ((str1[i]) > (str2[i])) {
-            return true;
-        }
-    }
-
-    return true;
-}
-
 int countIntLength(int num) {
     int lengthOfNum = 0;
 
@@ -317,7 +295,16 @@ BigInt &BigInt::operator/=(const BigInt &num2) {
         int counter = 0;
         std::string prevDivider = "0";
 
-        while (strCompare(dividend, divider)) {
+        while (true) {
+
+            if (dividend.size() < divider.size()) {
+                break;
+            }
+
+            if (dividend.size() == divider.size() && dividend < divider) {
+                break;
+            }
+
             ++counter;
             BigInt divBI(divider);
             divBI += num;
