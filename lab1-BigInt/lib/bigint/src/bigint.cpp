@@ -55,9 +55,9 @@ BigInt::BigInt(int num)
     isNegative_ = (num < 0);
 }
 
-BigInt::BigInt(std::string str)
+BigInt::BigInt(std::string src)
 {
-
+    std::string_view str = src;
     bool isSigned = false;
 
     if (str.empty())
@@ -97,14 +97,13 @@ BigInt::BigInt(std::string str)
 
     for (int i = str.length(); i > 0; i -= 9)
     {
-        char* pEnd = nullptr;
         if (i < 9)
         {
-            number_.push_back(atoi(str.substr( 0,i).c_str()));
+            number_.push_back(atoi(std::string(&str[0],i).c_str()));
         }
         else
         {
-            number_.push_back(atoi(str.substr(i - 9, 9).c_str()));
+            number_.push_back(atoi(std::string (&str[i-9],9).c_str()));
         }
     }
 
@@ -340,7 +339,8 @@ BigInt &BigInt::operator/=(const BigInt &num2)
             ++zeroesCounter;
             while (dividend[0] == '0')
             {
-                dividend.substr(0, 1);
+                //dividend.substr(0, 1);
+                dividend.erase(0,1);
             }
             continue;
         }

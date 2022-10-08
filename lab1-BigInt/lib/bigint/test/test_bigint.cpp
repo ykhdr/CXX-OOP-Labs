@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "bigint.h"
 
+
 TEST(TestConstructors, ConstructorWithoutArgs) {
     BigInt obj;
     EXPECT_EQ(static_cast<int>(obj), 0);
@@ -15,11 +16,11 @@ TEST(TestConstructors, ConstructorWithIntArg) {
     obj = BigInt(-1999999999);
     EXPECT_EQ(static_cast<int>(obj), -1999999999);
 
-    obj = BigInt(INT32_MAX);
-    EXPECT_EQ(static_cast<int>(obj), INT32_MAX);
+    obj = BigInt(std::numeric_limits<int>::max());
+    EXPECT_EQ(static_cast<int>(obj), std::numeric_limits<int>::max());
 
-    obj = BigInt(INT32_MIN);
-    EXPECT_EQ(static_cast<int>(obj), INT32_MIN);
+    obj = BigInt(std::numeric_limits<int>::min());
+    EXPECT_EQ(static_cast<int>(obj), std::numeric_limits<int>::min());
 }
 
 TEST(TestConstructors, ConstructorWithStringArg) {
