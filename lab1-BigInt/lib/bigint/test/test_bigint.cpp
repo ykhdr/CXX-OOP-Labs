@@ -125,19 +125,19 @@ TEST(TestAddition, PrefixIncrement) {
 
 TEST(TestAddition, PostfixIncrement) {
     BigInt obj(0);
-    obj++;
+    EXPECT_EQ(static_cast<int>(obj++),0);
     EXPECT_EQ(static_cast<int>(obj), 1);
 
-    BigInt obj2(-9901);
-    obj2++;
-    EXPECT_EQ(static_cast<int>(obj2), -9900);
+    obj = BigInt(-9901);
+    EXPECT_EQ(static_cast<int>(obj++),-9901);
+    EXPECT_EQ(static_cast<int>(obj), -9900);
 
     obj = BigInt(-1);
-    ++obj;
+    EXPECT_EQ(static_cast<int>(obj++),-1);
     EXPECT_EQ(static_cast<int>(obj), 0);
 
     obj = BigInt(999999999);
-    ++obj;
+    EXPECT_EQ(static_cast<int>(obj++),999999999);
     EXPECT_EQ(static_cast<int>(obj), 1000000000);
 }
 
@@ -244,19 +244,23 @@ TEST(TestSubtraction, PostfixDecrement) {
     BigInt obj;
 
     obj = BigInt(1);
-    obj--;
+    EXPECT_EQ(static_cast<int>(obj--), 1);
     EXPECT_EQ(static_cast<int>(obj), 0);
 
     obj = BigInt(31233);
-    obj--;
+    EXPECT_EQ(static_cast<int>(obj--), 31233);
     EXPECT_EQ(static_cast<int>(obj), 31232);
 
+    obj = BigInt(-231233);
+    EXPECT_EQ(static_cast<int>(obj--), -231233);
+    EXPECT_EQ(static_cast<int>(obj), -231234);
+
     obj = BigInt(0);
-    obj--;
+    EXPECT_EQ(static_cast<int>(obj--), 0);
     EXPECT_EQ(static_cast<int>(obj), -1);
 
     obj = BigInt("-900000002005078780209");
-    obj--;
+    EXPECT_STREQ(static_cast<std::string>(obj--).data(), "-900000002005078780209");
     EXPECT_STREQ(static_cast<std::string>(obj).data(), "-900000002005078780210");
 }
 

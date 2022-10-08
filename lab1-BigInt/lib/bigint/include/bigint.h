@@ -12,6 +12,8 @@ private:
     bool isNegative_ = false;
 
     void removeZeros();
+    BigInt& sum(BigInt&, const BigInt&);
+    BigInt& dif(BigInt&, const BigInt&);
 
 public:
     BigInt();

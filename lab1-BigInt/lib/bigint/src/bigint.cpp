@@ -26,8 +26,8 @@ int countIntLength(int num)
 
     return lengthOfNum;
 }
-
 }
+
 
 void BigInt::removeZeros()
 {
@@ -37,8 +37,50 @@ void BigInt::removeZeros()
     }
 }
 
-BigInt::BigInt() : number_(1, 0), isNegative_(false)
-{}
+BigInt& BigInt::sum(BigInt& num1, const BigInt& num2)
+{
+    int overLimit = 0;
+
+    for (int i = 0; i < std::max(num1.number_.size(), num2.number_.size()) || overLimit != 0; ++i)
+    {
+        if (i == num1.number_.size())
+        {
+            num1.number_.push_back(0);
+        }
+
+        num1.number_[i] += overLimit + (i < num2.number_.size() ? num2.number_[i] : 0);
+        overLimit = num1.number_[i] >= CELL_LIMIT;
+
+        if (overLimit != 0)
+        {
+            num1.number_[i] -= CELL_LIMIT;
+        }
+    }
+
+    return num1;
+}
+
+BigInt& BigInt::dif(BigInt& num1, const BigInt& num2)
+{
+    int overLimit = 0;
+
+    for (int i = 0; i < num2.number_.size() || overLimit; ++i)
+    {
+        num1.number_[i] -= overLimit + (i < num2.number_.size() ? num2.number_[i] : 0);
+        overLimit = num1.number_[i] < 0;
+
+        if (overLimit)
+        {
+            num1.number_[i] += CELL_LIMIT;
+        }
+    }
+
+    removeZeros();
+
+    return num1;
+}
+
+BigInt::BigInt() : number_(1, 0), isNegative_(false) {}
 
 BigInt::BigInt(int num)
 {
@@ -99,11 +141,11 @@ BigInt::BigInt(std::string src)
     {
         if (i < 9)
         {
-            number_.push_back(atoi(std::string(&str[0],i).c_str()));
+            number_.push_back(atoi(std::string(&str[0], i).c_str()));
         }
         else
         {
-            number_.push_back(atoi(std::string (&str[i-9],9).c_str()));
+            number_.push_back(atoi(std::string (&str[i - 9], 9).c_str()));
         }
     }
 
@@ -163,57 +205,27 @@ const BigInt BigInt::operator--(int)
     return tmp;
 }
 
-//TODO: решить что делать с if-ами
 BigInt &BigInt::operator+=(const BigInt &num)
 {
-    if (isNegative_)
+    if (isNegative_ != num.isNegative_)
     {
-        if (num.isNegative_)
-        {
-            *this = -*this;
-            BigInt tmp = -num;
-            *this += tmp;
-            *this = -*this;
+        BigInt numCopy(num);
 
-            return *this;
+        if (isNegative_)
+        {
+            isNegative_ = false;
+
+            return (*this < numCopy ? *this = dif(numCopy, *this) : *this = -dif(*this, numCopy));
         }
-
-        *this = -*this;
-        *this -= num;
-        *this = -*this;
-
-        return *this;
-    }
-
-    if (num.isNegative_)
-    {
-        BigInt tmp = -num;
-        *this -= tmp;
-
-        return *this;
-    }
-
-    int overLimit = 0;
-
-    for (int i = 0; i < std::max(number_.size(), num.number_.size()) || overLimit != 0; ++i)
-    {
-        if (i == number_.size())
+        else
         {
-            number_.push_back(0);
-        }
+            numCopy.isNegative_ = false;
 
-        number_[i] += overLimit + (i < num.number_.size() ? num.number_[i] : 0);
-        overLimit = number_[i] >= CELL_LIMIT;
-
-        if (overLimit != 0)
-        {
-            number_[i] -= CELL_LIMIT;
+            return (*this < numCopy ? *this = -dif(numCopy, *this) : *this = dif(*this, numCopy));
         }
     }
 
-
-
-    return *this;
+    return sum(*this, num);
 }
 
 BigInt &BigInt::operator*=(const BigInt &num)
@@ -244,45 +256,34 @@ BigInt &BigInt::operator*=(const BigInt &num)
 
 BigInt &BigInt::operator-=(const BigInt &num)
 {
-     if (num.isNegative_)
-     {
-         *this += (-num);
-         return *this;
-     }
+    BigInt numCopy(num);
 
-     if (isNegative_)
-     {
-         *this = -*this;
-         *this += num;
-         *this = -*this;
-         return *this;
-     }
-
-     if (*this < num)
-     {
-         BigInt tmp = (num - *this);
-         *this = -tmp;
-
-         return *this;
-     }
-
-    int overLimit = 0;
-
-    for (int i = 0; i < num.number_.size() || overLimit; ++i)
+    if(isNegative_!=numCopy.isNegative_)
     {
-        number_[i] -= overLimit + (i < num.number_.size() ? num.number_[i] : 0);
-        overLimit = number_[i] < 0;
-
-        if (overLimit)
+        if(!isNegative_)
         {
-            number_[i] += CELL_LIMIT;
+            numCopy.isNegative_ = false;
+
+            return (*this = sum(*this,numCopy));
+        }
+        else
+        {
+            isNegative_ = false;
+
+            return (*this = -sum(*this, numCopy));
         }
     }
 
-    removeZeros();
-
-    return *this;
+    if(!isNegative_)
+    {
+        return (*this < numCopy ? *this = -dif(numCopy,*this) : *this = dif(*this,numCopy));
+    }
+    else
+    {
+        return (*this < numCopy ? *this = dif(*this, numCopy) : *this = -dif(numCopy,*this));
+    }
 }
+
 
 BigInt &BigInt::operator/=(const BigInt &num2)
 {
@@ -340,7 +341,7 @@ BigInt &BigInt::operator/=(const BigInt &num2)
             while (dividend[0] == '0')
             {
                 //dividend.substr(0, 1);
-                dividend.erase(0,1);
+                dividend.erase(0, 1);
             }
             continue;
         }
