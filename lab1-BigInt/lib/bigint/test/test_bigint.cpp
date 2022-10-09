@@ -388,22 +388,27 @@ TEST(TestMultiplication, Multiplication) {
 
 TEST(TestDivision, DivisionWithAssigment) {
     BigInt obj;
+    int resultTest;
 
     obj = BigInt(-123);
     obj /= BigInt(-123);
-    EXPECT_EQ(static_cast<int>(obj), 1);
+    resultTest = -123 / -123;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt(0);
     obj /= BigInt(-123);
-    EXPECT_EQ(static_cast<int>(obj), 0);
+    resultTest = 0 / -123;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt(76);
     obj /= BigInt(7);
-    EXPECT_EQ(static_cast<int>(obj), 10);
+    resultTest = 76 / 7;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt(-254636);
     obj /= BigInt(907);
-    EXPECT_EQ(static_cast<int>(obj), -280);
+    resultTest = -254636 / 907;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt("32178312828245");
     obj /= BigInt("753838384");
@@ -425,21 +430,25 @@ TEST(TestDivision, Division) {
     BigInt quo;
     BigInt divisor;
     BigInt dividend;
+    int resultTest;
 
     dividend = BigInt(7);
     divisor = BigInt(3);
     quo = dividend / divisor;
-    EXPECT_EQ(static_cast<int>(quo), 2);
+    resultTest = 7 / 3;
+    EXPECT_EQ(static_cast<int>(quo), resultTest);
 
     dividend = BigInt(7442);
     divisor = BigInt(15);
     quo = dividend / divisor;
-    EXPECT_EQ(static_cast<int>(quo), 496);
+    resultTest = 7442 / 15;
+    EXPECT_EQ(static_cast<int>(quo), resultTest);
 
     dividend = BigInt(-893213);
     divisor = BigInt(-1);
     quo = dividend / divisor;
-    EXPECT_EQ(static_cast<int>(quo), 893213);
+    resultTest = -893213 / -1;
+    EXPECT_EQ(static_cast<int>(quo), resultTest);
 
     dividend = BigInt("320183856476532123543245");
     divisor = BigInt("238785");
@@ -457,68 +466,90 @@ TEST(TestDivision, Division) {
 
 TEST(TestXOR, XORWithAssigment) {
     BigInt obj;
+    int resultTest;
 
-    obj = BigInt(87);                           // 0 01010111
-    obj ^= BigInt(170);                         // 0 10101010
-    EXPECT_EQ(static_cast<int>(obj), 253);      // 0 11111101
+    obj = BigInt(87);
+    obj ^= BigInt(170);
+    resultTest = 87 ^ 170;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);                        // 0 01010101 01010111
-    obj ^= BigInt(170);                         // 0          10101010
-    EXPECT_EQ(static_cast<int>(obj), 22013);    // 0 01010101 11111101
+    obj = BigInt(21847);
+    obj ^= BigInt(170);
+    resultTest = 21847 ^ 170;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);                        // 0 01010101 01010111
-    obj ^= BigInt(-21930);                      // 1 01010101 10101010
-    EXPECT_EQ(static_cast<int>(obj), -253);     // 1          11111101
+    obj = BigInt(21847);
+    obj ^= BigInt(-21930);
+    resultTest = 21847 ^ -21930;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
+    obj = BigInt(-21847);
+    obj ^= BigInt(-21930);
+    resultTest = -21847 ^ -21930;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 }
 
 TEST(TestXOR, XOR) {
     BigInt result;
     BigInt num1;
     BigInt num2;
+    int resultTest;
 
     num1 = BigInt(87);
     num2 = BigInt(170);
     result = num1 ^ num2;
-    EXPECT_EQ(static_cast<int>(result), 253);
+    resultTest = 87 ^ 170;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
+
+    num1 = BigInt(21847);
+    num2 = BigInt(-21930);
+    result = num1 ^ num2;
+    resultTest = 21847 ^ -21930;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 
     num1 = BigInt(-21847);
     num2 = BigInt(-21930);
     result = num1 ^ num2;
-    EXPECT_EQ(static_cast<int>(result), 253);
+    resultTest = -21847 ^ -21930;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 }
 
 TEST(TestPercentageOfDivision, PercentageOfDivisionWithAssigment) {
     BigInt obj;
+    int resultTest;
 
     obj = BigInt(32);
     obj %= BigInt(2);
-    EXPECT_EQ(static_cast<int>(obj), 0);
+    resultTest = 32 % 2;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt(-20302);
     obj %= BigInt(73);
-    EXPECT_EQ(static_cast<int>(obj), 65);
+    resultTest = -20302 % 73;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt("3233211123323");
     obj %= BigInt(2442);
     EXPECT_EQ(static_cast<int>(obj), 5);
-
 }
 
 TEST(TestPercentageOfDivision, PercentageOfDivision) {
     BigInt result;
     BigInt num1;
     BigInt num2;
+    int resultTest;
 
     num1 = BigInt(22);
     num2 = BigInt(1);
     result = num1 % num2;
-    EXPECT_EQ(static_cast<int>(result), 0);
+    resultTest = 22 % 1;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 
     num1 = BigInt(0);
     num2 = BigInt(23332);
     result = num1 % num2;
-    EXPECT_EQ(static_cast<int>(result), 0);
+    resultTest = 0 % 23332;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 
     num1 = BigInt("233333221123");
     num2 = BigInt("22222222222222");
@@ -528,66 +559,85 @@ TEST(TestPercentageOfDivision, PercentageOfDivision) {
 
 TEST(TestBiwiseAND, BitwiseANDWithAssigment) {
     BigInt obj;
+    int resultTest;
 
-    obj = BigInt(87);                           // 0 01010111
-    obj &= BigInt(170);                         // 0 10101010
-    EXPECT_EQ(static_cast<int>(obj), 2);        // 0 00000010
+    obj = BigInt(87);
+    obj &= BigInt(170);
+    resultTest = 87 & 170;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);                        // 0 01010101 01010111
-    obj &= BigInt(170);                         // 0          10101010
-    EXPECT_EQ(static_cast<int>(obj), 2);        // 0          00000010
+    obj = BigInt(21847);
+    obj &= BigInt(170);
+    resultTest = 21847 & 170;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);                        // 0 01010101 01010111
-    obj &= BigInt(-21930);                      // 1 01010101 10101010
-    EXPECT_EQ(static_cast<int>(obj), 21762);    // 0 01010101 00000010
+    obj = BigInt(21847);
+    obj &= BigInt(-21930);
+    resultTest = 21847 & -21930;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
+
+    obj = BigInt(-21847);
+    obj &= BigInt(-21930);
+    resultTest = -21847 & -21930;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 }
 
 TEST(TestBitwiseAND, BitwiseAND) {
     BigInt result;
     BigInt num1;
     BigInt num2;
+    int resultTest;
 
     num1 = BigInt(87);
     num2 = BigInt(170);
     result = num1 & num2;
-    EXPECT_EQ(static_cast<int>(result), 2);
+    resultTest = 87 & 170;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 
     num1 = BigInt(-21847);
     num2 = BigInt(-21930);
     result = num1 & num2;
-    EXPECT_EQ(static_cast<int>(result), -21762);
+    resultTest = -21847 & -21930;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 }
 
 TEST(TestBitwiseOR, BitwiseORWithAssigment) {
     BigInt obj;
+    int resultTest;
 
-    obj = BigInt(87);                           // 0 01010111
-    obj |= BigInt(170);                         // 0 10101010
-    EXPECT_EQ(static_cast<int>(obj), 255);      // 0 11111111
+    obj = BigInt(87);
+    obj |= BigInt(170);
+    resultTest = 87 | 170;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);                        // 0 01010101 01010111
-    obj |= BigInt(170);                         // 0          10101010
-    EXPECT_EQ(static_cast<int>(obj), 22015);    // 0 01010101 11111111
+    obj = BigInt(21847);
+    obj |= BigInt(170);
+    resultTest = 21847 | 170;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);                        // 0 01010101 01010111
-    obj |= BigInt(-21930);                      // 1 01010101 10101010
-    EXPECT_EQ(static_cast<int>(obj), -22015);   // 1 01010101 11111111
+    obj = BigInt(21847);
+    obj |= BigInt(-21930);
+    resultTest = 21847 | -21930;
+    EXPECT_EQ(static_cast<int>(obj), resultTest);
 }
 
 TEST(TestBitwiseOR, BitwiseOR) {
     BigInt result;
     BigInt num1;
     BigInt num2;
+    int resultTest;
 
     num1 = BigInt(87);
     num2 = BigInt(170);
     result = num1 | num2;
-    EXPECT_EQ(static_cast<int>(result), 255);
+    resultTest = 87 | 170;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 
     num1 = BigInt(21847);
-    num2 = BigInt(21930);
+    num2 = BigInt(-21930);
     result = num1 | num2;
-    EXPECT_EQ(static_cast<int>(result), 22015);
+    resultTest = 21847 | -21930;
+    EXPECT_EQ(static_cast<int>(result), resultTest);
 }
 
 TEST(TestUnaryPlus, UnaryPlus) {

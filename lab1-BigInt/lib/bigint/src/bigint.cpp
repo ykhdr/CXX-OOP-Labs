@@ -419,6 +419,19 @@ BigInt &BigInt::operator^=(const BigInt &num)
         number_[i] = number_[i] ^ num.number_[i];
     }
 
+    if(isNegative_ || num.isNegative_)
+    {
+        if(isNegative_)
+        {
+            *this+=-2;
+        }
+        else
+        {
+            *this+=2;
+        }
+
+    }
+
     isNegative_ = num.isNegative_ != isNegative_;
 
     removeZeros();
@@ -432,11 +445,6 @@ BigInt &BigInt::operator%=(const BigInt &num)
     BigInt s = q * num;
     BigInt res = *this - s;
 
-    if (res.isNegative_)
-    {
-        res += num;
-    }
-
     *this = res;
 
     return *this;
@@ -444,12 +452,31 @@ BigInt &BigInt::operator%=(const BigInt &num)
 
 BigInt &BigInt::operator&=(const BigInt &num)
 {
-    for (int i = 0; i < std::min(number_.size(), num.number_.size()); ++i)
+    BigInt numCopy = num;
+    for (int i = 0; i < std::min(number_.size(), numCopy.number_.size()); ++i)
     {
-        number_[i] = number_[i] & num.number_[i];
+        if(isNegative_)
+        {
+            number_[i]*=-1;
+        }
+        if(numCopy.isNegative_)
+        {
+            numCopy.number_[i]*=-1;
+        }
+
+        number_[i] = number_[i] & numCopy.number_[i];
+
+        if(number_[i]<0)
+        {
+            number_[i]*=-1;
+        }
+        if(numCopy.isNegative_)
+        {
+            numCopy.number_[i]*=-1;
+        }
     }
 
-    isNegative_ = num.isNegative_ & isNegative_;
+    isNegative_ = numCopy.isNegative_ & isNegative_;
 
     removeZeros();
 
@@ -459,12 +486,31 @@ BigInt &BigInt::operator&=(const BigInt &num)
 
 BigInt &BigInt::operator|=(const BigInt &num)
 {
-    for (int i = 0; i < std::min(number_.size(), num.number_.size()); ++i)
+    BigInt numCopy = num;
+    for (int i = 0; i < std::min(number_.size(), numCopy.number_.size()); ++i)
     {
-        number_[i] = number_[i] | num.number_[i];
+        if(isNegative_)
+        {
+            number_[i]*=-1;
+        }
+        if(numCopy.isNegative_)
+        {
+            numCopy.number_[i]*=-1;
+        }
+
+        number_[i] = number_[i] | numCopy.number_[i];
+
+        if(number_[i]<0)
+        {
+            number_[i]*=-1;
+        }
+        if(numCopy.isNegative_)
+        {
+            numCopy.number_[i]*=-1;
+        }
     }
 
-    isNegative_ = num.isNegative_ & !isNegative_;
+    isNegative_ = numCopy.isNegative_ & !isNegative_;
 
     removeZeros();
 

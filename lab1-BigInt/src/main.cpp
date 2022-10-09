@@ -1,4 +1,5 @@
 #include "bigint.h"
+#include <bitset>
 #include <iostream>
 
 /**
@@ -8,12 +9,11 @@
  */
 
 int main() {
-    using namespace std;
 
-    string str = "12345678";
-    std::string_view y(str.c_str()+2,3);
-
-    int num = atoi(string(&y[0],  3).c_str());
-    cout << num;
+    std::bitset<32> b1 (21847);
+    std::cout << b1 << std::endl;
+    std::bitset<32> b2 (-21930*(-1));
+    std::cout << b2 <<std::endl;
+    std::cout << std::bitset<32>(21847 | -21930);
     return 0;
 }
