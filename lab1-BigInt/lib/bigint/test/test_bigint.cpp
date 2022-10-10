@@ -35,16 +35,17 @@ TEST(TestConstructors, ConstructorWithStringArg) {
     obj = BigInt(str);
     EXPECT_EQ(static_cast<int>(obj), 100);
 
-    str += "9999";
+    str = "9999232";
     obj = BigInt(str);
     EXPECT_STREQ(static_cast<std::string>(obj).data(), str.data());
 
-    str += "00000000000000000000";
+    str = "1233300000000000000000000";
     obj = BigInt(str);
     EXPECT_STREQ(static_cast<std::string>(obj).data(), str.data());
 
-    str = "-999999999999999999999";
+    str = "+999999999999999999999";
     obj = BigInt(str);
+    str = "999999999999999999999";
     EXPECT_STREQ(static_cast<std::string>(obj).data(), str.data());
 
     // empty str
@@ -610,9 +611,9 @@ TEST(TestBitwiseOR, BitwiseORWithAssigment) {
     resultTest = 87 | 170;
     EXPECT_EQ(static_cast<int>(obj), resultTest);
 
-    obj = BigInt(21847);
+    obj = BigInt(-21847);
     obj |= BigInt(170);
-    resultTest = 21847 | 170;
+    resultTest = -21847 | 170;
     EXPECT_EQ(static_cast<int>(obj), resultTest);
 
     obj = BigInt(21847);
@@ -696,10 +697,15 @@ TEST(TestBoolLess, Less) {
     EXPECT_TRUE(BigInt(-232) < BigInt(-231));
     EXPECT_TRUE(BigInt(-1) < BigInt(1));
     EXPECT_TRUE(BigInt("2333333333333333") < BigInt("2333333333333334"));
+    EXPECT_TRUE(BigInt("100000000") < BigInt("10000000000000000000"));
+    EXPECT_TRUE(BigInt("-23333333333333304000000000000000000000") < BigInt("-2333333333333330"));
 
+    EXPECT_FALSE(BigInt("-321332") < BigInt("-322323100000000"));
     EXPECT_FALSE(BigInt(-1) < BigInt(-1));
     EXPECT_FALSE(BigInt("642184380130193820") < BigInt("-642184380130193820"));
     EXPECT_FALSE(BigInt(333333) < BigInt(33333));
+    EXPECT_FALSE(BigInt("10000000000000000000") < BigInt("100000000"));
+    
 }
 
 TEST(TestBoolLess, LessWithEquality) {
@@ -748,10 +754,22 @@ TEST(TestTypeConversionOperators, IntConversion) {
     EXPECT_EQ(static_cast<int>(obj), INT32_MIN);
 
     try {
-        
-        obj = BigInt("3000000000000");
+        obj = BigInt("3000000000000000000000000");
         int num = static_cast<int>(obj);
+    } catch (std::length_error const& ex) {
+        EXPECT_STREQ(ex.what(), "Number exceeds int limit");
+    }
 
+     try {
+        obj = BigInt("2147483648");
+        int num = static_cast<int>(obj);
+    } catch (std::length_error const& ex) {
+        EXPECT_STREQ(ex.what(), "Number exceeds int limit");
+    }
+
+     try {
+        obj = BigInt("-2147483649");
+        int num = static_cast<int>(obj);
     } catch (std::length_error const& ex) {
         EXPECT_STREQ(ex.what(), "Number exceeds int limit");
     }

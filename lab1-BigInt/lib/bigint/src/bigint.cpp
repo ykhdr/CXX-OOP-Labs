@@ -328,21 +328,9 @@ BigInt &BigInt::operator/=(const BigInt &num2)
     {
         dividend += c;
 
-        if (dividend == "0")
-        {
-            ans += "0";
-            dividend.clear();
-            continue;
-        }
-
         if (dividend.size() < divider.size())
         {
             ++zeroesCounter;
-            while (dividend[0] == '0')
-            {
-                //dividend.substr(0, 1);
-                dividend.erase(0, 1);
-            }
             continue;
         }
 
@@ -394,11 +382,6 @@ BigInt &BigInt::operator/=(const BigInt &num2)
         }
         zeroesCounter = 0;
         ans += std::to_string(counter);
-    }
-
-    for (int i = 0; i < zeroesCounter; ++i)
-    {
-        ans += '0';
     }
 
     *this = BigInt(ans);
@@ -510,7 +493,7 @@ BigInt &BigInt::operator|=(const BigInt &num)
         }
     }
 
-    isNegative_ = numCopy.isNegative_ & !isNegative_;
+    isNegative_ = numCopy.isNegative_ || isNegative_;
 
     removeZeros();
 
@@ -647,9 +630,14 @@ BigInt::operator int() const
 {
     long long num = 0;
 
+    if(number_.size() > 2)
+    {
+        throw std::length_error("Number exceeds int limit");
+    }
+
     if (number_.size() > 1)
     {
-        num = number_[0] + number_[1] * CELL_LIMIT;
+        num = static_cast<long long >(number_[0]) + static_cast<long long>( number_[1]) * CELL_LIMIT;
 
         if (!isNegative_)
         {
