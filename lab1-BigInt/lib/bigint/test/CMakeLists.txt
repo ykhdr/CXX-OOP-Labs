@@ -12,9 +12,7 @@ add_custom_target(gcov
     )
 
 add_custom_command(TARGET gcov
-    COMMAND echo "=================== GCOV ===================="
-    #COMMAND gcov -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR}
-    COMMAND gcov -b ${CMAKE_SOURCE_DIR}/lib/bigint/src/*.cpp
+    COMMAND gcov -b ${CMAKE_SOURCE_DIR}/lib/bigint/src/*.cpp -o ${CMAKE_BINARY_DIR}/gcoverage
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcoverage
     )
 
