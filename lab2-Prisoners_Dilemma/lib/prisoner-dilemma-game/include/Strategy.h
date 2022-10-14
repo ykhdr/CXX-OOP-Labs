@@ -1,7 +1,1 @@
-class Strategy
-{
-public:
-	Strategy();
-	~Strategy();
-	
-};
+#pragma once

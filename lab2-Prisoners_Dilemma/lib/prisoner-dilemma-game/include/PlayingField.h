@@ -1,3 +1,8 @@
+#pragma once
+
+#include "MoveMatrix.h"
+#include "ResultMatrix.h"
+
 class PlayingField
 {
 public:

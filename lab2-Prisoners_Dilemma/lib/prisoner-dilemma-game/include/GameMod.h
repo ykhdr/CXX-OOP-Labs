@@ -1,7 +1,7 @@
+#pragma once
+
 class GameMod
 {
 public:
-	GameMod();
-	~GameMod();
 	
 };
