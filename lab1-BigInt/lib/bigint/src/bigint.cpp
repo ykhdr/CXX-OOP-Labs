@@ -37,47 +37,47 @@ void BigInt::removeZeros()
     }
 }
 
-BigInt& BigInt::sum(BigInt& num1, const BigInt& num2)
+BigInt& BigInt::sum(const BigInt& num)
 {
     int overLimit = 0;
 
-    for (int i = 0; i < std::max(num1.number_.size(), num2.number_.size()) || overLimit != 0; ++i)
+    for (int i = 0; i < std::max(this->number_.size(), num.number_.size()) || overLimit != 0; ++i)
     {
-        if (i == num1.number_.size())
+        if (i == this->number_.size())
         {
-            num1.number_.push_back(0);
+            this->number_.push_back(0);
         }
 
-        num1.number_[i] += overLimit + (i < num2.number_.size() ? num2.number_[i] : 0);
-        overLimit = num1.number_[i] >= CELL_LIMIT;
+        this->number_[i] += overLimit + (i < num.number_.size() ? num.number_[i] : 0);
+        overLimit = this->number_[i] >= CELL_LIMIT;
 
         if (overLimit != 0)
         {
-            num1.number_[i] -= CELL_LIMIT;
+            this->number_[i] -= CELL_LIMIT;
         }
     }
 
-    return num1;
+    return *this;
 }
 
-BigInt& BigInt::dif(BigInt& num1, const BigInt& num2)
+BigInt& BigInt::dif(const BigInt& num)
 {
     int overLimit = 0;
 
-    for (int i = 0; i < num2.number_.size() || overLimit; ++i)
+    for (int i = 0; i < num.number_.size() || overLimit; ++i)
     {
-        num1.number_[i] -= overLimit + (i < num2.number_.size() ? num2.number_[i] : 0);
-        overLimit = num1.number_[i] < 0;
+        this->number_[i] -= overLimit + (i < num.number_.size() ? num.number_[i] : 0);
+        overLimit = this->number_[i] < 0;
 
         if (overLimit)
         {
-            num1.number_[i] += CELL_LIMIT;
+            this->number_[i] += CELL_LIMIT;
         }
     }
 
     removeZeros();
 
-    return num1;
+    return *this;
 }
 
 BigInt::BigInt() : number_(1, 0), isNegative_(false) {}
@@ -215,17 +215,17 @@ BigInt &BigInt::operator+=(const BigInt &num)
         {
             isNegative_ = false;
 
-            return (*this < numCopy ? *this = dif(numCopy, *this) : *this = -dif(*this, numCopy));
+            return (*this < numCopy ? *this = numCopy.dif(*this) : *this = -dif(numCopy));
         }
         else
         {
             numCopy.isNegative_ = false;
 
-            return (*this < numCopy ? *this = -dif(numCopy, *this) : *this = dif(*this, numCopy));
+            return (*this < numCopy ? *this = -numCopy.dif(*this) : *this = dif(numCopy));
         }
     }
 
-    return sum(*this, num);
+    return this->sum(num);
 }
 
 BigInt &BigInt::operator*=(const BigInt &num)
@@ -264,23 +264,23 @@ BigInt &BigInt::operator-=(const BigInt &num)
         {
             numCopy.isNegative_ = false;
 
-            return (*this = sum(*this,numCopy));
+            return *this = sum(numCopy);
         }
         else
         {
             isNegative_ = false;
 
-            return (*this = -sum(*this, numCopy));
+            return *this = -sum(numCopy);
         }
     }
 
     if(!isNegative_)
     {
-        return (*this < numCopy ? *this = -dif(numCopy,*this) : *this = dif(*this,numCopy));
+        return (*this < numCopy ? *this = -numCopy.dif(*this) : *this = dif(numCopy));
     }
     else
     {
-        return (*this < numCopy ? *this = dif(*this, numCopy) : *this = -dif(numCopy,*this));
+        return (*this < numCopy ? *this = dif(numCopy) : *this = -numCopy.dif(*this));
     }
 }
 
