@@ -108,20 +108,16 @@ TEST(TestAddition, PrefixIncrement) {
     BigInt obj;
 
     obj = BigInt(0);
-    ++obj;
-    EXPECT_EQ(static_cast<int>(obj), 1);
+    EXPECT_EQ(static_cast<int>(++obj), 1);
 
     obj = BigInt(-1);
-    ++obj;
-    EXPECT_EQ(static_cast<int>(obj), 0);
+    EXPECT_EQ(static_cast<int>(++obj), 0);
 
     obj = BigInt(-9901);
-    ++obj;
-    EXPECT_EQ(static_cast<int>(obj), -9900);
+    EXPECT_EQ(static_cast<int>(++obj), -9900);
 
     obj = BigInt(999999999);
-    ++obj;
-    EXPECT_EQ(static_cast<int>(obj), 1000000000);
+    EXPECT_EQ(static_cast<int>(++obj), 1000000000);
 }
 
 TEST(TestAddition, PostfixIncrement) {
