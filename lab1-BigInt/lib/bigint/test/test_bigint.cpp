@@ -217,28 +217,22 @@ TEST(TestSubtraction, PrefixDecrement) {
     BigInt obj;
 
     obj = BigInt(1);
-    --obj;
-    EXPECT_EQ(static_cast<int>(obj), 0);
+    EXPECT_EQ(static_cast<int>(--obj), 0);
 
     obj = BigInt(31233);
-    --obj;
-    EXPECT_EQ(static_cast<int>(obj), 31232);
+    EXPECT_EQ(static_cast<int>(--obj), 31232);
 
     obj = BigInt(0);
-    --obj;
-    EXPECT_EQ(static_cast<int>(obj), -1);
+    EXPECT_EQ(static_cast<int>(--obj), -1);
 
     obj = BigInt(-842);
-    --obj;
-    EXPECT_EQ(static_cast<int>(obj), -843);
+    EXPECT_EQ(static_cast<int>(--obj), -843);
 
     obj = BigInt("1000000000");
-    --obj;
-    EXPECT_EQ(static_cast<int>(obj), 999999999);
+    EXPECT_EQ(static_cast<int>(--obj), 999999999);
 
     obj = BigInt("-900000002005078780209");
-    --obj;
-    EXPECT_STREQ(static_cast<std::string>(obj).data(), "-900000002005078780210");
+    EXPECT_STREQ(static_cast<std::string>(--obj).data(), "-900000002005078780210");
 }
 
 TEST(TestSubtraction, PostfixDecrement) {
