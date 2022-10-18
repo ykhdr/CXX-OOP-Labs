@@ -3,57 +3,70 @@
 
 
 
-MoveMatrix::MoveMatrix()
-{
-    matrix_ = new std::string* [height_];
-    for (int i = 0; i < height_; ++i)
-    {
-        matrix_[i] = new std::string [weight_];
-    }
-}
 
-MoveMatrix::MoveMatrix(int weight, int height) : weight_(weight), height_(height)
-{
-    matrix_ = new std::string* [height];
-    for (int i = 0; i < height; ++i)
-    {
-        matrix_[i] = new std::string [weight];
-    }
-
-}
+MoveMatrix::MoveMatrix(int weight, int height) : weight_(weight), height_(height) {}
 
 void MoveMatrix::makeMatrix()
 {
+    matrix_.resize(height_);
     for (int i = 0; i < height_; ++i)
     {
-        for (int j = 0; j < weight_; ++j)
-        {
-            matrix_[i][j] = "as ";
-        }
+        matrix_[i].resize(weight_);
     }
-    for (int i = 0; i < height_; ++i)
+
+    for (int i = 0; i < weight_; ++i)
     {
-        for (int j = 0; j < weight_; ++j)
-        {
-            std::cout << matrix_[i][j] << " ";
-        }
-        std::cout << std::endl;
+        matrix_[0][i] = "Pr" + std::to_string(i+1);
     }
 }
 
 MoveMatrix::~MoveMatrix()
 {
-    for (int i = 0; i < height_; ++i)
-    {
-        delete [] matrix_[i];
-    }
-    //delete [] matrix_;
+    
 }
 
-//std::vector<std::string_view> MoveMatrix::getLine(int height) const
-//{
-//
-//}
+std::vector<std::string_view> MoveMatrix::getLine(int height) const
+{
+    std::string str;
+    for (int i = 0; i < weight_; ++i)
+    {
+        str+=matrix_[height][i];
+        str+=" ";
+    }
+
+    std::vector<std::string_view> v;
+
+    for (int i = 0; i < weight_; ++i)
+    {
+        v.emplace_back(matrix_[height][i]);
+    }
+
+    return v;
+}
+
+void MoveMatrix::setWeight(int weight)
+{
+    this->weight_ = weight;
+}
+
+void MoveMatrix::setHeight(int height)
+{
+    this->height_ = height;
+}
+
+
+
+void MoveMatrix::addMove(int numOfPlayer,bool moveChoice)
+{
+    moveChoice ? matrix_[numOfMove_][numOfPlayer] = "D" : matrix_[numOfMove_][numOfPlayer] = "C";
+
+    if(numOfPlayer == weight_)
+    {
+        ++numOfMove_;
+    }
+}
+
+
 
 
 

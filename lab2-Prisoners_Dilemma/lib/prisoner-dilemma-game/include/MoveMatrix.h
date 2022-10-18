@@ -4,20 +4,24 @@
 #include <string>
 
 
-class MoveMatrix //: private Matrix
+class MoveMatrix : private Matrix
 {
 private:
-    std::string** matrix_;
+    std::vector<std::vector<std::string>> matrix_;
 
     int weight_ = 3;
     int height_ = 6;
 
+    int numOfMove_ = 1;
 public:
-	MoveMatrix();
+	MoveMatrix() = default;
     MoveMatrix(int weight, int height);
-	~MoveMatrix();// override;
+	~MoveMatrix() override;
 
-    //std::vector<std::string_view> getLine(int height) const override;
-    void makeMatrix();// override;
+    void setWeight(int);
+    void setHeight(int);
 
+    std::vector<std::string_view> getLine(int height) const;
+    void makeMatrix() override;
+    void addMove(int numOfPlayer,bool moveChoice);
 };

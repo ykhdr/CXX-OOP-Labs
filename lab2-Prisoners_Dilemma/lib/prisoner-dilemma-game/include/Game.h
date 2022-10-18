@@ -22,22 +22,41 @@ typedef void (*voidFunctionType)();
 class Game
 {
 private:
-	int argc_;
-	std::vector<std::string> argv_;
+    typedef bool (Game::*MFP)();
 
-    MoveMatrix moveMatrix_;
-    //ResultMatrix resultMatrix_;
-    std::map<std::string, std::function<bool()>> commands_;
+    bool isGameStarted_ = false;
+
+    int argc_;
+    std::vector<std::string> argv_;
+
+    int numOfPrisoners = 3;
+    int numOfMoves = 5;
+
+    std::vector<std::string> listOfStrategies_ =
+            {"simple"
+            };
+    std::vector<Player> players_;
+
+    PlayingField playingField_;
+
+    std::map<std::string, MFP> commands_;
+
+
+    void parseParams();
 
     void setUpCommands();
 
-    friend bool setUpGame();
-    friend bool endGame();
-    friend bool continueGame();
+    bool setUpGame();
+
+    bool endGame();
+
+    bool continueGame();
 
 public:
-	Game(int argc, const char** argv);
-	~Game();
-	
-	void run();
+
+    Game(int argc, const char **argv);
+
+    ~Game();
+
+    void run();
 };
