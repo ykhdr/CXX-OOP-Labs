@@ -1,10 +1,4 @@
-#include <iostream>
 #include "MoveMatrix.h"
-
-
-
-
-MoveMatrix::MoveMatrix(int weight, int height) : weight_(weight), height_(height) {}
 
 void MoveMatrix::makeMatrix()
 {
@@ -20,28 +14,21 @@ void MoveMatrix::makeMatrix()
     }
 }
 
-MoveMatrix::~MoveMatrix()
-{
-    
-}
+MoveMatrix::~MoveMatrix() {}
 
-std::vector<std::string_view> MoveMatrix::getLine(int height) const
+std::string MoveMatrix::getLine(int height) const
 {
     std::string str;
+    if(height!=0)
+        str+=" ";
+
     for (int i = 0; i < weight_; ++i)
     {
         str+=matrix_[height][i];
-        str+=" ";
+        height==0 ? str+=" " : str+= "   ";
     }
 
-    std::vector<std::string_view> v;
-
-    for (int i = 0; i < weight_; ++i)
-    {
-        v.emplace_back(matrix_[height][i]);
-    }
-
-    return v;
+    return str;
 }
 
 void MoveMatrix::setWeight(int weight)
@@ -54,17 +41,13 @@ void MoveMatrix::setHeight(int height)
     this->height_ = height;
 }
 
-
-
-void MoveMatrix::addMove(int numOfPlayer,bool moveChoice)
+void MoveMatrix::addMove(int numOfPlayer,bool moveChoice, const int &currentMove)
 {
-    moveChoice ? matrix_[numOfMove_][numOfPlayer] = "D" : matrix_[numOfMove_][numOfPlayer] = "C";
+    moveChoice ? matrix_[currentMove][numOfPlayer] = "D" : matrix_[currentMove][numOfPlayer] = "C";
 
-    if(numOfPlayer == weight_)
-    {
-        ++numOfMove_;
-    }
 }
+
+
 
 
 

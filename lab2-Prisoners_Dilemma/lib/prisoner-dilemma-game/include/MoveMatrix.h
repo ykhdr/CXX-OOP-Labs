@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Matrix.h"
-#include <string>
+#include "IMatrix.h"
 
-
-class MoveMatrix : private Matrix
+class MoveMatrix : private IMatrix
 {
 private:
     std::vector<std::vector<std::string>> matrix_;
@@ -12,16 +10,18 @@ private:
     int weight_ = 3;
     int height_ = 6;
 
-    int numOfMove_ = 1;
 public:
-	MoveMatrix() = default;
-    MoveMatrix(int weight, int height);
-	~MoveMatrix() override;
+    MoveMatrix() = default;
+
+    ~MoveMatrix() override;
 
     void setWeight(int);
+
     void setHeight(int);
 
-    std::vector<std::string_view> getLine(int height) const;
+    std::string getLine(int height) const override;
+
     void makeMatrix() override;
-    void addMove(int numOfPlayer,bool moveChoice);
+
+    void addMove(int numOfPlayer, bool moveChoice, const int &currentMove);
 };

@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
+
+set(CMAKE_CXX_STANDARD 17)
+#add_definitions(-std=c++17)
 
 set(PROJECT_NAME lab2-Prisoners_Dilemma)
 

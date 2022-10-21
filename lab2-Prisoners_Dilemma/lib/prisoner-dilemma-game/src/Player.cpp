@@ -3,17 +3,18 @@
 Player::Player(std::string)
 {
 //TODO: реализовать через фабрику стратегий
-    SimpleStrategy obj;
-    strategy_ = &obj;
+    //SimpleStrategy obj;
+    //strategy_ = &obj;
 
 }
 
 Player::~Player()
 {
-    strategy_ = nullptr;
+    //strategy_ = nullptr;
 }
 
-bool Player::makeMove(std::vector<std::string_view> moves)
+bool Player::makeMove(std::string &moves)
 {
-    return strategy_->makeMove(moves); //TODO: пофиксить какую то ошибку здесь
+
+    return strategy_.makeMove(moves); //TODO: пофиксить какую то ошибку здесь
 }

@@ -7,8 +7,5 @@ class StrategyFactory : public Factory
 {
 public:
 
-	std::unique_ptr<IStrategy> create() override
-	{
-
-	}
+	//std::unique_ptr<IStrategy> create() override;
 };

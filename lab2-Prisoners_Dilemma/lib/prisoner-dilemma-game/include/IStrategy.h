@@ -10,6 +10,6 @@ private:
 public:
 	virtual ~IStrategy() {}
 
-	virtual bool makeMove(const std::vector<std::string_view> &oppMoves) = 0;
+	virtual bool makeMove(std::string &oppMoves) = 0;
 
 };

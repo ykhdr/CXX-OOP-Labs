@@ -2,7 +2,8 @@
 
 int main(int argc, char const *argv[])
 {
-    Game game = Game(argc,argv);
+    Game game(argc,argv);
     game.run();
+    
 	return 0;
 }

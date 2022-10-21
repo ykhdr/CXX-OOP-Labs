@@ -4,6 +4,7 @@
 
 #include "MoveMatrix.h"
 #include "ResultMatrix.h"
+#include "Player.h"
 
 class PlayingField
 {
@@ -11,17 +12,19 @@ private:
     int weight_ = 3;
     int height_ = 6;
 
-
-    //ResultMatrix resultMatrix_;
+    ResultMatrix resultMatrix_;
+    MoveMatrix moveMatrix_;
 
 public:
 	PlayingField();
-    PlayingField(int,int);
+    PlayingField(int height,int weight);
 	~PlayingField();
 
-    MoveMatrix moveMatrix_;
+    std::string getLine(int);
 
-    std::vector<std::string_view> getLine(int);
 
+    void makeMoves(std::vector<Player> players, std::string previousMoves, int &currentMove);
+    void countResult(const std::string& moves, const int &currentMove);
+    void printGameStatus(const int &currentMove);
 
 };

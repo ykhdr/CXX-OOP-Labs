@@ -30,16 +30,19 @@ private:
     std::vector<std::string> argv_;
 
     int numOfPrisoners = 3;
-    int numOfMoves = 5;
+    int numOfMoves_ = 6;
 
-    std::vector<std::string> listOfStrategies_ =
+    int currentMove_ = 1;
+
+    std::vector<std::string> strategiesList_ =
             {"simple"
             };
+
     std::vector<Player> players_;
 
     PlayingField playingField_;
 
-    std::map<std::string, MFP> commands_;
+    std::map<std::string, MFP> commandList_;
 
 
     void parseParams();
