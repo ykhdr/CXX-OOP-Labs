@@ -1,11 +1,10 @@
 #include "Player.h"
 
-Player::Player(std::string)
+Player::Player(const std::string& strategyName)
 {
-//TODO: реализовать через фабрику стратегий
-    //SimpleStrategy obj;
-    //strategy_ = &obj;
+    Factory *factory = &Factory::getInstance();
 
+    strategy_ = factory->create(strategyName);
 }
 
 Player::~Player()
@@ -15,6 +14,5 @@ Player::~Player()
 
 bool Player::makeMove(std::string &moves)
 {
-
-    return strategy_.makeMove(moves); //TODO: пофиксить какую то ошибку здесь
+    return strategy_->makeMove(moves);
 }

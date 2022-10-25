@@ -20,6 +20,8 @@ namespace
 
 Game::Game(int argc, const char **argv) : argc_(argc)
 {
+    parsing = new ParsingCommandLineArgs;
+
     for (int i = 0; i < argc; ++i)
     {
         this->argv_.emplace_back(argv[i]);
@@ -33,29 +35,6 @@ Game::Game(int argc, const char **argv) : argc_(argc)
     playingField_ = PlayingField(numOfMoves_, numOfPrisoners);
 }
 
-void Game::parseParams()
-{
-    for (int i = 1; i < argc_; ++i)
-    {
-        if (std::find(strategiesList_.begin(), strategiesList_.end(), argv_[i]) != strategiesList_.end())
-        {
-            players_.emplace_back(argv_[i]);
-        } else
-        {
-
-            //TODO: сделать парс параметров здесь
-        }
-    }
-
-    if (players_.size() < 3)
-    {
-        while (players_.size() != 3)
-        {
-            players_.emplace_back("simple");
-        }
-    }
-}
-
 bool Game::setUpGame()
 {
     if (isGameStarted_)
@@ -63,8 +42,6 @@ bool Game::setUpGame()
         std::cout << "Game is already started" << std::endl;
         return false;
     }
-
-    //system("clear");
 
     playingField_.makeMoves(players_, "1",currentMove_);
     playingField_.countResult(playingField_.getLine(currentMove_),currentMove_);
@@ -118,15 +95,23 @@ void Game::setUpCommands()
     commandList_.insert(std::make_pair("start", &Game::setUpGame));
     commandList_.emplace("quit", &Game::endGame);
     commandList_.emplace("", &Game::continueGame);
+
+    Factory *factory = &Factory::getInstance();
+
+    factory->registerCreator("simple",std::make_shared<Creator<SimpleStrategy>>());
+    factory->registerCreator("default",std::make_shared<Creator<DefaultStrategy>>());
+    factory->registerCreator("random",std::make_shared<Creator<RandomStrategy>>());
 }
 
 void Game::run()
 {
-
-    parseParams();
     setUpCommands();
 
-    system("clear");
+    parsing->parseLine(*this);
+    //parseParams();
+
+
+    //system("clear");
 
     welcomeMessage();
 
@@ -156,7 +141,7 @@ void Game::run()
 
 Game::~Game()
 {
-
+    delete parsing;
 }
 
 

@@ -3,19 +3,18 @@
 #include <string>
 
 #include "IStrategy.h"
-#include "StrategyFactory.h"
 #include "../strategies/include/SimpleStrategy.h"
 
-
+#include "Factory.h"
 
 class Player
 {
 
 private:
     //IStrategy* strategy_ = nullptr;
-    SimpleStrategy strategy_;
+    std::shared_ptr<IStrategy> strategy_;
 public:
-    Player(std::string);
+    Player(const std::string&);
 	~Player();
 	bool makeMove(std::string &moves);
 };

@@ -5,29 +5,37 @@
 #include <string>
 #include <map>
 #include <stdexcept>
-#include <unordered_map>
 #include <functional>
 
 #include "Player.h"
 #include "PlayingField.h"
-#include "FastGameMod.h"
+//#include "FastGameMod.h"
 #include "MoveMatrix.h"
-#include "TournamentGameMod.h"
-#include "DetailedGameMod.h"
-#include "StrategyFactory.h"
+//#include "TournamentGameMod.h"
+//#include "DetailedGameMod.h"
+#include "Factory.h"
+#include "ParsingCommandLineArgs.h"
+
 #include "../strategies/include/SimpleStrategy.h"
+#include "../strategies/include/DefaultStrategy.h"
+#include "../strategies/include/RandomStrategy.h"
 
-typedef void (*voidFunctionType)();
 
+class ParsingCommandLineArgs;
 class Game
 {
 private:
     typedef bool (Game::*MFP)();
 
+
+
     bool isGameStarted_ = false;
 
     int argc_;
     std::vector<std::string> argv_;
+    friend ParsingCommandLineArgs;
+
+    ParsingCommandLineArgs *parsing;
 
     int numOfPrisoners = 3;
     int numOfMoves_ = 6;
@@ -35,7 +43,7 @@ private:
     int currentMove_ = 1;
 
     std::vector<std::string> strategiesList_ =
-            {"simple"
+            {"simple", "default", "random"
             };
 
     std::vector<Player> players_;
@@ -43,6 +51,7 @@ private:
     PlayingField playingField_;
 
     std::map<std::string, MFP> commandList_;
+
 
 
     void parseParams();
