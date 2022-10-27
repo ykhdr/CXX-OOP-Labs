@@ -9,7 +9,6 @@ Player::Player(const std::string& strategyName)
 
 Player::~Player()
 {
-    //strategy_ = nullptr;
 }
 
 bool Player::makeMove(std::string &moves)

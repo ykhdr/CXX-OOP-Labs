@@ -1,7 +1,6 @@
 #pragma once
 
 #include <random>
-
 #include "IStrategy.h"
 class RandomStrategy : public IStrategy
 {

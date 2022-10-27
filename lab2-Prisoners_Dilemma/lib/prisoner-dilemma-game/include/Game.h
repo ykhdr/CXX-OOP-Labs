@@ -9,12 +9,13 @@
 
 #include "Player.h"
 #include "PlayingField.h"
-//#include "FastGameMod.h"
 #include "MoveMatrix.h"
-//#include "TournamentGameMod.h"
-//#include "DetailedGameMod.h"
 #include "Factory.h"
 #include "ParsingCommandLineArgs.h"
+
+#include "../game-mode/include/FastGameMode.h"
+#include "../game-mode/include/TournamentGameMode.h"
+#include "../game-mode/include/DetailedGameMode.h"
 
 #include "../strategies/include/SimpleStrategy.h"
 #include "../strategies/include/DefaultStrategy.h"
@@ -22,12 +23,11 @@
 
 
 class ParsingCommandLineArgs;
+
 class Game
 {
 private:
-    typedef bool (Game::*MFP)();
-
-
+    typedef bool (Game::*gameFun)();
 
     bool isGameStarted_ = false;
 
@@ -35,7 +35,7 @@ private:
     std::vector<std::string> argv_;
     friend ParsingCommandLineArgs;
 
-    ParsingCommandLineArgs *parsing;
+    std::unique_ptr<ParsingCommandLineArgs> parsing = std::make_unique<ParsingCommandLineArgs>();
 
     int numOfPrisoners = 3;
     int numOfMoves_ = 6;
@@ -43,20 +43,14 @@ private:
     int currentMove_ = 1;
 
     std::vector<std::string> strategiesList_ =
-            {"simple", "default", "random"
-            };
+    {   "simple", "default", "random"
+    };
 
     std::vector<Player> players_;
 
     PlayingField playingField_;
 
-    std::map<std::string, MFP> commandList_;
-
-
-
-    void parseParams();
-
-    void setUpCommands();
+    std::map<std::string, gameFun> commandList_;
 
     bool setUpGame();
 

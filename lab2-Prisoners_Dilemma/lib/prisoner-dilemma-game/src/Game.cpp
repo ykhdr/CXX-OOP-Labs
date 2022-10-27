@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <getopt.h>
 
 /**
  * D - предать, C - молчать
@@ -20,7 +19,6 @@ namespace
 
 Game::Game(int argc, const char **argv) : argc_(argc)
 {
-    parsing = new ParsingCommandLineArgs;
 
     for (int i = 0; i < argc; ++i)
     {
@@ -32,7 +30,7 @@ Game::Game(int argc, const char **argv) : argc_(argc)
         numOfPrisoners = argc - 1;
     }
 
-    playingField_ = PlayingField(numOfMoves_, numOfPrisoners);
+
 }
 
 bool Game::setUpGame()
@@ -43,45 +41,44 @@ bool Game::setUpGame()
         return false;
     }
 
-    playingField_.makeMoves(players_, "1",currentMove_);
-    playingField_.countResult(playingField_.getLine(currentMove_),currentMove_);
+    playingField_.makeMoves(players_, "1", currentMove_);
+    playingField_.countResult(playingField_.getLine(currentMove_), currentMove_);
 
     std::cout << "\t\t\tThe game starts!\n\t\t\tFirst moves:\n" << std::endl;
 
     playingField_.printGameStatus(currentMove_);
 
-    isGameStarted_ = true;
+    if (currentMove_ == numOfMoves_)
+    {
+        std::cout << "\n\t\t\t Game over!\n" << std::endl;
+        return true;
+    }
 
     ++currentMove_;
+
+    isGameStarted_ = true;
+
+    srand(time(NULL));
 
     return false;
 }
 
-bool Game::endGame()
-{
-    std::cout << "endGame" << std::endl;
-
-    return true;
-}
-
 bool Game::continueGame()
 {
-    //system("clear");
-
     if (!isGameStarted_)
     {
         std::cout << "\t\t\tGame hasn't started yet" << std::endl;
         return false;
     }
 
-    playingField_.makeMoves(players_, playingField_.getLine(currentMove_),currentMove_);
-    playingField_.countResult(playingField_.getLine(currentMove_),currentMove_);
-
+    playingField_.makeMoves(players_, playingField_.getLine(currentMove_ - 1), currentMove_);
+    playingField_.countResult(playingField_.getLine(currentMove_), currentMove_);
     playingField_.printGameStatus(currentMove_);
 
-    if (currentMove_ == numOfMoves_ - 1)
+    if (currentMove_ == numOfMoves_)
     {
         std::cout << "\n\t\t\t Game over!\n" << std::endl;
+        playingField_.printGameResult();
         return true;
     }
 
@@ -90,28 +87,20 @@ bool Game::continueGame()
     return false;
 }
 
-void Game::setUpCommands()
+bool Game::endGame()
 {
-    commandList_.insert(std::make_pair("start", &Game::setUpGame));
-    commandList_.emplace("quit", &Game::endGame);
-    commandList_.emplace("", &Game::continueGame);
 
-    Factory *factory = &Factory::getInstance();
-
-    factory->registerCreator("simple",std::make_shared<Creator<SimpleStrategy>>());
-    factory->registerCreator("default",std::make_shared<Creator<DefaultStrategy>>());
-    factory->registerCreator("random",std::make_shared<Creator<RandomStrategy>>());
+    return true;
 }
 
 void Game::run()
 {
-    setUpCommands();
+    if (parsing->parseLine(*this))
+    {
+        return;
+    }
 
-    parsing->parseLine(*this);
-    //parseParams();
-
-
-    //system("clear");
+    playingField_ = PlayingField(numOfMoves_ + 1, numOfPrisoners);
 
     welcomeMessage();
 
@@ -121,7 +110,7 @@ void Game::run()
     {
         std::getline(std::cin, inputMessage);
 
-        MFP fp = commandList_[inputMessage];
+        gameFun fp = commandList_[inputMessage];
 
         if (fp == nullptr)
         {
@@ -136,12 +125,10 @@ void Game::run()
 
         std::cout << "\n\t\t\tPress enter for next move\n" << std::endl;
     }
-
 }
 
 Game::~Game()
 {
-    delete parsing;
 }
 
 

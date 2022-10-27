@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "Factory.h"
 
 int main(int argc, char const *argv[])
 {

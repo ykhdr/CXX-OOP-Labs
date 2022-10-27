@@ -41,7 +41,7 @@ void ResultMatrix::makeMatrix()
     }
 }
 
-void ResultMatrix::countResult(const std::string &moves, const int &currentMove)
+void ResultMatrix::countMoveResult(const std::string &moves, const int &currentMove)
 {
     int traitors = 0;
     int employers = 0;
@@ -84,6 +84,21 @@ void ResultMatrix::countResult(const std::string &moves, const int &currentMove)
                 matrix_[currentMove][i] = std::to_string(emPoints) : matrix_[currentMove][i] = std::to_string(trPoints);
         ++i;
     }
+}
+
+std::vector<int> ResultMatrix::countGameResult()
+{
+    std::vector<int> result;
+    for (int i = 0; i < weight_; ++i)
+    {
+        result.push_back(0);
+        for (int j = 1; j < height_; ++j)
+        {
+            result[i]+=std::atoi(matrix_[j][i].c_str());
+        }
+    }
+
+    return result;
 }
 
 

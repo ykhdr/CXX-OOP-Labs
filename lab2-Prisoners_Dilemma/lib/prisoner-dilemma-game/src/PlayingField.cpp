@@ -1,5 +1,24 @@
 #include "PlayingField.h"
 
+namespace
+{
+    int findIdMax(std::vector<int> v)
+    {
+        int idMax = 0;
+
+        for (int i = 0; i < v.size()-1; ++i)
+        {
+            if(v[i] < v[i+1])
+            {
+                idMax = i+1;
+            }
+        }
+
+        return idMax;
+    }
+}
+
+
 PlayingField::PlayingField()
 {
     moveMatrix_.makeMatrix();
@@ -36,7 +55,7 @@ void PlayingField::makeMoves(std::vector<Player> players, std::string previousMo
 
 void PlayingField::countResult(const std::string &moves, const int &currentMove)
 {
-    resultMatrix_.countResult(moves, currentMove);
+    resultMatrix_.countMoveResult(moves, currentMove);
 }
 
 void PlayingField::printGameStatus(int const &currentMove)
@@ -54,6 +73,26 @@ void PlayingField::printGameStatus(int const &currentMove)
 
         std::cout << resultMatrix_.getLine(i) << std::endl;
     }
+}
+
+void PlayingField::printGameResult()
+{
+    std::cout << "\t\t\tGame result:" << std::endl;
+    std::cout << "\t\t" << resultMatrix_.getLine(0) << std::endl;
+
+    std::vector<int> result = resultMatrix_.countGameResult();
+    std::cout << "\t\t ";
+
+    for(int el : result)
+    {
+        std::cout << el << "  ";
+    }
+
+    std::cout << std::endl;
+
+    int id = findIdMax(result);
+
+    std::cout << "\n\t\t   The Winner is Prisoner " << id+1 << "!" << std::endl;
 }
 
 

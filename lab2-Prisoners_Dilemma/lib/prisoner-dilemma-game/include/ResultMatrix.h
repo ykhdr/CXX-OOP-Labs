@@ -24,7 +24,7 @@ public:
 
     void makeMatrix() override;
 
-    void countResult(const std::string &moves, const int &currentMove);
+    void countMoveResult(const std::string &moves, const int &currentMove);
 
-
+    std::vector<int> countGameResult();
 };

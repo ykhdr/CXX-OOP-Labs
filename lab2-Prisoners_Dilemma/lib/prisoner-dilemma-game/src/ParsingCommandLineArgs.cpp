@@ -1,28 +1,26 @@
 #include "ParsingCommandLineArgs.h"
 
 ParsingCommandLineArgs::ParsingCommandLineArgs()
-{
-    //stringValuesMap_[""];
-}
+{}
 
 void ParsingCommandLineArgs::initialize(Game &game)
 {
     stringValuesMap_["--mode"] = evMode;
     stringValuesMap_["--steps"] = evSteps;
 
-    game.commandList_.insert(std::make_pair("start", &Game::setUpGame));
+    game.commandList_.emplace("start", &Game::setUpGame);
     game.commandList_.emplace("quit", &Game::endGame);
     game.commandList_.emplace("", &Game::continueGame);
 
     Factory *factory = &Factory::getInstance();
 
-    factory->registerCreator("simple",std::make_shared<Creator<SimpleStrategy>>());
-    factory->registerCreator("default",std::make_shared<Creator<DefaultStrategy>>());
-    factory->registerCreator("random",std::make_shared<Creator<RandomStrategy>>());
+    factory->registerCreator("simple", std::make_shared<Creator<SimpleStrategy>>());
+    factory->registerCreator("default", std::make_shared<Creator<DefaultStrategy>>());
+    factory->registerCreator("random", std::make_shared<Creator<RandomStrategy>>());
 
 }
 
-void ParsingCommandLineArgs::parseLine(Game &game)
+bool ParsingCommandLineArgs::parseLine(Game &game)
 {
 
     initialize(game);
@@ -38,18 +36,44 @@ void ParsingCommandLineArgs::parseLine(Game &game)
 
         if (game.argv_[i][0] == '-' && game.argv_[i][1] == '-')
         {
-            int fPos = game.argv_[i].find('=');
-            std::string_view strView = game.argv_[i];
-            switch (stringValuesMap_[strView.substr(0,-fPos)])
+            auto fPos = game.argv_[i].find('=');
+
+            if (fPos == -1 || fPos == game.argv_.size() - 1)
+            {
+                std::cout << "\t\t\tParameter entered incorrectly";
+            }
+
+            std::string_view argView = game.argv_[i];
+
+            switch (stringValuesMap_[argView.substr(0, fPos)])
             {
                 case evMode:
+                    std::cout << "evMode" << std::endl;
 
                     break;
+
                 case evSteps:
+                    std::cout << "evSteps" << std::endl;
+
+                    try
+                    {
+                        game.numOfMoves_ = std::stoi(game.argv_[i].substr(fPos + 1));
+
+                        if (game.numOfMoves_ <= 0)
+                        {
+                            throw std::exception();
+                        }
+
+                    } catch (std::exception &ex)
+                    {
+                        std::cout << "\t\t\t" << "You entered wrong --steps param" << std::endl;
+                        return true;
+                    }
 
                     break;
                 default:
-
+                    std::cout << "\t\t\tParameter entered incorrectly" << std::endl;
+                    return true;
                     break;
 
             }
@@ -61,9 +85,15 @@ void ParsingCommandLineArgs::parseLine(Game &game)
     {
         while (game.players_.size() != 3)
         {
-            game.players_.emplace_back("random");
+            game.players_.emplace_back("default");
         }
     }
+    else
+    {
+        game.numOfPrisoners = game.players_.size();
+    }
+
+    return false;
 }
 
 

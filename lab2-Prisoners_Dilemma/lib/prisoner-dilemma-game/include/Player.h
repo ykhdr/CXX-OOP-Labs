@@ -7,14 +7,15 @@
 
 #include "Factory.h"
 
+
+//TODO: мб избавиться от этого класса, так как он не несет в себе по сути никакого смысла
 class Player
 {
 
 private:
-    //IStrategy* strategy_ = nullptr;
     std::shared_ptr<IStrategy> strategy_;
 public:
     Player(const std::string&);
-	~Player();
-	bool makeMove(std::string &moves);
+    ~Player();
+    bool makeMove(std::string &moves);
 };

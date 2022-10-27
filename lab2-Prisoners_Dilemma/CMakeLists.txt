@@ -9,5 +9,3 @@ project(${PROJECT_NAME} CXX)
 add_executable(${PROJECT_NAME} src/main.cpp)
 
 add_subdirectory(lib/prisoner-dilemma-game)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC game_lib)

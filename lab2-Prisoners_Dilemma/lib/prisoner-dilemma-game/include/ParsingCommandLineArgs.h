@@ -9,8 +9,7 @@ class Game;
 
 class ParsingCommandLineArgs
 {
-    enum StringValue{
-        evNotDefined,
+    enum StringValue {
         evMode,
         evSteps
     };
@@ -21,6 +20,6 @@ class ParsingCommandLineArgs
 public:
     ParsingCommandLineArgs();
 
-    void parseLine(Game &);
+   bool parseLine(Game &);
 
 };

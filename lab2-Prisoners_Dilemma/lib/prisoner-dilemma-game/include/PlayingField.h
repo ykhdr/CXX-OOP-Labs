@@ -26,5 +26,5 @@ public:
     void makeMoves(std::vector<Player> players, std::string previousMoves, int &currentMove);
     void countResult(const std::string& moves, const int &currentMove);
     void printGameStatus(const int &currentMove);
-
+    void printGameResult();
 };
