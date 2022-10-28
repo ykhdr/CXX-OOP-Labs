@@ -10,7 +10,7 @@
 #include "PlayingField.h"
 #include "MoveMatrix.h"
 #include "Factory.h"
-#include "ParsingCommandLineArgs.h"
+//#include "ParsingCommandLineArgs.h"
 
 #include "../game-mode/include/FastGameMode.h"
 #include "../game-mode/include/TournamentGameMode.h"
@@ -21,23 +21,42 @@
 #include "../strategies/include/RandomStrategy.h"
 #include "../strategies/include/SmartStrategy.h"
 
-class ParsingCommandLineArgs;
+//class ParsingCommandLineArgs;
 
 class Game
 {
 private:
     typedef bool (Game::*pGameFun)();
 
-    friend ParsingCommandLineArgs;
+    class ParsingCommandLineArgs
+    {
+        enum StringValue
+        {
+            evMode,
+            evSteps
+        };
+
+        std::map<std::string_view, StringValue> stringValuesMap_;
+
+        void initialize(Game &);
+
+        bool parseCommand(Game &game, std::string &str);
+
+    public:
+        ParsingCommandLineArgs() = default;
+
+        bool parseLine(Game &);
+
+    };
 
     bool isGameStarted_ = false;
 
     int argc_;
     std::vector<std::string> argv_;
 
-    std::unique_ptr<ParsingCommandLineArgs> parsing = std::make_unique<ParsingCommandLineArgs>();
+    std::unique_ptr<ParsingCommandLineArgs> parsing_ = std::make_unique<ParsingCommandLineArgs>();
 
-    int numOfPrisoners = 3;
+    int numOfPrisoners_ = 3;
     int numOfMoves_ = 5;
 
     int currentMove_ = 1;
@@ -62,3 +81,5 @@ public:
 
     void run();
 };
+
+
