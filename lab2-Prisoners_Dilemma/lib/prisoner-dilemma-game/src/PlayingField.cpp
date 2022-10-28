@@ -8,7 +8,7 @@ namespace
 
         for (int i = 0; i < v.size() - 1; ++i)
         {
-            if (v[i] < v[i + 1])
+            if (v[idMax] < v[i + 1])
             {
                 idMax = i + 1;
             }
@@ -82,7 +82,22 @@ void PlayingField::printGameResult()
     //TODO: сделать цикл по поиску нескольких победителей, если у них счет одинаковый
     int id = findIdMax(result);
 
-    std::cout << "\n\t\t   The Winner is Prisoner " << id + 1 << "!" << std::endl;
+    std::cout << "\n\t\t   The Winners: "; //<< id + 1 << "!" << std::endl;
+    for (int i = 0; i < result.size(); ++i)
+    {
+        if (result[i] == result[id])
+        {
+            if (i == id)
+            {
+                std::cout << i + 1;
+            } else
+            {
+                std::cout << ", " << i + 1;
+            }
+
+        }
+    }
+    std::cout << "!" << std::endl;
 }
 
 
