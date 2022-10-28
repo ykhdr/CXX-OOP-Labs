@@ -11,7 +11,7 @@ Factory &Factory::getInstance()
 
 void Factory::registerCreator(std::string strategy_name, std::shared_ptr<ICreator> creator)
 {
-	factoryMap_.insert({std::move(strategy_name), std::move(creator)}); //TODO: прочитать про move семантику и понять почему не работает
+	factoryMap_.insert({std::move(strategy_name), std::move(creator)});
 }
 
 std::shared_ptr<IStrategy> Factory::create(const std::string & strategy_name)

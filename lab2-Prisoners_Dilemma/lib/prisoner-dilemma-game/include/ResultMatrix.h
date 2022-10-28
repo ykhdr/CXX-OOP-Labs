@@ -14,15 +14,11 @@ class ResultMatrix : private IMatrix
 public:
     ResultMatrix() = default;
 
+    ResultMatrix(int height, int weight);
+
     ~ResultMatrix() override = default;
 
-    void setWeight(int);
-
-    void setHeight(int);
-
     std::string getLine(int height) const override;
-
-    void makeMatrix() override;
 
     void countMoveResult(const std::string &moves, const int &currentMove);
 

@@ -7,7 +7,6 @@
 #include <stdexcept>
 #include <functional>
 
-#include "Player.h"
 #include "PlayingField.h"
 #include "MoveMatrix.h"
 #include "Factory.h"
@@ -20,37 +19,34 @@
 #include "../strategies/include/SimpleStrategy.h"
 #include "../strategies/include/DefaultStrategy.h"
 #include "../strategies/include/RandomStrategy.h"
-
+#include "../strategies/include/SmartStrategy.h"
 
 class ParsingCommandLineArgs;
 
 class Game
 {
 private:
-    typedef bool (Game::*gameFun)();
+    typedef bool (Game::*pGameFun)();
+
+    friend ParsingCommandLineArgs;
 
     bool isGameStarted_ = false;
 
     int argc_;
     std::vector<std::string> argv_;
-    friend ParsingCommandLineArgs;
 
     std::unique_ptr<ParsingCommandLineArgs> parsing = std::make_unique<ParsingCommandLineArgs>();
 
     int numOfPrisoners = 3;
-    int numOfMoves_ = 6;
+    int numOfMoves_ = 5;
 
     int currentMove_ = 1;
 
-    std::vector<std::string> strategiesList_ =
-    {   "simple", "default", "random"
-    };
-
-    std::vector<Player> players_;
+    std::vector<std::shared_ptr<IStrategy>> players_;
 
     PlayingField playingField_;
 
-    std::map<std::string, gameFun> commandList_;
+    std::map<std::string, pGameFun> commandMap_;
 
     bool setUpGame();
 

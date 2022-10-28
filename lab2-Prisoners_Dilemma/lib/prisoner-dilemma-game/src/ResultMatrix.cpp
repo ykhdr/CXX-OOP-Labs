@@ -1,15 +1,17 @@
 #include "ResultMatrix.h"
 
-//ResultMatrix::~ResultMatrix() {}
-
-void ResultMatrix::setWeight(int weight)
+ResultMatrix::ResultMatrix(int height, int weight) : height_(height),weight_(weight)
 {
-    weight_ = weight;
-}
+    matrix_.resize(height_);
+    for (int i = 0; i < height_; ++i)
+    {
+        matrix_[i].resize(weight_);
+    }
 
-void ResultMatrix::setHeight(int height)
-{
-    height_ = height;
+    for (int i = 0; i < weight_; ++i)
+    {
+        matrix_[0][i] = "Pr" + std::to_string(i + 1);
+    }
 }
 
 std::string ResultMatrix::getLine(int height) const
@@ -25,20 +27,6 @@ std::string ResultMatrix::getLine(int height) const
     }
 
     return str;
-}
-
-void ResultMatrix::makeMatrix()
-{
-    matrix_.resize(height_);
-    for (int i = 0; i < height_; ++i)
-    {
-        matrix_[i].resize(weight_);
-    }
-
-    for (int i = 0; i < weight_; ++i)
-    {
-        matrix_[0][i] = "Pr" + std::to_string(i + 1);
-    }
 }
 
 void ResultMatrix::countMoveResult(const std::string &moves, const int &currentMove)
@@ -100,5 +88,7 @@ std::vector<int> ResultMatrix::countGameResult()
 
     return result;
 }
+
+
 
 

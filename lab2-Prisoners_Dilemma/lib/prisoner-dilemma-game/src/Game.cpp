@@ -110,7 +110,7 @@ void Game::run()
     {
         std::getline(std::cin, inputMessage);
 
-        gameFun fp = commandList_[inputMessage];
+        pGameFun fp = commandMap_[inputMessage];
 
         if (fp == nullptr)
         {
