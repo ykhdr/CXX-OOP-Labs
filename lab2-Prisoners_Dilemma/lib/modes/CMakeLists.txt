@@ -1,8 +1,8 @@
 include_directories(include)
 
-add_library(game_mode
+add_library(modes
         src/DetailedGameMode.cpp
         src/FastGameMode.cpp
         src/TournamentGameMode.cpp)
 
-target_include_directories(game_mode PUBLIC include)
+target_include_directories(modes PUBLIC include)

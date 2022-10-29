@@ -2,7 +2,7 @@
 
 #include "GameMod.h"
 
-class DetailedGameMode : private GameMod
+class DetailedGameMode //: private GameMod
 {
 public:
 	DetailedGameMode();

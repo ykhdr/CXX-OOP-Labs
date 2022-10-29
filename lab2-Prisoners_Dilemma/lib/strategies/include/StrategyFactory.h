@@ -1,9 +1,13 @@
 #pragma once
 
-#include "IStrategy.h"
-
 #include <map>
 #include <memory>
+
+#include "IStrategy.h"
+#include "DefaultStrategy.h"
+#include "RandomStrategy.h"
+#include "SimpleStrategy.h"
+#include "SmartStrategy.h"
 
 class ICreator
 {
@@ -23,20 +27,18 @@ public:
     }
 };
 
-class Factory
+class StrategyFactory
 {
 private:
-    Factory() = default;
+    StrategyFactory() = default;
 
-    Factory(const Factory &)
+    StrategyFactory(const StrategyFactory &)
     {}
-
-    //Factory& operator=(Factory&) {}
 
     std::map<std::string, std::shared_ptr<ICreator>> factoryMap_;
 
 public:
-    static Factory &getInstance();
+    static StrategyFactory &getInstance();
 
     void registerCreator(std::string strategy_name, std::shared_ptr<ICreator> creator);
 

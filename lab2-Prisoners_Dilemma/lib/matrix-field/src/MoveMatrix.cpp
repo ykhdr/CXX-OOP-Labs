@@ -1,4 +1,4 @@
-#include "MoveMatrix.h"
+#include "../include/MoveMatrix.h"
 
 MoveMatrix::MoveMatrix(int height, int weight) : height_(height), weight_(weight)
 {

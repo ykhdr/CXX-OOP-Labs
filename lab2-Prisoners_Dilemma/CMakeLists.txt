@@ -8,4 +8,9 @@ project(${PROJECT_NAME} CXX)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-add_subdirectory(lib/prisoner-dilemma-game)
+add_subdirectory(lib/game)
+add_subdirectory(lib/modes)
+add_subdirectory(lib/strategies)
+add_subdirectory(lib/matrix-field)
+
+target_link_libraries(${PROJECT_NAME} game_engine)

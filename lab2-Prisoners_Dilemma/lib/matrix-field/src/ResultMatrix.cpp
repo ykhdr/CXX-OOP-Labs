@@ -1,4 +1,4 @@
-#include "ResultMatrix.h"
+#include "../include/ResultMatrix.h"
 
 ResultMatrix::ResultMatrix(int height, int weight) : height_(height),weight_(weight)
 {

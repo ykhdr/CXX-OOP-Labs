@@ -2,7 +2,7 @@
 
 #include "GameMod.h"
 
-class TournamentGameMode : private GameMod
+class TournamentGameMode //: private GameMod
 {
 public:
 	TournamentGameMode();

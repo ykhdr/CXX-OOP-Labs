@@ -1,12 +1,5 @@
 #include "Game.h"
 
-/**
- * D - предать, C - молчать
- *
- *
- */
-
-
 namespace
 {
     void welcomeMessage()
@@ -26,7 +19,7 @@ void Game::ParsingCommandLineArgs::initialize(Game &game)
     game.commandMap_.emplace("quit", &Game::endGame);
     game.commandMap_.emplace("", &Game::continueGame);
 
-    Factory *factory = &Factory::getInstance();
+    StrategyFactory *factory = &StrategyFactory::getInstance();
 
     factory->registerCreator("simple", std::make_shared<Creator<SimpleStrategy>>());
     factory->registerCreator("default", std::make_shared<Creator<DefaultStrategy>>());
@@ -83,7 +76,7 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
 {
     initialize(game);
 
-    Factory *factory = &Factory::getInstance();
+    StrategyFactory *factory = &StrategyFactory::getInstance();
 
     for (int i = 1; i < game.argc_; ++i)
     {
@@ -194,7 +187,6 @@ bool Game::continueGame()
 
 bool Game::endGame()
 {
-
     return true;
 }
 

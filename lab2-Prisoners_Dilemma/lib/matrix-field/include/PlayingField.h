@@ -4,7 +4,7 @@
 
 #include "MoveMatrix.h"
 #include "ResultMatrix.h"
-#include "IStrategy.h"
+#include "StrategyFactory.h"
 
 class PlayingField
 {

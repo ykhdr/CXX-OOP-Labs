@@ -2,7 +2,7 @@
 
 #include "GameMod.h"
 
-class FastGameMode : private GameMod
+class FastGameMode //: private GameMod
 {
 public:
 	FastGameMode();

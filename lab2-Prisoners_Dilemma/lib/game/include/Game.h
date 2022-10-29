@@ -8,20 +8,8 @@
 #include <functional>
 
 #include "PlayingField.h"
-#include "MoveMatrix.h"
-#include "Factory.h"
-//#include "ParsingCommandLineArgs.h"
-
-#include "../game-mode/include/FastGameMode.h"
-#include "../game-mode/include/TournamentGameMode.h"
-#include "../game-mode/include/DetailedGameMode.h"
-
-#include "../strategies/include/SimpleStrategy.h"
-#include "../strategies/include/DefaultStrategy.h"
-#include "../strategies/include/RandomStrategy.h"
-#include "../strategies/include/SmartStrategy.h"
-
-//class ParsingCommandLineArgs;
+#include "StrategyFactory.h"
+#include "GameMod.h"
 
 class Game
 {
