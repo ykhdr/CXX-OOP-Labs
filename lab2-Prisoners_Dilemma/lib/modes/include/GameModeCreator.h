@@ -4,8 +4,12 @@
 #include "FastGameMode.h"
 #include "TournamentGameMode.h"
 
-class GameMod
+class GameModeCreator
 {
+private:
+    /* data */
 public:
-
+    GameModeCreator(/* args */);
+    ~GameModeCreator();
 };
+

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GameMod.h"
+#include "IGameMod.h"
 
-class TournamentGameMode //: private GameMod
+class TournamentGameMode : private IGameMod
 {
 public:
 	TournamentGameMode();

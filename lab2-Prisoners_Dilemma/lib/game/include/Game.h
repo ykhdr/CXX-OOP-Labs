@@ -3,13 +3,14 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <time.h>
 #include <map>
 #include <stdexcept>
 #include <functional>
 
 #include "PlayingField.h"
 #include "StrategyFactory.h"
-#include "GameMod.h"
+#include "GameModeCreator.h"
 
 class Game
 {
