@@ -25,6 +25,7 @@ void Game::ParsingCommandLineArgs::initialize(Game &game)
     factory->registerCreator("default", std::make_shared<Creator<DefaultStrategy>>());
     factory->registerCreator("random", std::make_shared<Creator<RandomStrategy>>());
     factory->registerCreator("smart", std::make_shared<Creator<SmartStrategy>>());
+    factory->registerCreator("person",std::make_shared<Creator<PersonStrategy>>());
 }
 
 bool Game::ParsingCommandLineArgs::parseCommand(Game &game, std::string &str)
@@ -79,7 +80,7 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
     for (int i = 1; i < game.argc_; ++i)
-    {
+    {   
         std::shared_ptr<IStrategy> player = factory->create(game.argv_[i]);
 
         if (player != nullptr)

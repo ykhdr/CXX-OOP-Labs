@@ -8,6 +8,7 @@
 #include "RandomStrategy.h"
 #include "SimpleStrategy.h"
 #include "SmartStrategy.h"
+#include "PersonStrategy.h"
 
 class ICreator
 {
