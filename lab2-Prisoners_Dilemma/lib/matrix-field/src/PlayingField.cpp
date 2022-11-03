@@ -42,9 +42,14 @@ void PlayingField::makeMoves
     }
 }
 
-void PlayingField::countResult(const std::string &moves, const int &currentMove)
+void PlayingField::countMoveResult(const std::string &moves, const int &currentMove)
 {
     resultMatrix_.countMoveResult(moves, currentMove);
+}
+
+std::vector<int> PlayingField::countGameResult()
+{
+    return resultMatrix_.countGameResult();
 }
 
 void PlayingField::printGameStatus(int const &currentMove)
@@ -79,7 +84,6 @@ void PlayingField::printGameResult()
 
     std::cout << std::endl;
 
-    //TODO: сделать цикл по поиску нескольких победителей, если у них счет одинаковый
     int id = findIdMax(result);
 
     std::cout << "\n\t\t   The Winners: "; //<< id + 1 << "!" << std::endl;
@@ -99,6 +103,8 @@ void PlayingField::printGameResult()
     }
     std::cout << "!" << std::endl;
 }
+
+
 
 
 

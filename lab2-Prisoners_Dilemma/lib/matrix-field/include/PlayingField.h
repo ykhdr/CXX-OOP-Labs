@@ -24,7 +24,9 @@ public:
 
     void makeMoves(std::vector<std::shared_ptr<IStrategy>> players, std::string previousMoves, int &currentMove);
 
-    void countResult(const std::string &moves, const int &currentMove);
+    void countMoveResult(const std::string &moves, const int &currentMove);
+
+    std::vector<int> countGameResult();
 
     void printGameStatus(const int &currentMove);
 

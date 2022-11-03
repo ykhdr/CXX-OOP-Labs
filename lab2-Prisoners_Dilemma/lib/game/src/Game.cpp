@@ -12,12 +12,8 @@ namespace
 
 void Game::ParsingCommandLineArgs::initialize(Game &game)
 {
-    stringValuesMap_["--mode"] = evMode;
     stringValuesMap_["--steps"] = evSteps;
-
-    game.commandMap_.emplace("start", &Game::setUpGame);
-    game.commandMap_.emplace("quit", &Game::endGame);
-    game.commandMap_.emplace("", &Game::continueGame);
+    stringValuesMap_["--mode"] = evMode;
 
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
@@ -25,7 +21,7 @@ void Game::ParsingCommandLineArgs::initialize(Game &game)
     factory->registerCreator("default", std::make_shared<Creator<DefaultStrategy>>());
     factory->registerCreator("random", std::make_shared<Creator<RandomStrategy>>());
     factory->registerCreator("smart", std::make_shared<Creator<SmartStrategy>>());
-    factory->registerCreator("person",std::make_shared<Creator<PersonStrategy>>());
+    factory->registerCreator("person", std::make_shared<Creator<PersonStrategy>>());
 }
 
 bool Game::ParsingCommandLineArgs::parseCommand(Game &game, std::string &str)
@@ -43,7 +39,14 @@ bool Game::ParsingCommandLineArgs::parseCommand(Game &game, std::string &str)
     switch (stringValuesMap_[argView.substr(0, fPos)])
     {
         case evMode:
-            std::cout << "evMode" << std::endl;
+
+            if (!game.gameModeName_.empty())
+            {
+                std::cout << "\t\t\tYou have already chosen game mode" << std::endl;
+                return true;
+            }
+
+            game.gameModeName_ = argView.substr(fPos + 1);
 
             break;
 
@@ -77,15 +80,17 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
 {
     initialize(game);
 
+    std::vector<std::shared_ptr<IStrategy>> players;
+
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
     for (int i = 1; i < game.argc_; ++i)
-    {   
+    {
         std::shared_ptr<IStrategy> player = factory->create(game.argv_[i]);
 
         if (player != nullptr)
         {
-            game.players_.push_back(player);
+            players.push_back(player);
             continue;
         }
 
@@ -102,138 +107,69 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
         return true;
     }
 
-    if (game.players_.size() < 3)
+    if (players.size() < 3)
     {
-        while (game.players_.size() != 3)
+        while (players.size() != 3)
         {
-            game.players_.push_back(factory->create("default"));
+            players.push_back(factory->create("default"));
         }
-    } else
-    {
-        game.numOfPrisoners_ = game.players_.size();
     }
 
-    return false;
-}
+    if (game.gameModeName_.empty())
+    {
+        if(players.size()>3)
+        {
+            game.gameMode_ = std::make_unique<TournamentGameMode>(std::move(players), game.numOfMoves_);
+        } else
+        {
+            game.gameMode_ = std::make_unique<DetailedGameMode>(std::move(players), game.numOfMoves_);
+        }
+        return false;
+    }
+    if (game.gameModeName_ == "detailed")
+    {
+        game.gameMode_ = std::make_unique<DetailedGameMode>(std::move(players), game.numOfMoves_);
+        return false;
+    }
+    if (game.gameModeName_ == "fast")
+    {
+        game.gameMode_ = std::make_unique<FastGameMode>(std::move(players), game.numOfMoves_);
+        return false;
+    }
+    if (game.gameModeName_ == "tournament")
+    {
+        game.gameMode_ = std::make_unique<TournamentGameMode>(std::move(players), game.numOfMoves_);
+        return false;
+    }
 
+    std::cout << "Name of game mode entered incorrectly" << std::endl;
+    return true;
+
+}
 
 Game::Game(int argc, const char **argv) : argc_(argc)
 {
-
     for (int i = 0; i < argc; ++i)
     {
         this->argv_.emplace_back(argv[i]);
     }
-
-    if (argc - 1 > numOfPrisoners_)
-    {
-        numOfPrisoners_ = argc - 1;
-    }
-
-}
-
-bool Game::setUpGame()
-{
-    if (isGameStarted_)
-    {
-        std::cout << "Game is already started" << std::endl;
-        return false;
-    }
-
-    playingField_.makeMoves(players_, "1", currentMove_);
-    playingField_.countResult(playingField_.getLine(currentMove_), currentMove_);
-
-    std::cout << "\t\t\tThe game starts!\n\t\t\tFirst moves:\n" << std::endl;
-
-    playingField_.printGameStatus(currentMove_);
-
-    if (currentMove_ == numOfMoves_)
-    {
-        std::cout << "\n\t\t\t Game over!\n" << std::endl;
-        return true;
-    }
-
-    ++currentMove_;
-
-    isGameStarted_ = true;
-
-    srand(time(NULL));
-
-    return false;
-}
-
-bool Game::continueGame()
-{
-    if (!isGameStarted_)
-    {
-        std::cout << "\t\t\tGame hasn't started yet" << std::endl;
-        return false;
-    }
-
-    playingField_.makeMoves(players_, playingField_.getLine(currentMove_ - 1), currentMove_);
-    playingField_.countResult(playingField_.getLine(currentMove_), currentMove_);
-    playingField_.printGameStatus(currentMove_);
-
-    if (currentMove_ == numOfMoves_)
-    {
-        std::cout << "\n\t\t\t Game over!\n" << std::endl;
-        playingField_.printGameResult();
-        return true;
-    }
-
-    ++currentMove_;
-
-    return false;
-}
-
-bool Game::endGame()
-{
-    return true;
 }
 
 void Game::run()
 {
+    srand(time(NULL));
+
     if (parsing_->parseLine(*this))
     {
         return;
     }
 
-    playingField_ = PlayingField(numOfMoves_ + 1, numOfPrisoners_);
-
     welcomeMessage();
 
-    std::string inputMessage;
+    gameMode_->run();
 
-    while (true)
-    {
-        std::getline(std::cin, inputMessage);
-
-        pGameFun fp = commandMap_[inputMessage];
-
-        if (fp == nullptr)
-        {
-            std::cout << "\t\tYou entered the wrong message. Try again." << std::endl;
-            continue;
-        }
-
-        if ((this->*fp)())
-        {
-            return;
-        }
-
-        std::cout << "\n\t\t\tPress enter for next move\n" << std::endl;
-    }
 }
 
 Game::~Game()
 {
 }
-
-
-
-
-
-
-
-
-

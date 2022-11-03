@@ -1,11 +1,23 @@
 #pragma once
 
-#include "IGameMod.h"
+#include "IGameMode.h"
 
-class TournamentGameMode : private IGameMod
+class TournamentGameMode : public IGameMode
 {
+private:
+    std::vector<std::shared_ptr<IStrategy>> players_;
+
+    std::map<int,int> resultMap_;
+
+    int movesNum_;
+
+    PlayingField playingField_;
+
 public:
-	TournamentGameMode();
-	~TournamentGameMode();
+    explicit TournamentGameMode(std::vector<std::shared_ptr<IStrategy>> && players, int &moves);
+
+    ~TournamentGameMode() override;
+
+    void run() override;
 
 };

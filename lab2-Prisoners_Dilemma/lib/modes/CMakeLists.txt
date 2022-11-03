@@ -6,3 +6,4 @@ add_library(modes
         src/TournamentGameMode.cpp)
 
 target_include_directories(modes PUBLIC include)
+target_link_libraries(modes PUBLIC strategies matrix_field)

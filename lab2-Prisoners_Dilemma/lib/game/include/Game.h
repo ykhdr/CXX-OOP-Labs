@@ -3,19 +3,25 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <time.h>
+#include <ctime>
 #include <map>
 #include <stdexcept>
 #include <functional>
 
-#include "PlayingField.h"
-#include "StrategyFactory.h"
-#include "GameModeCreator.h"
+#include "IGameModeCreator.h"
+
+
+//Имеем gamemode
+/*
+    В каждом gamemode будет одтельная реализация игры(?)
+    Или же в зависимости от gamemode будет происходить игра в game.cpp
+    Скорее всего в gamemode 
+
+*/
 
 class Game
 {
 private:
-    typedef bool (Game::*pGameFun)();
 
     class ParsingCommandLineArgs
     {
@@ -38,29 +44,15 @@ private:
 
     };
 
-    bool isGameStarted_ = false;
-
     int argc_;
     std::vector<std::string> argv_;
 
     std::unique_ptr<ParsingCommandLineArgs> parsing_ = std::make_unique<ParsingCommandLineArgs>();
 
-    int numOfPrisoners_ = 3;
+    std::string_view gameModeName_;
+    std::unique_ptr<IGameMode> gameMode_ = nullptr;
+
     int numOfMoves_ = 5;
-
-    int currentMove_ = 1;
-
-    std::vector<std::shared_ptr<IStrategy>> players_;
-
-    PlayingField playingField_;
-
-    std::map<std::string, pGameFun> commandMap_;
-
-    bool setUpGame();
-
-    bool endGame();
-
-    bool continueGame();
 
 public:
 
