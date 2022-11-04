@@ -1,11 +1,18 @@
 #include "DetailedGameMode.h"
 
+namespace
+{
+    void printCommandMessage()
+    {
+        std::cout << "\tTo start the game write \'start\'\n" <<
+                  "\tTo end the game write \'quit\'\n" << std::endl;
+    }
+}
+
 DetailedGameMode::DetailedGameMode(std::vector<std::shared_ptr<IStrategy>> &&players, int &moves) :
         players_(players), movesNum_(moves)
 {
-    playersNum_ = players.size();
-    currentMove_ = 1;
-    playingField_ = PlayingField(movesNum_ + 1, playersNum_);
+    playingField_ = PlayingField(movesNum_ + 1);
 
     commandMap_.emplace("start", &DetailedGameMode::setUpGame);
     commandMap_.emplace("quit", &DetailedGameMode::endGame);
@@ -14,6 +21,7 @@ DetailedGameMode::DetailedGameMode(std::vector<std::shared_ptr<IStrategy>> &&pla
 
 void DetailedGameMode::run()
 {
+    printCommandMessage();
 
     std::string inputMessage;
 
@@ -98,9 +106,3 @@ bool DetailedGameMode::endGame()
 {
     return true;
 }
-
-
-
-
-
-

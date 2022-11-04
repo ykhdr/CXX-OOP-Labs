@@ -16,7 +16,7 @@ private:
 public:
     PlayingField() = default;
 
-    PlayingField(int height, int weight);
+    PlayingField(int height);
 
     ~PlayingField();
 

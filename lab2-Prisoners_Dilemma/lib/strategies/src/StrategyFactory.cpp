@@ -1,4 +1,4 @@
-#include "../include/StrategyFactory.h"
+#include "StrategyFactory.h"
 
 StrategyFactory &StrategyFactory::getInstance()
 {
@@ -21,5 +21,3 @@ std::shared_ptr<IStrategy> StrategyFactory::create(const std::string & strategy_
 
 	return it->second->create();
 }
-
-

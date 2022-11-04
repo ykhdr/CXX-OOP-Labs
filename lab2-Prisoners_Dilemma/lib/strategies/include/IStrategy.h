@@ -5,8 +5,6 @@
 
 class IStrategy
 {
-private:
-
 public:
 	virtual ~IStrategy() = default;
 

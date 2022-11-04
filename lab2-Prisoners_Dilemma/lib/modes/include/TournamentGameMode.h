@@ -13,6 +13,8 @@ private:
 
     PlayingField playingField_;
 
+    void printResult(int maxValue);
+
 public:
     explicit TournamentGameMode(std::vector<std::shared_ptr<IStrategy>> && players, int &moves);
 

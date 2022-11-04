@@ -9,7 +9,6 @@ private:
 
     PlayingField playingField_;
 
-    int playersNum_;
     int movesNum_;
 
 public:

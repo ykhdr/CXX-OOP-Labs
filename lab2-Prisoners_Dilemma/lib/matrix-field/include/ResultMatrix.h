@@ -8,13 +8,13 @@ class ResultMatrix : private IMatrix
 {
     std::vector<std::vector<std::string>> matrix_;
 
-    int weight_ = 3;
+    static constexpr int weight_ = 3;
     int height_ = 6;
 
 public:
     ResultMatrix() = default;
 
-    ResultMatrix(int height, int weight);
+    explicit ResultMatrix(int height);
 
     ~ResultMatrix() override = default;
 

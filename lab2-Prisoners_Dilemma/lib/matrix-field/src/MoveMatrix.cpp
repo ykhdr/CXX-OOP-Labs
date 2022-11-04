@@ -1,6 +1,6 @@
 #include "../include/MoveMatrix.h"
 
-MoveMatrix::MoveMatrix(int height, int weight) : height_(height), weight_(weight)
+MoveMatrix::MoveMatrix(int height) : height_(height)
 {
     matrix_.resize(height_);
     for (int i = 0; i < height_; ++i)
@@ -36,13 +36,3 @@ void MoveMatrix::addMove(int numOfPlayer, bool moveChoice, const int &currentMov
 {
     moveChoice ? matrix_[currentMove][numOfPlayer] = "D" : matrix_[currentMove][numOfPlayer] = "C";
 }
-
-
-
-
-
-
-
-
-
-

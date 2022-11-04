@@ -1,6 +1,6 @@
 #include "../include/ResultMatrix.h"
 
-ResultMatrix::ResultMatrix(int height, int weight) : height_(height),weight_(weight)
+ResultMatrix::ResultMatrix(int height) : height_(height)
 {
     matrix_.resize(height_);
     for (int i = 0; i < height_; ++i)
@@ -88,7 +88,3 @@ std::vector<int> ResultMatrix::countGameResult()
 
     return result;
 }
-
-
-
-

@@ -18,10 +18,10 @@ namespace
     }
 }
 
-PlayingField::PlayingField(int height, int weight)
+PlayingField::PlayingField(int height)
 {
-    moveMatrix_ = MoveMatrix(height, weight);
-    resultMatrix_ = ResultMatrix(height, weight);
+    moveMatrix_ = MoveMatrix(height);
+    resultMatrix_ = ResultMatrix(height);
 }
 
 PlayingField::~PlayingField()
@@ -101,17 +101,5 @@ void PlayingField::printGameResult()
 
         }
     }
-    std::cout << "!" << std::endl;
+    std::cout <<" with score " << result[id] << "!\n" << std::endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-

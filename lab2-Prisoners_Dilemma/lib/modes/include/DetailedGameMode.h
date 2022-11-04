@@ -15,9 +15,8 @@ private:
 
     PlayingField playingField_;
 
-    int playersNum_;
     int movesNum_;
-    int currentMove_;
+    int currentMove_ = 1;
 
     bool setUpGame();
 

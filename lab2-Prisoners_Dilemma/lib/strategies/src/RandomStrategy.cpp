@@ -1,8 +1,7 @@
 
-#include "../include/RandomStrategy.h"
+#include "RandomStrategy.h"
 
 bool RandomStrategy::makeMove(std::string &oppMoves)
 {
     return rand() % 2;
 }
-

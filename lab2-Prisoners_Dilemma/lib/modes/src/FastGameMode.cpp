@@ -3,9 +3,7 @@
 FastGameMode::FastGameMode(std::vector<std::shared_ptr<IStrategy>> &&players, int &moves) :
         players_(players), movesNum_(moves)
 {
-    playersNum_ = players.size();
-    playingField_ = PlayingField(movesNum_ + 1, playersNum_);
-
+    playingField_ = PlayingField(movesNum_ + 1);
 }
 
 void FastGameMode::run()
@@ -25,5 +23,3 @@ void FastGameMode::run()
 
     playingField_.printGameResult();
 }
-
-

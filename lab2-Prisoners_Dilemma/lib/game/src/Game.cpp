@@ -2,11 +2,9 @@
 
 namespace
 {
-    void welcomeMessage()
+    void printCommandMessage()
     {
-        std::cout << "\n\t\t\tGame \"Prisoner's Dilemma\"\n\n " <<
-                  "\tTo start the game write \'start\'\n" <<
-                  "\tTo end the game write \'quit\'\n" << std::endl;
+        std::cout << "\n\t\t\tGame \"Prisoner's Dilemma\"\n\n ";
     }
 }
 
@@ -117,7 +115,7 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
 
     if (game.gameModeName_.empty())
     {
-        if(players.size()>3)
+        if (players.size() > 3)
         {
             game.gameMode_ = std::make_unique<TournamentGameMode>(std::move(players), game.numOfMoves_);
         } else
@@ -126,6 +124,24 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
         }
         return false;
     }
+
+    if (game.gameModeName_ == "tournament")
+    {
+        if (players.size() == 3)
+        {
+            std::cout << "\t\t\tFew players for tournament mode" << std::endl;
+            return true;
+        }
+        game.gameMode_ = std::make_unique<TournamentGameMode>(std::move(players), game.numOfMoves_);
+        return false;
+    }
+
+    if (players.size() > 3)
+    {
+        std::cout << "\t\t\tToo much players for this game mode" << std::endl;
+        return true;
+    }
+
     if (game.gameModeName_ == "detailed")
     {
         game.gameMode_ = std::make_unique<DetailedGameMode>(std::move(players), game.numOfMoves_);
@@ -136,15 +152,9 @@ bool Game::ParsingCommandLineArgs::parseLine(Game &game)
         game.gameMode_ = std::make_unique<FastGameMode>(std::move(players), game.numOfMoves_);
         return false;
     }
-    if (game.gameModeName_ == "tournament")
-    {
-        game.gameMode_ = std::make_unique<TournamentGameMode>(std::move(players), game.numOfMoves_);
-        return false;
-    }
 
     std::cout << "Name of game mode entered incorrectly" << std::endl;
     return true;
-
 }
 
 Game::Game(int argc, const char **argv) : argc_(argc)
@@ -164,12 +174,7 @@ void Game::run()
         return;
     }
 
-    welcomeMessage();
+    printCommandMessage();
 
     gameMode_->run();
-
-}
-
-Game::~Game()
-{
 }

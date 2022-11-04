@@ -21,7 +21,7 @@ namespace
 TournamentGameMode::TournamentGameMode(std::vector<std::shared_ptr<IStrategy>> &&players, int &moves) :
         players_(players), movesNum_(moves)
 {
-    playingField_ = PlayingField(movesNum_ + 1, 3);
+    playingField_ = PlayingField(movesNum_ + 1);
 }
 
 TournamentGameMode::~TournamentGameMode()
@@ -29,12 +29,24 @@ TournamentGameMode::~TournamentGameMode()
 
 void TournamentGameMode::run()
 {
+    int gameCounter = 1;
+
+    int maxValue = 0;
+
     for (auto itFirst = players_.begin(); itFirst != std::prev(players_.end(), 2); ++itFirst)
     {
         for (auto itSecond = std::next(itFirst); itSecond != std::prev(players_.end()); ++itSecond)
         {
             for (auto itThird = std::next(itSecond); itThird != players_.end(); ++itThird)
             {
+                std::cout << "\n\t\t\tGame " << gameCounter << " started\n" << std::endl;
+                std::cout << "\t\tPlayers " << itFirst - players_.begin() + 1
+                          << ", " << itSecond - players_.begin() + 1
+                          << ", " << itThird - players_.begin() + 1
+                          << " are playing now"<<std::endl;
+
+                ++gameCounter;
+
                 std::vector<std::shared_ptr<IStrategy>> pl;
 
                 pl.push_back(*itFirst);
@@ -54,43 +66,81 @@ void TournamentGameMode::run()
                     playingField_.countMoveResult(playingField_.getLine(currentMove), currentMove);
                 }
 
-                std::vector<int> result = playingField_.countGameResult();
+                std::vector<int> gameResult = playingField_.countGameResult();
 
-                //TODO: сделать так, чтобы в мапу мы записывали номер ИГРОКА с его результатом, желательно, чтобы можно было переписать значение по известному ключу
+                playingField_.printGameResult();
 
-                int idMax = findIdMax(result);
+                int idMax = findIdMax(gameResult);
 
-                int idPlayer;
-                switch (idMax)
+                if (gameResult[idMax] > maxValue)
                 {
-                    case 0:
-                        idPlayer = itFirst - players_.begin();
-                        break;
-                    case 1:
-                        idPlayer = itSecond - players_.begin();
-                        break;
-                    case 2:
-                        idPlayer = itThird - players_.begin();
-                        break;
-                    default:
-                        break;
+                    maxValue = gameResult[idMax];
                 }
-                //TODO: сделать поиск по ключу, если уже имеется, то сравниваем значения и в случае, если новое значение больше предыдущего, то удаляем ту пару и заменяем новой
-                resultMap_.insert(std::make_pair(idPlayer, result[idMax]));
+
+                int idPlayer = 0;
+
+                for (int i = 0; i < gameResult.size(); ++i)
+                {
+                    if (gameResult[i] != gameResult[idMax])
+                    {
+                        continue;
+                    }
+
+                    switch (i)
+                    {
+                        case 0:
+                            idPlayer = itFirst - players_.begin();
+                            break;
+                        case 1:
+                            idPlayer = itSecond - players_.begin();
+                            break;
+                        case 2:
+                            idPlayer = itThird - players_.begin();
+                            break;
+                        default:
+                            break;
+                    }
+
+                    auto key = resultMap_.find(idPlayer);
+
+                    if (key == resultMap_.end())
+                    {
+                        resultMap_.insert(std::make_pair(idPlayer, gameResult[idMax]));
+                        continue;
+                    }
+
+                    if (gameResult[idMax] > key->second)
+                    {
+                        resultMap_[key->first] = gameResult[idMax];
+                    }
+
+                }
             }
         }
     }
 
-
+    printResult(maxValue);
 }
 
 
+void TournamentGameMode::printResult(int maxValue)
+{
+    std::cout << "\t\t The Winner of tournament is";
 
+    bool isFisrt = true;
+    for (const auto &result: resultMap_)
+    {
+        if (result.second == maxValue)
+        {
 
+            if (!isFisrt)
+            {
+                std::cout << ",";
+            }
+            std::cout << " " << result.first + 1;
+            isFisrt = false;
+        }
+    }
 
-
-
-
-
-
-
+    std::cout << " with score " << maxValue << "!" << std::endl;
+}

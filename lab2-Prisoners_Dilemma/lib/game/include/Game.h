@@ -6,18 +6,8 @@
 #include <ctime>
 #include <map>
 #include <stdexcept>
-#include <functional>
 
 #include "IGameModeCreator.h"
-
-
-//Имеем gamemode
-/*
-    В каждом gamemode будет одтельная реализация игры(?)
-    Или же в зависимости от gamemode будет происходить игра в game.cpp
-    Скорее всего в gamemode 
-
-*/
 
 class Game
 {
@@ -58,7 +48,7 @@ public:
 
     Game(int argc, const char **argv);
 
-    ~Game();
+    ~Game() = default;
 
     void run();
 };
