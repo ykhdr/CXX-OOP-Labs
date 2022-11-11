@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-//#include "PlayerChoice.h"
-
 namespace
 {
     int findIdMax(std::vector<int> v)
@@ -29,8 +27,7 @@ std::string PlayingField::getLine(int height)
     return moveMatrix_.getLine(height);
 }
 
-void PlayingField::makeMoves
-        (std::vector<std::shared_ptr<IStrategy>> players, std::string previousMoves, int &currentMove)
+void PlayingField::makeMoves(std::vector<std::shared_ptr<IStrategy>> players, std::string previousMoves, int &currentMove)
 {
     for (int i = 0; i < players.size(); ++i)
     {
@@ -56,7 +53,8 @@ void PlayingField::printGameStatus(int const &currentMove)
         if (i == 0)
         {
             std::cout << "  =>   ";
-        } else
+        }
+        else
         {
             std::cout << " =>   ";
         }
@@ -73,7 +71,7 @@ void PlayingField::printGameResult()
     std::vector<int> result = resultMatrix_.countGameResult();
     std::cout << "\t\t ";
 
-    for (int el: result)
+    for (int el : result)
     {
         std::cout << el << "  ";
     }
@@ -90,12 +88,13 @@ void PlayingField::printGameResult()
             if (i == id)
             {
                 std::cout << i + 1;
-            } else
+            }
+            else
             {
                 std::cout << ", " << i + 1;
             }
-
         }
     }
-    std::cout <<" with score " << result[id] << "!\n" << std::endl;
+    std::cout << " with score " << result[id] << "!\n"
+              << std::endl;
 }

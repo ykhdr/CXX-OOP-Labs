@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include "MoveMatrix.h"
 #include "ResultMatrix.h"
 #include "StrategyFactory.h"
@@ -9,7 +7,6 @@
 class PlayingField
 {
 private:
-
     ResultMatrix resultMatrix_;
     MoveMatrix moveMatrix_;
 

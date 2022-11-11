@@ -20,6 +20,7 @@ PlayerChoice PersonStrategy::makeMove(std::string &oppMoves)
             return PlayerChoice::evCooperate;
         }
 
-        std::cout << std::endl << "You entered wrong move, try again" << std::endl;
+        std::cout << std::endl
+                  << "You entered wrong move, try again" << std::endl;
     }
 }

@@ -1,9 +1,5 @@
 #include "GameHub.h"
 
-// #include "TournamentGameMode.h"
-// #include "FastGameMode.h"
-// #include "DetailedGameMode.h"
-
 #include <iostream>
 
 #include "FastGame.h"
@@ -92,17 +88,12 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
 {
     initialize(game);
 
-    // std::vector<std::shared_ptr<IStrategy>> players;
-
     std::vector<std::string> strategiesNames;
 
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
     for (int i = 1; i < game.argv_.size(); ++i)
     {
-        // TODO: делаем проверку на существование стратегии и далее уже в случае успеха записываем ее в вектор имен стратегий
-        // TODO: сделаем проверку уже при создании самой игры в Game
-
         if (game.argv_[i][0] == '-' && game.argv_[i][1] == '-')
         {
             if (parseCommand(game, game.argv_[i]))
@@ -120,29 +111,8 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
         }
 
         strategiesNames.push_back(game.argv_[i]);
-        // players.push_back(factory->create(game.argv_[i]));
     }
 
-    // if (players.size() < 3)
-    // {
-    //     while (players.size() != 3)
-    //     {
-    //         players.push_back(factory->create("default"));
-    //     }
-    // }
-
-    // if (game.gameModeName_.empty())
-    // {
-    //     if (players.size() > 3)
-    //     {
-    //         game.gameMode_ = std::make_unique<TournamentGameMode>(players, game.numOfMoves_);
-    //     }
-    //     else
-    //     {
-    //         game.gameMode_ = std::make_unique<DetailedGameMode>(players, game.numOfMoves_);
-    //     }
-    //     return false;
-    // }
     while (strategiesNames.size() < 3)
     {
         strategiesNames.push_back("default");
@@ -163,19 +133,16 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
 
     if (game.gameModeName_ == "tournament")
     {
-        // if (players.size() == 3)
         if (strategiesNames.size() == 3)
         {
             std::cerr << "Few players for tournament mode" << std::endl;
             return true;
         }
-        // game.gameMode_ = std::make_unique<TournamentGameMode>(players, game.numOfMoves_);
         game.gameMode_ = std::make_unique<TournamentGame>(strategiesNames, game.numOfMoves_);
 
         return false;
     }
 
-    // if (players.size() > 3)
     if (strategiesNames.size() > 3)
     {
         std::cerr << "Too much players for this game mode" << std::endl;
@@ -184,13 +151,11 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
 
     if (game.gameModeName_ == "detailed")
     {
-        // game.gameMode_ = std::make_unique<DetailedGameMode>(players, game.numOfMoves_);
         game.gameMode_ = std::make_unique<DetailedGame>(strategiesNames, game.numOfMoves_);
         return false;
     }
     if (game.gameModeName_ == "fast")
     {
-        // game.gameMode_ = std::make_unique<FastGameMode>(players, game.numOfMoves_);
         game.gameMode_ = std::make_unique<FastGame>(strategiesNames, game.numOfMoves_);
         return false;
     }

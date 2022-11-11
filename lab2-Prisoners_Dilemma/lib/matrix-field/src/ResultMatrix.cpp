@@ -37,7 +37,7 @@ void ResultMatrix::countMoveResult(const std::string &moves, const int &currentM
     int trPoints = 0;
     int emPoints = 0;
 
-    for (char move: moves)
+    for (char move : moves)
     {
         if (move == ' ')
         {
@@ -50,14 +50,16 @@ void ResultMatrix::countMoveResult(const std::string &moves, const int &currentM
     if (employers == 0)
     {
         trPoints = 1;
-    } else if (traitors == 0)
+    }
+    else if (traitors == 0)
     {
         emPoints = 7;
-
-    } else if (employers == 1)
+    }
+    else if (employers == 1)
     {
         trPoints = 5;
-    } else
+    }
+    else
     {
         trPoints = 9;
         emPoints = 3;
@@ -69,8 +71,7 @@ void ResultMatrix::countMoveResult(const std::string &moves, const int &currentM
         {
             continue;
         }
-        moves[j] == 'C' ?
-                matrix_[currentMove][i] = std::to_string(emPoints) : matrix_[currentMove][i] = std::to_string(trPoints);
+        moves[j] == 'C' ? matrix_[currentMove][i] = std::to_string(emPoints) : matrix_[currentMove][i] = std::to_string(trPoints);
         ++i;
     }
 }
@@ -83,7 +84,7 @@ std::vector<int> ResultMatrix::countGameResult()
         result.push_back(0);
         for (int j = 1; j < height_; ++j)
         {
-            result[i]+=std::atoi(matrix_[j][i].c_str());
+            result[i] += std::atoi(matrix_[j][i].c_str());
         }
     }
 

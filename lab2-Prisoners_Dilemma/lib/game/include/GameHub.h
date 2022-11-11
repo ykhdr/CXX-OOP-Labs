@@ -10,7 +10,6 @@
 class GameHub
 {
 private:
-
     class ParsingCommandLineArgs
     {
         enum class CommandsValues
@@ -30,7 +29,6 @@ private:
         ParsingCommandLineArgs() = default;
 
         bool parseLine(GameHub &);
-
     };
 
     std::vector<std::string> argv_;
@@ -43,12 +41,9 @@ private:
     int numOfMoves_ = 5;
 
 public:
-
     GameHub(int argc, const char **argv);
 
     ~GameHub() = default;
 
     void run();
 };
-
-

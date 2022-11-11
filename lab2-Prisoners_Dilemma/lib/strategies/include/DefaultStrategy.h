@@ -6,7 +6,7 @@
 class DefaultStrategy : public IStrategy
 {
 private:
-    bool isBetrayer = false;
+    bool isBetrayer_ = false;
 
 public:
     PlayerChoice makeMove(std::string &oppMoves) override;

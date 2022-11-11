@@ -2,8 +2,8 @@
 
 StrategyFactory &StrategyFactory::getInstance()
 {
-    static StrategyFactory instance;
-    return instance;
+	static StrategyFactory instance;
+	return instance;
 }
 
 void StrategyFactory::registerCreator(std::string strategyName, std::shared_ptr<ICreator> creator)
@@ -11,7 +11,7 @@ void StrategyFactory::registerCreator(std::string strategyName, std::shared_ptr<
 	factoryMap_.insert({std::move(strategyName), std::move(creator)});
 }
 
-std::shared_ptr<IStrategy> StrategyFactory::create(const std::string & strategyName)
+std::shared_ptr<IStrategy> StrategyFactory::create(const std::string &strategyName)
 {
 	auto it = factoryMap_.find(strategyName);
 	if (it == factoryMap_.end())
@@ -22,7 +22,7 @@ std::shared_ptr<IStrategy> StrategyFactory::create(const std::string & strategyN
 	return it->second->create();
 }
 
-bool StrategyFactory::canCreateStrategy(const std::string & strategyName)
+bool StrategyFactory::canCreateStrategy(const std::string &strategyName)
 {
-	return factoryMap_.find(strategyName)!=factoryMap_.end() ? true : false;
+	return factoryMap_.find(strategyName) != factoryMap_.end() ? true : false;
 }

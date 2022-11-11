@@ -5,6 +5,6 @@
 PlayerChoice DefaultStrategy::makeMove(std::string &oppMoves)
 {
     // Switch team every round
-    isBetrayer = !isBetrayer;
-    return !isBetrayer ? PlayerChoice::evCooperate : PlayerChoice::evBetray;
+    isBetrayer_ = !isBetrayer_;
+    return !isBetrayer_ ? PlayerChoice::evCooperate : PlayerChoice::evBetray;
 }
