@@ -1,8 +1,10 @@
 #pragma once
 
-#include "IMatrix.h"
+#include <vector>
 #include <memory>
 #include <cstring>
+
+#include "IMatrix.h"
 
 class ResultMatrix : private IMatrix
 {

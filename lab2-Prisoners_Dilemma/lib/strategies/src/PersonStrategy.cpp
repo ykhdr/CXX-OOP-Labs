@@ -1,22 +1,25 @@
 #include "PersonStrategy.h"
 
-bool PersonStrategy::makeMove(std::string &oppMoves)
+PlayerChoice PersonStrategy::makeMove(std::string &oppMoves)
 {
-    std::cout << "\t\t\tMake move ('C' or 'D'): ";
-    
+    std::cout << "\t\t\tMake move:" << std::endl
+              << "\t\t\t'C' - to cooperate" << std::endl
+              << "\t\t\t'D' - to betray" << std::endl;
+
     char move;
-    while(true){
+    while (true)
+    {
         std::cin >> move;
 
-        if(move=='D')
+        if (move == 'D')
         {
-            return true;
+            return PlayerChoice::evBetray;
         }
-        if(move == 'C')
+        if (move == 'C')
         {
-            return false;
+            return PlayerChoice::evCooperate;
         }
-        
+
         std::cout << std::endl << "You entered wrong move, try again" << std::endl;
-    }   
+    }
 }

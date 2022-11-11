@@ -7,6 +7,5 @@
 class PersonStrategy : public IStrategy
 {
 public:
-    bool makeMove(std::string &oppMoves) override; 
+    PlayerChoice makeMove(std::string &oppMoves) override;
 };
-

@@ -1,6 +1,9 @@
 #pragma once
 
+#include <vector>
+
 #include "IMatrix.h"
+#include "PlayerChoice.h"
 
 class MoveMatrix : private IMatrix
 {
@@ -20,5 +23,5 @@ public:
 
     std::string getLine(int height) const override;
 
-    void addMove(int numOfPlayer, bool moveChoice, const int &currentMove);
+    void addMove(int numOfPlayer, PlayerChoice moveChoice, const int &currentMove);
 };

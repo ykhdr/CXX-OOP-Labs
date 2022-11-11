@@ -1,11 +1,13 @@
 #pragma once
 
 #include "IStrategy.h"
+#include "PlayerChoice.h"
 
 class DefaultStrategy : public IStrategy
 {
 private:
-    bool isTraitor = false;
+    bool isBetrayer = false;
+
 public:
-    bool makeMove(std::string &oppMoves) override;
+    PlayerChoice makeMove(std::string &oppMoves) override;
 };

@@ -1,8 +1,8 @@
-#include "Game.h"
+#include "GameHub.h"
 
 int main(int argc, char const *argv[])
 {
-    Game game(argc,argv);
+    GameHub game(argc, argv);
     game.run();
 
 	return 0;

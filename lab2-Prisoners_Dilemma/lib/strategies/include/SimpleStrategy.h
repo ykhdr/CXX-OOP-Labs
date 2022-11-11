@@ -1,11 +1,10 @@
 #pragma once
 
 #include "IStrategy.h"
-
-#include <iostream>
+#include "PlayerChoice.h"
 
 class SimpleStrategy : public IStrategy
 {
 public:
-	bool makeMove(std::string& oppMoves) override;
+	PlayerChoice makeMove(std::string& oppMoves) override;
 };

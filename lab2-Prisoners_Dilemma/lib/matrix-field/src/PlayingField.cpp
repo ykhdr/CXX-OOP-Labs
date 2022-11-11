@@ -1,4 +1,8 @@
-#include "../include/PlayingField.h"
+#include "PlayingField.h"
+
+#include <iostream>
+
+//#include "PlayerChoice.h"
 
 namespace
 {
@@ -18,15 +22,7 @@ namespace
     }
 }
 
-PlayingField::PlayingField(int height)
-{
-    moveMatrix_ = MoveMatrix(height);
-    resultMatrix_ = ResultMatrix(height);
-}
-
-PlayingField::~PlayingField()
-{
-}
+PlayingField::PlayingField(int height) : moveMatrix_(MoveMatrix(height)), resultMatrix_(ResultMatrix(height)) {}
 
 std::string PlayingField::getLine(int height)
 {

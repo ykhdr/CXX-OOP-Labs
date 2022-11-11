@@ -1,7 +1,14 @@
-
 #include "RandomStrategy.h"
 
-bool RandomStrategy::makeMove(std::string &oppMoves)
+#include <random>
+#include <ctime>
+
+RandomStrategy::RandomStrategy()
 {
-    return rand() % 2;
+    srand(time(NULL));
+}
+
+PlayerChoice RandomStrategy::makeMove(std::string &oppMoves)
+{
+    return rand() % 2 == 0 ? PlayerChoice::evCooperate : PlayerChoice::evBetray;
 }

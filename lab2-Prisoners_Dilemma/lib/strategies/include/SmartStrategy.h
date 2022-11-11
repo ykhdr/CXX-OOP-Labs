@@ -1,16 +1,12 @@
 #pragma once
 
 #include "IStrategy.h"
-#include <algorithm>
+#include "PlayerChoice.h"
 
 class SmartStrategy : public IStrategy
 {
 public:
     ~SmartStrategy() override = default;
 
-    bool makeMove(std::string &oppMoves) override;
-
+    PlayerChoice makeMove(std::string &oppMoves) override;
 };
-
-
-

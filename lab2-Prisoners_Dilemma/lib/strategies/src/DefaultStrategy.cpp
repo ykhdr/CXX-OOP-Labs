@@ -1,12 +1,10 @@
-//
-// Created by User on 22.10.2022.
-//
 #include "DefaultStrategy.h"
 
 #include "IStrategy.h"
 
-bool DefaultStrategy::makeMove(std::string &oppMoves)
+PlayerChoice DefaultStrategy::makeMove(std::string &oppMoves)
 {
     // Switch team every round
-    return isTraitor = !isTraitor;
+    isBetrayer = !isBetrayer;
+    return !isBetrayer ? PlayerChoice::evCooperate : PlayerChoice::evBetray;
 }

@@ -45,4 +45,6 @@ public:
 
     std::shared_ptr<IStrategy> create(const std::string &strategy_name);
 
+    bool canCreateStrategy(const std::string & strategyName);
+
 };

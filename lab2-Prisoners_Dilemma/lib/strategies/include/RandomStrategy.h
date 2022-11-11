@@ -1,12 +1,11 @@
 #pragma once
 
-#include <random>
 #include "IStrategy.h"
+#include "PlayerChoice.h"
+
 class RandomStrategy : public IStrategy
 {
-
 public:
-    bool makeMove(std::string &oppMoves) override;
+    RandomStrategy();
+    PlayerChoice makeMove(std::string &oppMoves) override;
 };
-
-

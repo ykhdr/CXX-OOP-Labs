@@ -1,8 +1,7 @@
-#include "../include/SimpleStrategy.h"
+#include "SimpleStrategy.h"
 
-
-bool SimpleStrategy::makeMove(std::string &oppMoves)
+PlayerChoice SimpleStrategy::makeMove(std::string &oppMoves)
 {
     // Always employer
-    return false;
+    return PlayerChoice::evBetray;
 }

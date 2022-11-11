@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+
 
 #include "MoveMatrix.h"
 #include "ResultMatrix.h"
@@ -18,9 +18,9 @@ public:
 
     PlayingField(int height);
 
-    ~PlayingField();
+    ~PlayingField() = default;
 
-    std::string getLine(int);
+    std::string getLine(int height);
 
     void makeMoves(std::vector<std::shared_ptr<IStrategy>> players, std::string previousMoves, int &currentMove);
 

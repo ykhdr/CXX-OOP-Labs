@@ -1,40 +1,38 @@
 #pragma once
 
-#include <iostream>
 #include <memory>
 #include <string>
-#include <ctime>
+#include <vector>
 #include <map>
-#include <stdexcept>
 
-#include "IGameModeCreator.h"
+#include "IGameMode.h"
 
-class Game
+class GameHub
 {
 private:
 
     class ParsingCommandLineArgs
     {
-        enum StringValue
+        enum class CommandsValues
         {
             evMode,
-            evSteps
+            evSteps,
+            evMatrix
         };
 
-        std::map<std::string_view, StringValue> stringValuesMap_;
+        std::map<std::string_view, CommandsValues> commandsValuesMap_;
 
-        void initialize(Game &);
+        void initialize(GameHub &);
 
-        bool parseCommand(Game &game, std::string &str);
+        bool parseCommand(GameHub &game, std::string &str);
 
     public:
         ParsingCommandLineArgs() = default;
 
-        bool parseLine(Game &);
+        bool parseLine(GameHub &);
 
     };
 
-    int argc_;
     std::vector<std::string> argv_;
 
     std::unique_ptr<ParsingCommandLineArgs> parsing_ = std::make_unique<ParsingCommandLineArgs>();
@@ -46,9 +44,9 @@ private:
 
 public:
 
-    Game(int argc, const char **argv);
+    GameHub(int argc, const char **argv);
 
-    ~Game() = default;
+    ~GameHub() = default;
 
     void run();
 };

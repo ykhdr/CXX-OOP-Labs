@@ -1,4 +1,4 @@
-#include "../include/MoveMatrix.h"
+#include "MoveMatrix.h"
 
 MoveMatrix::MoveMatrix(int height) : height_(height)
 {
@@ -32,7 +32,7 @@ std::string MoveMatrix::getLine(int height) const
     return str;
 }
 
-void MoveMatrix::addMove(int numOfPlayer, bool moveChoice, const int &currentMove)
+void MoveMatrix::addMove(int numOfPlayer, PlayerChoice moveChoice, const int &currentMove)
 {
-    moveChoice ? matrix_[currentMove][numOfPlayer] = "D" : matrix_[currentMove][numOfPlayer] = "C";
+    moveChoice == PlayerChoice::evBetray ? matrix_[currentMove][numOfPlayer] = "D" : matrix_[currentMove][numOfPlayer] = "C";
 }

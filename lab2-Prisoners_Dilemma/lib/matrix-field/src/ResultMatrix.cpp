@@ -1,4 +1,4 @@
-#include "../include/ResultMatrix.h"
+#include "ResultMatrix.h"
 
 ResultMatrix::ResultMatrix(int height) : height_(height)
 {
@@ -52,14 +52,15 @@ void ResultMatrix::countMoveResult(const std::string &moves, const int &currentM
         trPoints = 1;
     } else if (traitors == 0)
     {
-        emPoints = 2 * employers + 1;
+        emPoints = 7;
+
     } else if (employers == 1)
     {
-        trPoints = 3 + traitors;
+        trPoints = 5;
     } else
     {
-        trPoints = (2 + employers) * employers;
-        emPoints = 1 + employers;
+        trPoints = 9;
+        emPoints = 3;
     }
 
     for (int i = 0, j = 0; i < weight_; ++j)
