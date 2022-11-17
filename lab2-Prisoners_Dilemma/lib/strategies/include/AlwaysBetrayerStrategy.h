@@ -1,16 +1,13 @@
 #pragma once
 
-#include <random>
-
 #include "IStrategy.h"
-#include "PlayerChoice.h"
 
-class RandomStrategy : public IStrategy
+class AlwaysBetrayerStrategy : public IStrategy
 {
 public:
-    RandomStrategy() = default;
+    AlwaysBetrayerStrategy() = default;
 
-    ~RandomStrategy() override = default;
+    ~AlwaysBetrayerStrategy() override = default;
 
     void opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move) override;
 

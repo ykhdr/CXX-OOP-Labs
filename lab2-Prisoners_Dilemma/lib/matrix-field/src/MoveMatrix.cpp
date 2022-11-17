@@ -1,12 +1,9 @@
 #include "MoveMatrix.h"
 
-MoveMatrix::MoveMatrix(int height) : height_(height)
+MoveMatrix::MoveMatrix()
 {
-    matrix_.resize(height_);
-    for (int i = 0; i < height_; ++i)
-    {
-        matrix_[i].resize(weight_);
-    }
+    matrix_.resize(1);
+    matrix_[0].resize(weight_);
 
     for (int i = 0; i < weight_; ++i)
     {
@@ -14,10 +11,7 @@ MoveMatrix::MoveMatrix(int height) : height_(height)
     }
 }
 
-MoveMatrix::~MoveMatrix()
-{}
-
-std::string MoveMatrix::getLine(int height) const
+std::string MoveMatrix::getLine(const int &height) const
 {
     std::string str;
     if (height != 0)
@@ -32,7 +26,13 @@ std::string MoveMatrix::getLine(int height) const
     return str;
 }
 
-void MoveMatrix::addMove(int numOfPlayer, PlayerChoice moveChoice, const int &currentMove)
+void MoveMatrix::addMove(const int &numOfPlayer, const PlayerChoice &moveChoice, const int &currentMove)
 {
-    moveChoice == PlayerChoice::evBetray ? matrix_[currentMove][numOfPlayer] = "D" : matrix_[currentMove][numOfPlayer] = "C";
+    if (currentMove == matrixSize_)
+    {
+        matrix_.emplace_back(3);
+        ++matrixSize_;
+    }
+    moveChoice == PlayerChoice::evBetray ? matrix_[currentMove][numOfPlayer] = "D"
+                                         : matrix_[currentMove][numOfPlayer] = "C";
 }

@@ -1,6 +1,10 @@
 #include "DetailedGame.h"
 
-DetailedGame::DetailedGame(std::vector<std::string> strategiesNames, int &moves) : game_(Game(std::move(strategiesNames), moves)), moves_(moves) {}
+#include <iostream>
+
+DetailedGame::DetailedGame(std::vector<std::string> strategiesNames) :
+        game_(Game(std::move(strategiesNames)))
+{}
 
 void DetailedGame::initialize()
 {
@@ -13,32 +17,44 @@ void DetailedGame::run()
 {
     initialize();
 
+    bool isStarted = false;
+    bool isFinished = false;
+
     std::string inputMessage;
 
-    for (int i = 0; i < moves_;)
+    //TODO: loop бесконечный, результат считаем по quit
+    while (!isFinished)
     {
         std::getline(std::cin, inputMessage);
 
         switch (userInputValuesMap_[inputMessage])
         {
-        case UserInputValues::evStart:
-            std::cout << "\t\t\tGame already started" << std::endl;
-            continue;
+            case UserInputValues::evStart:
+                if (isStarted)
+                {
+                    std::cout << "\t\t\tGame already started" << std::endl;
+                    continue;
+                }
+                isStarted = true;
 
-        case UserInputValues::evContinue:
-            game_.makeMove();
-            game_.printGameStatus();
-            break;
+            case UserInputValues::evContinue:
+                game_.makeMove();
+                game_.printGameStatus();
+                break;
 
-        case UserInputValues::evQuit:
-            return;
+            case UserInputValues::evQuit:
+                if(!isStarted)
+                {
+                    return;
+                }
 
-        default:
-            std::cout << "\t\t\tYou entered the wrong message. Try again." << std::endl;
-            continue;
+                isFinished = true;
+                break;
+
+            default:
+                std::cout << "\t\t\tYou entered the wrong message. Try again." << std::endl;
+                continue;
         }
-
-        ++i;
     }
 
     game_.finishGame();

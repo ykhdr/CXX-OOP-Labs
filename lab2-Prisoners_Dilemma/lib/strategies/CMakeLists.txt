@@ -1,8 +1,8 @@
 include_directories(include)
 
 add_library(strategies
-        src/SimpleStrategy.cpp
-        src/DefaultStrategy.cpp
+        src/AlwaysBetrayerStrategy.cpp
+        src/AlternatingStrategy.cpp
         src/RandomStrategy.cpp
         src/SmartStrategy.cpp
         src/StrategyFactory.cpp
@@ -10,3 +10,5 @@ add_library(strategies
         )
 
 target_include_directories(strategies PUBLIC include)
+
+target_link_libraries(strategies matrix_field)

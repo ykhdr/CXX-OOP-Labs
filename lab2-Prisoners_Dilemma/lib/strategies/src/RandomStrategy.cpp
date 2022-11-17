@@ -1,14 +1,13 @@
 #include "RandomStrategy.h"
 
-#include <random>
-#include <ctime>
+void RandomStrategy::opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move)
+{}
 
-RandomStrategy::RandomStrategy()
+PlayerChoice RandomStrategy::makeMove()
 {
-    srand(time(NULL));
-}
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(1, 2);
 
-PlayerChoice RandomStrategy::makeMove(std::string &oppMoves)
-{
-    return rand() % 2 == 0 ? PlayerChoice::evCooperate : PlayerChoice::evBetray;
+    return distrib(gen) % 2 == 0 ? PlayerChoice::evCooperate : PlayerChoice::evBetray;
 }

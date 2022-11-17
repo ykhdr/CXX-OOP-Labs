@@ -1,8 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <string>
-
 #include "PlayerChoice.h"
 
 class IStrategy
@@ -10,5 +7,7 @@ class IStrategy
 public:
 	virtual ~IStrategy() = default;
 
-	virtual PlayerChoice makeMove(std::string &oppMoves) = 0;
+    virtual  void opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move) = 0;
+
+	virtual PlayerChoice makeMove() = 0;
 };

@@ -1,13 +1,14 @@
 #include "SmartStrategy.h"
 
-#include <algorithm>
-
-PlayerChoice SmartStrategy::makeMove(std::string &oppMoves)
+void SmartStrategy::opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move)
 {
-    auto employers = std::count(oppMoves.begin(), oppMoves.end(), 'C');
-    auto traitors = std::count(oppMoves.begin(), oppMoves.end(), 'D');
+    opponent1Move_ = opponent1Move;
+    opponent2Move_ = opponent2Move;
+}
 
-    if (traitors < employers)
+PlayerChoice SmartStrategy::makeMove()
+{
+    if (opponent2Move_ == PlayerChoice::evCooperate && opponent1Move_ == PlayerChoice::evCooperate)
     {
         return PlayerChoice::evCooperate;
     }

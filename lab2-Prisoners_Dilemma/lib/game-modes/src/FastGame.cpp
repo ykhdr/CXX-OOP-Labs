@@ -1,6 +1,6 @@
 #include "FastGame.h"
 
-FastGame::FastGame(std::vector<std::string> strategiesNames, int &moves) : game_(Game(std::move(strategiesNames), moves)), moves_(moves) {}
+FastGame::FastGame(std::vector<std::string> strategiesNames, const int &moves) : game_(Game(std::move(strategiesNames))), moves_(moves) {}
 
 void FastGame::run()
 {
@@ -8,7 +8,12 @@ void FastGame::run()
     {
         game_.makeMove();
     }
-    
+
     game_.printGameStatus();
     game_.finishGame();
+}
+
+std::vector<std::pair<int, int>> FastGame::getWinners() const
+{
+   return game_.getWinners();
 }

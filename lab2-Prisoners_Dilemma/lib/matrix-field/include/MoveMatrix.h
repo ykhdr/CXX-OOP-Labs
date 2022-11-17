@@ -12,16 +12,14 @@ private:
 
     static constexpr int weight_ = 3;
 
-    int height_ = 6;
+    int matrixSize_ = 1;
 
 public:
-    MoveMatrix() = default;
+    MoveMatrix();
 
-    explicit MoveMatrix(int height);
+    ~MoveMatrix() override = default;
 
-    ~MoveMatrix() override;
+    std::string getLine(const int &height) const override;
 
-    std::string getLine(int height) const override;
-
-    void addMove(int numOfPlayer, PlayerChoice moveChoice, const int &currentMove);
+    void addMove(const int &numOfPlayer, const PlayerChoice &moveChoice, const int &currentMove);
 };

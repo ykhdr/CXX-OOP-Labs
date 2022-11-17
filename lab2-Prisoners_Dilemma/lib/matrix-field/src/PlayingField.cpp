@@ -20,18 +20,59 @@ namespace
     }
 }
 
-PlayingField::PlayingField(int height) : moveMatrix_(MoveMatrix(height)), resultMatrix_(ResultMatrix(height)) {}
-
 std::string PlayingField::getLine(int height)
 {
     return moveMatrix_.getLine(height);
 }
 
-void PlayingField::makeMoves(std::vector<std::shared_ptr<IStrategy>> players, std::string previousMoves, int &currentMove)
+std::pair<PlayerChoice, PlayerChoice> PlayingField::getOpponentsMoves(int playerNumber, int height)
+{
+    std::string line = moveMatrix_.getLine(height);
+
+    std::pair<PlayerChoice, PlayerChoice> opponentsMoves;
+
+    bool isFirstAtPair = true;
+
+    int playerIter = 0;
+
+    for (const auto &item: line)
+    {
+        if (item == ' ')
+        {
+            continue;
+        }
+
+        if (playerIter == playerNumber)
+        {
+            ++playerIter;
+            continue;
+        }
+
+        if (isFirstAtPair)
+        {
+            opponentsMoves.first = (item == 'C' ? PlayerChoice::evBetray : PlayerChoice::evCooperate);
+            isFirstAtPair = false;
+        }
+        else
+        {
+            opponentsMoves.second = (item == 'C' ? PlayerChoice::evBetray : PlayerChoice::evCooperate);
+        }
+    }
+
+    return opponentsMoves;
+}
+
+std::vector<std::pair<int, int>> PlayingField::getWinners() const
+{
+    return winners_;
+}
+
+void PlayingField::makeMoves(std::vector<std::shared_ptr<IStrategy>> players,
+                             int &currentMove)
 {
     for (int i = 0; i < players.size(); ++i)
     {
-        moveMatrix_.addMove(i, players[i]->makeMove(previousMoves), currentMove);
+        moveMatrix_.addMove(i, players[i]->makeMove(), currentMove);
     }
 }
 
@@ -40,12 +81,7 @@ void PlayingField::countMoveResult(const std::string &moves, const int &currentM
     resultMatrix_.countMoveResult(moves, currentMove);
 }
 
-std::vector<int> PlayingField::countGameResult()
-{
-    return resultMatrix_.countGameResult();
-}
-
-void PlayingField::printGameStatus(int const &currentMove)
+void PlayingField::printGameStatus(int const &currentMove) const
 {
     for (int i = 0; i < currentMove + 1; ++i)
     {
@@ -63,7 +99,7 @@ void PlayingField::printGameStatus(int const &currentMove)
     }
 }
 
-void PlayingField::printGameResult()
+void PlayingField::printGameResult() const
 {
     std::cout << "\t\t\tGame result:" << std::endl;
     std::cout << "\t\t" << resultMatrix_.getLine(0) << std::endl;
@@ -71,7 +107,7 @@ void PlayingField::printGameResult()
     std::vector<int> result = resultMatrix_.countGameResult();
     std::cout << "\t\t ";
 
-    for (int el : result)
+    for (int el: result)
     {
         std::cout << el << "  ";
     }
@@ -80,13 +116,14 @@ void PlayingField::printGameResult()
 
     int id = findIdMax(result);
 
-    std::cout << "\n\t\t   The Winners: "; //<< id + 1 << "!" << std::endl;
+    std::cout << "\n\t\t   The Winners: ";
     for (int i = 0; i < result.size(); ++i)
     {
         if (result[i] == result[id])
         {
             if (i == id)
             {
+                winners_.emplace_back(i, result[i]);
                 std::cout << i + 1;
             }
             else

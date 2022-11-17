@@ -19,13 +19,15 @@ private:
 public:
     Game() = default;
 
-    Game(std::vector<std::string> strategiesNames, int moves);
+    Game(std::vector<std::string> strategiesNames);
 
     ~Game() = default;
 
     void makeMove();
 
-    void printGameStatus();
+    void printGameStatus() const;
 
-    void finishGame();
+    void finishGame() const;
+
+    std::vector<std::pair<int, int>> getWinners() const;
 };

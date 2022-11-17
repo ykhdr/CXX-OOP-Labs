@@ -17,12 +17,10 @@ private:
 
     Game game_;
 
-    int moves_;
-
     void initialize();
 
 public:
-    DetailedGame(std::vector<std::string> strategiesNames, int &moves);
+    DetailedGame(std::vector<std::string> strategiesNames);
 
     ~DetailedGame() override = default;
 

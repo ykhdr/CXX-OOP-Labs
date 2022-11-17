@@ -1,6 +1,11 @@
 #include "PersonStrategy.h"
 
-PlayerChoice PersonStrategy::makeMove(std::string &oppMoves)
+#include <iostream>
+
+void PersonStrategy::opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move)
+{}
+
+PlayerChoice PersonStrategy::makeMove()
 {
     std::cout << "\t\t\tMake move:" << std::endl
               << "\t\t\t'C' - to cooperate" << std::endl

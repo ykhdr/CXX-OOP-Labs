@@ -1,19 +1,16 @@
 #pragma once
 
-#include "Game.h"
-#include "IGameMode.h"
+#include "FastGame.h"
 
 class TournamentGame : public IGameMode
 {
 private:
-    Game game_;
-
     std::vector<std::string> strategiesNames_; 
 
     int moves_;
 
 public:
-    TournamentGame(std::vector<std::string> strategiesNames, int &moves);
+    TournamentGame(std::vector<std::string> strategiesNames, const int &moves);
     
     ~TournamentGame() override = default;
 

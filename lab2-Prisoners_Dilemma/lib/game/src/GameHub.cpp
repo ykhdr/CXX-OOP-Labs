@@ -1,10 +1,17 @@
 #include "GameHub.h"
 
 #include <iostream>
+#include <ctime>
 
 #include "FastGame.h"
 #include "DetailedGame.h"
 #include "TournamentGame.h"
+
+#include "AlwaysBetrayerStrategy.h"
+#include "AlternatingStrategy.h"
+#include "SmartStrategy.h"
+#include "PersonStrategy.h"
+#include "RandomStrategy.h"
 
 namespace
 {
@@ -25,8 +32,8 @@ void GameHub::ParsingCommandLineArgs::initialize(GameHub &game)
 
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
-    factory->registerCreator("simple", std::make_shared<Creator<SimpleStrategy>>());
-    factory->registerCreator("default", std::make_shared<Creator<DefaultStrategy>>());
+    factory->registerCreator("simple", std::make_shared<Creator<AlwaysBetrayerStrategy>>());
+    factory->registerCreator("default", std::make_shared<Creator<AlternatingStrategy>>());
     factory->registerCreator("random", std::make_shared<Creator<RandomStrategy>>());
     factory->registerCreator("smart", std::make_shared<Creator<SmartStrategy>>());
     factory->registerCreator("person", std::make_shared<Creator<PersonStrategy>>());
@@ -62,6 +69,7 @@ bool GameHub::ParsingCommandLineArgs::parseCommand(GameHub &game, std::string &s
         try
         {
             game.numOfMoves_ = std::stoi(str.substr(fPos + 1));
+            game.isNumOfMovesChanged_ = true;
 
             if (game.numOfMoves_ <= 0)
             {
@@ -126,7 +134,13 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
         }
         else
         {
-            game.gameMode_ = std::make_unique<DetailedGame>(strategiesNames, game.numOfMoves_);
+            if(game.isNumOfMovesChanged_)
+            {
+                std::cerr << "Detailed game mode do not support --steps option";
+                return true;
+            }
+
+            game.gameMode_ = std::make_unique<DetailedGame>(strategiesNames);
         }
         return false;
     }
@@ -151,7 +165,13 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
 
     if (game.gameModeName_ == "detailed")
     {
-        game.gameMode_ = std::make_unique<DetailedGame>(strategiesNames, game.numOfMoves_);
+        if(game.isNumOfMovesChanged_)
+        {
+            std::cerr << "Detailed game mode do not support --steps option";
+            return true;
+        }
+
+        game.gameMode_ = std::make_unique<DetailedGame>(strategiesNames);
         return false;
     }
     if (game.gameModeName_ == "fast")

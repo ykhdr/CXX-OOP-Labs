@@ -1,12 +1,9 @@
 #include "ResultMatrix.h"
 
-ResultMatrix::ResultMatrix(int height) : height_(height)
+ResultMatrix::ResultMatrix()
 {
-    matrix_.resize(height_);
-    for (int i = 0; i < height_; ++i)
-    {
-        matrix_[i].resize(weight_);
-    }
+    matrix_.resize(1);
+    matrix_[0].resize(weight_);
 
     for (int i = 0; i < weight_; ++i)
     {
@@ -14,7 +11,7 @@ ResultMatrix::ResultMatrix(int height) : height_(height)
     }
 }
 
-std::string ResultMatrix::getLine(int height) const
+std::string ResultMatrix::getLine(const int &height) const
 {
     std::string str;
     if (height != 0)
@@ -31,13 +28,19 @@ std::string ResultMatrix::getLine(int height) const
 
 void ResultMatrix::countMoveResult(const std::string &moves, const int &currentMove)
 {
+    if (currentMove == matrixSize_)
+    {
+        matrix_.emplace_back(3);
+        ++matrixSize_;
+    }
+
     int traitors = 0;
     int employers = 0;
 
     int trPoints = 0;
     int emPoints = 0;
 
-    for (char move : moves)
+    for (char move: moves)
     {
         if (move == ' ')
         {
@@ -71,7 +74,8 @@ void ResultMatrix::countMoveResult(const std::string &moves, const int &currentM
         {
             continue;
         }
-        moves[j] == 'C' ? matrix_[currentMove][i] = std::to_string(emPoints) : matrix_[currentMove][i] = std::to_string(trPoints);
+        moves[j] == 'C' ? matrix_[currentMove][i] = std::to_string(emPoints) : matrix_[currentMove][i] = std::to_string(
+                trPoints);
         ++i;
     }
 }
@@ -82,7 +86,7 @@ std::vector<int> ResultMatrix::countGameResult()
     for (int i = 0; i < weight_; ++i)
     {
         result.push_back(0);
-        for (int j = 1; j < height_; ++j)
+        for (int j = 1; j < matrixSize_; ++j)
         {
             result[i] += std::atoi(matrix_[j][i].c_str());
         }

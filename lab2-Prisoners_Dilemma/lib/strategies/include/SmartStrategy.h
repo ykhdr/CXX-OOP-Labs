@@ -5,8 +5,17 @@
 
 class SmartStrategy : public IStrategy
 {
+private:
+    PlayerChoice opponent1Move_ = PlayerChoice::evCooperate;
+
+    PlayerChoice opponent2Move_ = PlayerChoice::evCooperate;
+
 public:
+    SmartStrategy() = default;
+
     ~SmartStrategy() override = default;
 
-    PlayerChoice makeMove(std::string &oppMoves) override;
+    void opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move) override;
+
+    PlayerChoice makeMove() override;
 };

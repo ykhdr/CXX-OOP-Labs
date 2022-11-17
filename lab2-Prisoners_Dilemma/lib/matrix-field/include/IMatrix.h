@@ -6,5 +6,5 @@ class IMatrix
 {
 public:
     virtual ~IMatrix() {}
-    virtual std::string getLine(int) const = 0;
+    virtual std::string getLine(const int &) const = 0;
 };

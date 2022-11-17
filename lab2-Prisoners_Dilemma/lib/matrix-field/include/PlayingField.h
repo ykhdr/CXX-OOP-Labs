@@ -10,22 +10,24 @@ private:
     ResultMatrix resultMatrix_;
     MoveMatrix moveMatrix_;
 
+    std::vector<std::pair<int, int>> winners_;
+
 public:
     PlayingField() = default;
-
-    PlayingField(int height);
 
     ~PlayingField() = default;
 
     std::string getLine(int height);
 
-    void makeMoves(std::vector<std::shared_ptr<IStrategy>> players, std::string previousMoves, int &currentMove);
+    std::pair<PlayerChoice, PlayerChoice> getOpponentsMoves(int playerNumber, int height);
+
+    void makeMoves(std::vector<std::shared_ptr<IStrategy>> players, int &currentMove);
 
     void countMoveResult(const std::string &moves, const int &currentMove);
 
-    std::vector<int> countGameResult();
+    std::vector<std::pair<int, int>> getWinners() const;
 
-    void printGameStatus(const int &currentMove);
+    void printGameStatus(const int &currentMove) const;
 
-    void printGameResult();
+    void printGameResult() const;
 };

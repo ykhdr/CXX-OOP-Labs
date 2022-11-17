@@ -2,11 +2,7 @@
 
 #include "StrategyFactory.h"
 
-/*
-    Всю логику игры реаоищовать здесь и далее пользоваться ей уже в gamemode.
-*/
-
-Game::Game(std::vector<std::string> strategiesNames, int moves) : playingField_(PlayingField(moves + 1))
+Game::Game(std::vector<std::string> strategiesNames)
 {
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
@@ -20,25 +16,29 @@ Game::Game(std::vector<std::string> strategiesNames, int moves) : playingField_(
 
 void Game::makeMove()
 {
-    if (currentMove_ == 1)
+    playingField_.makeMoves(players_, currentMove_);
+
+    for (int i = 0; i < players_.size();++i)
     {
-        playingField_.makeMoves(players_, "1", currentMove_);
-    }
-    else
-    {
-        playingField_.makeMoves(players_, playingField_.getLine(currentMove_ - 1), currentMove_);
+        std::pair<PlayerChoice,PlayerChoice> opponentMoves = playingField_.getOpponentsMoves(i,currentMove_-1);
+        players_[i]->opponentsMoves(opponentMoves.first,opponentMoves.second);
     }
 
     playingField_.countMoveResult(playingField_.getLine(currentMove_), currentMove_);
     ++currentMove_;
 }
 
-void Game::printGameStatus()
+void Game::printGameStatus()  const
 {
     playingField_.printGameStatus(currentMove_ - 1);
 }
 
-void Game::finishGame()
+void Game::finishGame() const
 {
     playingField_.printGameResult();
+}
+
+std::vector<std::pair<int, int>> Game::getWinners() const
+{
+    return playingField_.getWinners();
 }

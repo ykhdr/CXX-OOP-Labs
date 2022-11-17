@@ -4,11 +4,6 @@
 #include <memory>
 
 #include "IStrategy.h"
-#include "DefaultStrategy.h"
-#include "RandomStrategy.h"
-#include "SimpleStrategy.h"
-#include "SmartStrategy.h"
-#include "PersonStrategy.h"
 
 class ICreator
 {
@@ -18,7 +13,7 @@ public:
     virtual std::shared_ptr<IStrategy> create() = 0;
 };
 
-template<typename T>
+template <typename T>
 class Creator : public ICreator
 {
 public:
@@ -31,20 +26,20 @@ public:
 class StrategyFactory
 {
 private:
-    StrategyFactory() = default;
-
-    StrategyFactory(const StrategyFactory &)
-    {}
-
     std::map<std::string, std::shared_ptr<ICreator>> factoryMap_;
 
+    StrategyFactory() = default;
+
 public:
+    StrategyFactory(const StrategyFactory &) = delete;
+
+    StrategyFactory(StrategyFactory &&) = delete;
+
     static StrategyFactory &getInstance();
 
     void registerCreator(std::string strategy_name, std::shared_ptr<ICreator> creator);
 
     std::shared_ptr<IStrategy> create(const std::string &strategy_name);
 
-    bool canCreateStrategy(const std::string & strategyName);
-
+    bool canCreateStrategy(const std::string &strategyName);
 };

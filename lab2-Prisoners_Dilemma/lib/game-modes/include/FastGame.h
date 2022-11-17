@@ -10,10 +10,13 @@ private:
 
     int moves_;
 
+
 public:
-    FastGame(std::vector<std::string> strategiesNames, int &moves);
+    FastGame(std::vector<std::string> strategiesNames, const int &moves);
 
     ~FastGame() override = default;
 
     void run() override;
+
+    std::vector<std::pair<int, int>> getWinners();
 };

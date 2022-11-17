@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <cstring>
 
 #include "IMatrix.h"
 
@@ -10,16 +9,15 @@ class ResultMatrix : private IMatrix
     std::vector<std::vector<std::string>> matrix_;
 
     static constexpr int weight_ = 3;
-    int height_ = 6;
+
+    int matrixSize_ = 1;
 
 public:
-    ResultMatrix() = default;
-
-    explicit ResultMatrix(int height);
+    ResultMatrix();
 
     ~ResultMatrix() override = default;
 
-    std::string getLine(int height) const override;
+    std::string getLine(const int &height) const override;
 
     void countMoveResult(const std::string &moves, const int &currentMove);
 

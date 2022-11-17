@@ -38,6 +38,8 @@ private:
     std::string_view gameModeName_;
     std::unique_ptr<IGameMode> gameMode_ = nullptr;
 
+    bool isNumOfMovesChanged_ = false;
+
     int numOfMoves_ = 5;
 
 public:
