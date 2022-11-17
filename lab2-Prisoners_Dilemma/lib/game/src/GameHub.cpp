@@ -32,8 +32,8 @@ void GameHub::ParsingCommandLineArgs::initialize(GameHub &game)
 
     StrategyFactory *factory = &StrategyFactory::getInstance();
 
-    factory->registerCreator("simple", std::make_shared<Creator<AlwaysBetrayerStrategy>>());
-    factory->registerCreator("default", std::make_shared<Creator<AlternatingStrategy>>());
+    factory->registerCreator("betrayer", std::make_shared<Creator<AlwaysBetrayerStrategy>>());
+    factory->registerCreator("alternating", std::make_shared<Creator<AlternatingStrategy>>());
     factory->registerCreator("random", std::make_shared<Creator<RandomStrategy>>());
     factory->registerCreator("smart", std::make_shared<Creator<SmartStrategy>>());
     factory->registerCreator("person", std::make_shared<Creator<PersonStrategy>>());
@@ -123,7 +123,7 @@ bool GameHub::ParsingCommandLineArgs::parseLine(GameHub &game)
 
     while (strategiesNames.size() < 3)
     {
-        strategiesNames.push_back("default");
+        strategiesNames.push_back("alternating");
     }
 
     if (game.gameModeName_.empty())
