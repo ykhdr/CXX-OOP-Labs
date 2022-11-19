@@ -18,5 +18,5 @@ public:
 
     void run() override;
 
-    std::vector<std::pair<int, int>> getWinners();
+    std::vector<std::pair<int, int>> getWinners() const;
 };

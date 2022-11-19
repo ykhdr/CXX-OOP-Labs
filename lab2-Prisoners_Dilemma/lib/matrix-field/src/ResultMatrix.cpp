@@ -80,7 +80,7 @@ void ResultMatrix::countMoveResult(const std::string &moves, const int &currentM
     }
 }
 
-std::vector<int> ResultMatrix::countGameResult()
+std::vector<int> ResultMatrix::countGameResult() const
 {
     std::vector<int> result;
     for (int i = 0; i < weight_; ++i)

@@ -1,5 +1,7 @@
 #include "RandomStrategy.h"
 
+#include <random>
+
 void RandomStrategy::opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move)
 {}
 

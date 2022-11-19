@@ -12,6 +12,7 @@
 #include "SmartStrategy.h"
 #include "PersonStrategy.h"
 #include "RandomStrategy.h"
+#include "MetaStrategy.h"
 
 namespace
 {
@@ -37,6 +38,7 @@ void GameHub::ParsingCommandLineArgs::initialize(GameHub &game)
     factory->registerCreator("random", std::make_shared<Creator<RandomStrategy>>());
     factory->registerCreator("smart", std::make_shared<Creator<SmartStrategy>>());
     factory->registerCreator("person", std::make_shared<Creator<PersonStrategy>>());
+    factory->registerCreator("meta",std::make_shared<Creator<MetaStrategy>>());
 }
 
 bool GameHub::ParsingCommandLineArgs::parseCommand(GameHub &game, std::string &str)

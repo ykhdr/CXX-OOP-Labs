@@ -22,7 +22,6 @@ void DetailedGame::run()
 
     std::string inputMessage;
 
-    //TODO: loop бесконечный, результат считаем по quit
     while (!isFinished)
     {
         std::getline(std::cin, inputMessage);

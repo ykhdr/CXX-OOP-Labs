@@ -1,7 +1,5 @@
 #pragma once
 
-#include <random>
-
 #include "IStrategy.h"
 #include "PlayerChoice.h"
 

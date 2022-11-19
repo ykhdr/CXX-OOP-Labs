@@ -50,12 +50,12 @@ std::pair<PlayerChoice, PlayerChoice> PlayingField::getOpponentsMoves(int player
 
         if (isFirstAtPair)
         {
-            opponentsMoves.first = (item == 'C' ? PlayerChoice::evBetray : PlayerChoice::evCooperate);
+            opponentsMoves.first = (item == 'D' ? PlayerChoice::evBetray : PlayerChoice::evCooperate);
             isFirstAtPair = false;
         }
         else
         {
-            opponentsMoves.second = (item == 'C' ? PlayerChoice::evBetray : PlayerChoice::evCooperate);
+            opponentsMoves.second = (item == 'D' ? PlayerChoice::evBetray : PlayerChoice::evCooperate);
         }
     }
 
@@ -99,7 +99,7 @@ void PlayingField::printGameStatus(int const &currentMove) const
     }
 }
 
-void PlayingField::printGameResult() const
+void PlayingField::printGameResult()
 {
     std::cout << "\t\t\tGame result:" << std::endl;
     std::cout << "\t\t" << resultMatrix_.getLine(0) << std::endl;

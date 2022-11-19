@@ -17,7 +17,7 @@ template <typename T>
 class Creator : public ICreator
 {
 public:
-    std::shared_ptr<IStrategy> create()
+    std::shared_ptr<IStrategy> create() override
     {
         return std::make_shared<T>();
     }

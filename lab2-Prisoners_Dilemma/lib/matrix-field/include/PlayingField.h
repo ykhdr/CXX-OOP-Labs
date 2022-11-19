@@ -29,5 +29,5 @@ public:
 
     void printGameStatus(const int &currentMove) const;
 
-    void printGameResult() const;
+    void printGameResult();
 };

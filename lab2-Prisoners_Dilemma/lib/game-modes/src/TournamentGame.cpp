@@ -81,11 +81,11 @@ void TournamentGame::run()
 
     if (winners.size() == 1)
     {
-        std::cout << "\n\t\t\tWinner of Tournament: ";
+        std::cout << "\n\t\tWinner of Tournament: ";
     }
     else
     {
-        std::cout << "\n\t\t\tWinners of Tournament: ";
+        std::cout << "\n\t\tWinners of Tournament: ";
     }
 
     for (int i = 0; i < winners.size(); ++i)
@@ -98,4 +98,6 @@ void TournamentGame::run()
 
         std::cout << ", " << winners[i];
     }
+
+    std::cout << " with score " << maxRoundResult << "!" << std::endl;
 }

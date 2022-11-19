@@ -3,7 +3,8 @@
 #include <iostream>
 
 void PersonStrategy::opponentsMoves(PlayerChoice opponent1Move, PlayerChoice opponent2Move)
-{}
+{
+}
 
 PlayerChoice PersonStrategy::makeMove()
 {
@@ -11,16 +12,17 @@ PlayerChoice PersonStrategy::makeMove()
               << "\t\t\t'C' - to cooperate" << std::endl
               << "\t\t\t'D' - to betray" << std::endl;
 
-    char move;
+    std::string move;
+    
     while (true)
     {
-        std::cin >> move;
+        std::getline(std::cin, move);
 
-        if (move == 'D')
+        if (move == "D")
         {
             return PlayerChoice::evBetray;
         }
-        if (move == 'C')
+        if (move == "C")
         {
             return PlayerChoice::evCooperate;
         }

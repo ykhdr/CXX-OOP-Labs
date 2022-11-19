@@ -27,7 +27,7 @@ public:
 
     void printGameStatus() const;
 
-    void finishGame() const;
+    void finishGame();
 
     std::vector<std::pair<int, int>> getWinners() const;
 };

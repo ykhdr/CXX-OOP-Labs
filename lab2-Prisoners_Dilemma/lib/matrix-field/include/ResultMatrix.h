@@ -21,5 +21,5 @@ public:
 
     void countMoveResult(const std::string &moves, const int &currentMove);
 
-    std::vector<int> countGameResult();
+    std::vector<int> countGameResult() const;
 };

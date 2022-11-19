@@ -7,6 +7,7 @@ add_library(strategies
         src/SmartStrategy.cpp
         src/StrategyFactory.cpp
         src/PersonStrategy.cpp
+        src/MetaStrategy.cpp
         )
 
 target_include_directories(strategies PUBLIC include)

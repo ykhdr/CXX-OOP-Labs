@@ -18,22 +18,22 @@ void Game::makeMove()
 {
     playingField_.makeMoves(players_, currentMove_);
 
-    for (int i = 0; i < players_.size();++i)
+    for (int i = 0; i < players_.size(); ++i)
     {
-        std::pair<PlayerChoice,PlayerChoice> opponentMoves = playingField_.getOpponentsMoves(i,currentMove_-1);
-        players_[i]->opponentsMoves(opponentMoves.first,opponentMoves.second);
+        std::pair<PlayerChoice, PlayerChoice> opponentMoves = playingField_.getOpponentsMoves(i, currentMove_);
+        players_[i]->opponentsMoves(opponentMoves.first, opponentMoves.second);
     }
 
     playingField_.countMoveResult(playingField_.getLine(currentMove_), currentMove_);
     ++currentMove_;
 }
 
-void Game::printGameStatus()  const
+void Game::printGameStatus() const
 {
     playingField_.printGameStatus(currentMove_ - 1);
 }
 
-void Game::finishGame() const
+void Game::finishGame()
 {
     playingField_.printGameResult();
 }
