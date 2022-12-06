@@ -13,13 +13,13 @@ class SoundProcessor
 {
     std::string configFilePath_;
 
-    std::string outputFIlePath_;
+    std::string outputFilePath_;
 
     std::vector<std::string> inputFilesPaths_;
 
     WAVReaderVector wavReaderVector_;
 
-    static ConverterPipeline createPipeline(ConfigParams &params);
+    static ConverterPipeline createPipeline(ConfigParamLine &params);
 
     WAVReaderVector createWAVReaderVector();
 

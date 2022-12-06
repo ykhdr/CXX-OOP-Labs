@@ -7,15 +7,10 @@
 
 class IConverter;
 
-using Params = std::pair<int,int>;
-using ConverterType = std::shared_ptr<IConverter>;
+using ConverterParams = std::pair<int,int>;
+using ConverterPtr = std::shared_ptr<IConverter>;
 
-using ConverterPipeline = std::vector<ConverterType>;
-
-// TODO: при создании конвертера сразу же инициализировать его параметры и передавтаь в него два сэмпла:
-// буферный выходной рабочий и вектор сэмплов
-// при
-
+using ConverterPipeline = std::vector<ConverterPtr>;
 
 class IConverter
 {

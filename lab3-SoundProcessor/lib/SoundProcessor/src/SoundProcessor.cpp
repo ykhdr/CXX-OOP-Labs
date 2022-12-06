@@ -1,10 +1,11 @@
 #include "SoundProcessor.hpp"
+#include "SoundProcessorExceptions.hpp"
 
 #include <iostream>
 
-
 SoundProcessor::SoundProcessor(int &argc, const char **argv)
 {
+
     if (argc < 5)
     {
         throw std::invalid_argument("incorrect number of parameters");
@@ -13,8 +14,9 @@ SoundProcessor::SoundProcessor(int &argc, const char **argv)
     {
         throw std::invalid_argument("-c Argument was not found");
     }
+
     configFilePath_ = std::string(argv[2]);
-    outputFIlePath_ = std::string(argv[3]);
+    outputFilePath_ = std::string(argv[3]);
 
     for (int i = 4; i < argc; ++i)
     {
@@ -28,13 +30,13 @@ void SoundProcessor::run()
     {
         ConfigParser configParser(configFilePath_);
 
-        ConfigParams configParams = configParser.getConfig();
+        ConfigParamLine configParams = configParser.getConfig();
 
         ConverterPipeline pipeline = createPipeline(configParams);
 
         wavReaderVector_ = createWAVReaderVector();
 
-        WAVWriter wavOutputWriter(outputFIlePath_);
+        WAVWriter wavOutputWriter(outputFilePath_);
 
         SampleBuffer outputSample;
 
@@ -60,7 +62,7 @@ void SoundProcessor::run()
     }
 }
 
-ConverterPipeline SoundProcessor::createPipeline(ConfigParams &params)
+ConverterPipeline SoundProcessor::createPipeline(ConfigParamLine &params)
 {
     ConverterPipeline pipeline;
 
@@ -77,7 +79,7 @@ ConverterPipeline SoundProcessor::createPipeline(ConfigParams &params)
         else
         {
             // throw exception about invalid convertor name
-            throw std::exception();
+            throw SoundProcessorExceptions::BadConverterName(param.first);
         }
     }
     return pipeline;
@@ -102,7 +104,7 @@ bool SoundProcessor::updateSamples(SampleVector &defaultSamples)
         return false;
     }
 
-    for (int i = 0; i < defaultSamples.size(); ++i)
+    for (int i = 1; i < defaultSamples.size(); ++i)
     {
         wavReaderVector_[i].readSample(defaultSamples[i]);
     }

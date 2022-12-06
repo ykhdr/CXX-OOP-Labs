@@ -13,7 +13,7 @@ private:
     int currentSec_ = 0;
 
 public:
-    MuteConverter(Params);
+    MuteConverter(ConverterParams);
 
     void convert(SampleBuffer &outputSample, SampleVector &inputSamples) override;
 };

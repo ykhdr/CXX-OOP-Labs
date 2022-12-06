@@ -1,14 +1,15 @@
 #include "MuteConverter.hpp"
+#include "ConverterException.hpp"
 
-MuteConverter::MuteConverter(Params params)
+MuteConverter::MuteConverter(ConverterParams params)
 {
     if (params.first < 0)
    {
-        throw std::exception();
+        throw ConverterExceptions::BadFirstArgumentMuteConverter(params.first);
     }
     if (params.second < 0 || params.second <= params.first)
     {
-        throw std::exception();
+        throw  ConverterExceptions::BadSecondArgumentMuteConverter(params.second);
     }
 
     secStart_ = params.first;

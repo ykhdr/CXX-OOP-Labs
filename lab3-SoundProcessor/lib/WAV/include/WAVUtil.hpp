@@ -17,10 +17,6 @@ struct WAVHeader
 
     struct FMTChunkData
     {
-        uint32_t subchunk1Id; // symbols "fmt "
-
-        uint32_t subchunk1Size; // size of subchunk of WAV header with data about file
-
         uint16_t audioFormat; // audio format
 
         uint16_t numChannels; // number of channels
@@ -32,10 +28,6 @@ struct WAVHeader
         uint16_t blockAlign; // number of bytes for one sample
 
         uint16_t bitsPerSample; // capacity of bits in sample
-
-        uint32_t subchunk2Id; // symbols "data"
-
-        uint32_t subchunk2Size; // number of bytes in data
     };
 };
 
@@ -48,8 +40,6 @@ namespace WAVSupportedFormat
     static constexpr uint32_t FMT_ = 0x20746d66;
 
     static constexpr uint32_t DATA = 0x61746164;
-
-    static constexpr uint32_t LIST = 0x5453494C;
 
     static constexpr uint16_t AUDIO_FORMAT_PCM = 1;
 

@@ -1,7 +1,7 @@
 include_directories(include)
 
 add_library(ConfigParser
-            src/ConfigParser.cpp)
+            src/ConfigParser.cpp src/ConfigParserExceptions.cpp)
             
 target_include_directories(ConfigParser PUBLIC include)
 

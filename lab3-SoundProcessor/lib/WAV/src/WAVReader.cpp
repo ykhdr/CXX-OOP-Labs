@@ -1,5 +1,9 @@
 #include "WAVReader.hpp"
 
+#include "WAVExceptions.hpp"
+
+using namespace WAVExceptions;
+
 WAVReader::WAVReader(std::string filePath)
 {
     open(std::move(filePath));
@@ -7,17 +11,18 @@ WAVReader::WAVReader(std::string filePath)
 
 void WAVReader::open(std::string filePath)
 {
-   if (filePath.find(".wav") == std::string::npos)
+    if (filePath.find(".wav") == std::string::npos)
     {
         // WAV exception about not format file
-        throw std::exception();
+        throw BadFileFormat(filePath);
     }
+    inputFilePath_ = std::move(filePath);
 
-    inputFile_.open(filePath, std::ios_base::binary);
+    inputFile_.open(inputFilePath_, std::ios_base::binary);
     if (!inputFile_.good())
     {
         // WAV exception about bad file opening
-        throw std::exception();
+        throw BadFileOpening(inputFilePath_);
     }
 
     readHeader();
@@ -25,67 +30,76 @@ void WAVReader::open(std::string filePath)
 
 void WAVReader::readHeader()
 {
-    WAVHeader::Chunk chunk;
+    WAVHeader::Chunk riffChunk;
 
-    inputFile_.read((char *)&chunk, sizeof(chunk));
+    inputFile_.read((char *) &riffChunk, sizeof(riffChunk));
 
-    if (!inputFile_.good() || chunk.chunkID != WAVSupportedFormat::RIFF)
+    if (!inputFile_.good() || riffChunk.chunkID != WAVSupportedFormat::RIFF)
     {
-        // WAV exception about bad chunk format
-        throw std::exception();
+        // WAV exception about bad riffChunk format
+        throw BadChunkHeaderFormat(inputFilePath_, WAVSupportedFormat::RIFF);
     }
 
     WAVHeader::format format;
 
-    inputFile_.read((char *)&format, sizeof(format));
+    inputFile_.read((char *) &format, sizeof(format));
 
     if (!inputFile_.good() || format != WAVSupportedFormat::WAVE)
     {
         // WAV exception aboud bad format sym
-        throw std::exception();
+        throw BadFormatHeader(inputFilePath_);
     }
 
-    WAVHeader::FMTChunkData fmtData;
+    WAVHeader::Chunk fmtChunk;
 
-    inputFile_.read((char*)&fmtData,sizeof(fmtData));
+    inputFile_.read((char *) &fmtChunk, sizeof(fmtChunk));
 
-    if(!inputFile_.good())
+    if (!inputFile_.good() || fmtChunk.chunkID != WAVSupportedFormat::FMT_)
     {
-        throw std::exception();
+        throw BadChunkHeaderFormat(inputFilePath_,WAVSupportedFormat::FMT_);
     }
 
-    //TODO: подцепочки могут иметь другое нащвание, проверять иначе
-    if(fmtData.subchunk2Id == WAVSupportedFormat::LIST)
+    WAVHeader::FMTChunkData fmtData {};
+
+    inputFile_.read((char *) &fmtData, sizeof(fmtData));
+
+    if (!inputFile_.good())
     {
-        inputFile_.ignore(fmtData.subchunk2Size);
-
-        inputFile_.read((char*)&fmtData.subchunk2Id,sizeof(fmtData.subchunk2Id));
-        inputFile_.read((char*)&fmtData.subchunk2Size,sizeof(fmtData.subchunk2Size));
-
+        throw BadReadingFile(inputFilePath_);
     }
 
-    if (!inputFile_.good()                                          ||
+    if (fmtData.audioFormat != WAVSupportedFormat::AUDIO_FORMAT_PCM ||
 
-        fmtData.subchunk1Id != WAVSupportedFormat::FMT_             ||
+        fmtData.numChannels != WAVSupportedFormat::NUM_CHANNELS ||
 
-        fmtData.audioFormat != WAVSupportedFormat::AUDIO_FORMAT_PCM ||
-
-        fmtData.numChannels != WAVSupportedFormat::NUM_CHANNELS     ||
-
-        fmtData.sampleRate != WAVSupportedFormat::SAMPLE_RATE       ||
-
-        fmtData.subchunk2Id != WAVSupportedFormat::DATA)
+        fmtData.sampleRate != WAVSupportedFormat::SAMPLE_RATE)
     {
         // WAV excetpion about bad FMT data format
-        throw std::exception();
+        throw BadFMTChunkDataFormat(inputFilePath_);
     }
+
+    WAVHeader::Chunk dataChunk;
+
+    inputFile_.read((char *) &dataChunk, sizeof(dataChunk));
+
+    while (dataChunk.chunkID != WAVSupportedFormat::DATA)
+    {
+        if (!inputFile_.good())
+        {
+            throw BadReadingFile(inputFilePath_);
+        }
+
+        inputFile_.ignore(dataChunk.chunkSize);
+        inputFile_.read((char *) &dataChunk, sizeof(dataChunk));
+    }
+
 }
 
 bool WAVReader::readSample(SampleBuffer &sampleBuffer)
 {
-    inputFile_.read((char*) &sampleBuffer[0], sizeof(sampleBuffer[0]) * sampleBuffer.size());
+    inputFile_.read((char *) &sampleBuffer[0], sizeof(sampleBuffer[0]) * sampleBuffer.size());
 
-    if(inputFile_.gcount()==0)
+    if (inputFile_.gcount() == 0)
     {
         sampleBuffer.fill(0);
     }

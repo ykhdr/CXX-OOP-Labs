@@ -3,7 +3,7 @@ include_directories(include)
 add_library(Converter
         src/MuteConverter.cpp
         src/ConverterCreator.cpp
-        src/MixConverter.cpp)
+        src/MixConverter.cpp src/ConverterExceptions.cpp)
             
 target_include_directories(Converter PUBLIC include)
 

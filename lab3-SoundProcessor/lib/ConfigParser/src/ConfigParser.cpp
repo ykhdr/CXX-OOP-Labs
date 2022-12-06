@@ -1,4 +1,5 @@
 #include "ConfigParser.hpp"
+#include "ConfigParserExceptions.hpp"
 
 #include <iostream>
 
@@ -20,8 +21,10 @@ ConfigParser::ConfigParser(const std::string& configPath_)
     if (!configFile_.good())
     {
         // exception about не открыт конфиг файл
-        throw std::exception();
+        throw ConfigExceptions::BadOpeningConfig(configPath_);
     }
+
+    configFilePath_ = std::move(configPath_);
 
     readConfig();
 }
@@ -38,10 +41,8 @@ void ConfigParser::readConfig()
             continue;
         }
 
-        // FIXME: проверить работает ли
-        config_.push_back(std::pair<std::string, Params>());
+        config_.push_back(std::pair<std::string, ConverterParams>());
 
-        // TODO: проверить на нормальность уже в самом конструкторе конвертера
         config_[config_.size()-1].first = line;
 
         for (int i = 0; i < 2; ++i)
@@ -49,7 +50,7 @@ void ConfigParser::readConfig()
             if (configFile_.eof())
             {
                 // exception about file's end / incorrect configFile
-                throw std::exception();
+                throw ConfigExceptions::BadReadingFile(configFilePath_);
             }
 
             configFile_ >> line;
@@ -71,7 +72,7 @@ void ConfigParser::readConfig()
     }
 }
 
-ConfigParams ConfigParser::getConfig()
+ConfigParamLine ConfigParser::getConfig()
 {
     return config_;
 }

@@ -9,18 +9,18 @@ class ConverterCreator
 public:
     virtual ~ConverterCreator() = default;
 
-    virtual ConverterType create(Params params) const = 0;
+    virtual ConverterPtr create(ConverterParams params) const = 0;
 };
 
 
 class MuteConverterCreator : public ConverterCreator
 {
 public:
-    ConverterType create(Params params) const override;
+    ConverterPtr create(ConverterParams params) const override;
 };
 
 class MixConverterCreator : public ConverterCreator
 {
 public:
-    ConverterType create(Params params) const override;
+    ConverterPtr create(ConverterParams params) const override;
 };

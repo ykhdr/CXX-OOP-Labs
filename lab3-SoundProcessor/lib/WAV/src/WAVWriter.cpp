@@ -1,6 +1,9 @@
 #include "WAVWriter.hpp"
+#include "WAVExceptions.hpp"
 
-WAVWriter::WAVWriter(std::string path)
+using namespace WAVExceptions;
+
+WAVWriter::WAVWriter(const std::string &path)
 {
     outputFile_ = std::ofstream(path);
 
@@ -9,38 +12,51 @@ WAVWriter::WAVWriter(std::string path)
         throw std::invalid_argument("output file was not opened");
     }
 
+    outputFilePath_ = std::move(path);
+
     writeHeader();
 }
 
 void WAVWriter::writeHeader()
 {
-    WAVHeader::Chunk chunk =
+    WAVHeader::Chunk riffChunk =
             {
                     WAVSupportedFormat::RIFF,
                     0
             };
 
-    outputFile_.write((char *) &chunk, sizeof(chunk));
+    outputFile_.write((char *) &riffChunk, sizeof(riffChunk));
 
     WAVHeader::format format = WAVSupportedFormat::WAVE;
 
     outputFile_.write((char *) &format, sizeof(format));
 
-    WAVHeader::FMTChunkData fmtChunkData =
+    WAVHeader::Chunk fmtChunk =
             {
                     WAVSupportedFormat::FMT_,
-                    sizeof(fmtChunkData) - 3 * sizeof(uint32_t), // without subchunk1Id, subchunk2
+                    sizeof(WAVHeader::FMTChunkData)
+            };
+
+    outputFile_.write((char *) &fmtChunk, sizeof(fmtChunk));
+
+    WAVHeader::FMTChunkData fmtData =
+            {
                     WAVSupportedFormat::AUDIO_FORMAT_PCM,
                     WAVSupportedFormat::NUM_CHANNELS,
                     WAVSupportedFormat::SAMPLE_RATE,
                     WAVSupportedFormat::BYTE_RATE,
                     WAVSupportedFormat::BLOCK_ALIGN,
-                    WAVSupportedFormat::BITS_PER_SAMPLE,
+                    WAVSupportedFormat::BITS_PER_SAMPLE
+            };
+
+    outputFile_.write((char *) &fmtData, sizeof(fmtData));
+
+    WAVHeader::Chunk dataChunk =
+            {
                     WAVSupportedFormat::DATA,
                     0
             };
-
-    outputFile_.write((char *) &fmtChunkData, sizeof(fmtChunkData));
+    outputFile_.write((char*)&dataChunk,sizeof(dataChunk));
 }
 
 void WAVWriter::fixHeader()
@@ -55,19 +71,25 @@ void WAVWriter::fixHeader()
             std::ios_base::beg);
 
     fSize -= sizeof(WAVHeader::Chunk);
-    //TODO: проблемы с форматом файла
     outputFile_.write((char *) &fSize, sizeof(fSize));
 
     // Data size
+
+
+    fSize -= sizeof(WAVHeader::format)
+            +sizeof(WAVHeader::Chunk)
+            + sizeof(WAVHeader::FMTChunkData)
+            + sizeof(WAVHeader::Chunk);
+
     outputFile_.seekp(
             sizeof(WAVHeader::Chunk)
             + sizeof(WAVHeader::format)
+            + sizeof(WAVHeader::Chunk)
             + sizeof(WAVHeader::FMTChunkData)
-            - sizeof(WAVSupportedFormat::DATA),
+            + sizeof(WAVSupportedFormat::DATA),
             std::ios_base::beg);
 
-    fSize -= sizeof(WAVHeader::format)
-            + sizeof(WAVHeader::FMTChunkData);
+    //fSize = 21894912;
 
     outputFile_.write((char *) &fSize, sizeof(fSize));
 
@@ -75,10 +97,10 @@ void WAVWriter::fixHeader()
 
 void WAVWriter::writeSample(SampleBuffer sampleBuffer)
 {
-    outputFile_.write((char *) &sampleBuffer[0], sizeof(sampleBuffer[0] * sampleBuffer.size()));
+    outputFile_.write((const char *) &sampleBuffer[0], sizeof(sampleBuffer[0]) * sampleBuffer.size());
 
     if (!outputFile_.good())
     {
-        throw std::exception();
+        throw BadWritingFile(outputFilePath_);
     }
 }

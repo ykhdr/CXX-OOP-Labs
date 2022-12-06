@@ -1,18 +1,18 @@
 #include "MixConverter.hpp"
-
+#include "ConverterException.hpp"
 #include <algorithm>
 
-MixConverter::MixConverter(Params params)
+MixConverter::MixConverter(ConverterParams params)
 {
     if (params.first < 1)
     {
         // throw exception about invalid id for mix
-        throw std::exception();
+        throw  ConverterExceptions::BadFirstArgumentMixConverter(params.first);
     }
     if (params.second < 0)
     {
         // throw exception about invalid second start
-        throw std::exception();
+        throw  ConverterExceptions::BadSecondArgumentMixConverter(params.second);
     }
 
     idWAVForMix_ = params.first;

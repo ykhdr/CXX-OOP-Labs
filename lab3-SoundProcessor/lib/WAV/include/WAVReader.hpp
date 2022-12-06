@@ -14,9 +14,12 @@ class WAVReader
 private:
     std::ifstream inputFile_;
 
+    std::string inputFilePath_;
+
     void open(std::string filePath);
 
     void readHeader();
+
 public:
     WAVReader() = default;
 

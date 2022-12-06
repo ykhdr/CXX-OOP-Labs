@@ -10,12 +10,14 @@ class WAVWriter
 private:
     std::ofstream outputFile_;
 
+    std::string outputFilePath_;
+
     void writeHeader();
 
 public:
     WAVWriter() = default;
 
-    WAVWriter(std::string path);
+    WAVWriter(const std::string& path);
 
     void fixHeader();
 

@@ -14,7 +14,7 @@ private:
     int currentSec_ = 0;
 
 public:
-    MixConverter(Params);
+    MixConverter(ConverterParams);
 
     void convert(SampleBuffer &outputSample, SampleVector &inputSamples) override;
 };
