@@ -4,7 +4,7 @@
 MuteConverter::MuteConverter(ConverterParams params)
 {
     if (params.first < 0)
-   {
+    {
         throw ConverterExceptions::BadFirstArgumentMuteConverter(params.first);
     }
     if (params.second < 0 || params.second <= params.first)

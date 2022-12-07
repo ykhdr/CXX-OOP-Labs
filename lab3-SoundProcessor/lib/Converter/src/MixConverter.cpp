@@ -1,5 +1,6 @@
 #include "MixConverter.hpp"
 #include "ConverterException.hpp"
+
 #include <algorithm>
 
 MixConverter::MixConverter(ConverterParams params)
@@ -30,4 +31,3 @@ void MixConverter::convert(SampleBuffer &outputSample, SampleVector &inputSample
     }
     ++currentSec_;
 }
-

@@ -57,7 +57,5 @@ namespace WAVSupportedFormat
 }
 
 using Sample = int16_t;
-
 using SampleBuffer = std::array<Sample, WAVSupportedFormat::SAMPLE_RATE>;
-
 using SampleVector = std::vector<SampleBuffer>;

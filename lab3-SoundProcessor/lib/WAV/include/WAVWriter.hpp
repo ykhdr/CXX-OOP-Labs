@@ -19,6 +19,8 @@ public:
 
     WAVWriter(const std::string& path);
 
+    ~WAVWriter();
+
     void fixHeader();
 
     void writeSample(SampleBuffer);

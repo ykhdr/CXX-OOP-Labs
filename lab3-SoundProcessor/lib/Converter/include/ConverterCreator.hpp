@@ -24,3 +24,9 @@ class MixConverterCreator : public ConverterCreator
 public:
     ConverterPtr create(ConverterParams params) const override;
 };
+
+class DoubleMixConverterCreator : public ConverterCreator
+{
+public:
+    ConverterPtr  create(ConverterParams params) const override;
+};

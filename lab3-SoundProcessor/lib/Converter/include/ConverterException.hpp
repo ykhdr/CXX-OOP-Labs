@@ -48,4 +48,38 @@ namespace ConverterExceptions
 
         const char *what() const noexcept override;
     };
+
+    class BadFirstArgumentDoubleMixConverter : virtual public std::exception
+    {
+    private:
+        int argument_;
+
+    public:
+        BadFirstArgumentDoubleMixConverter(int argument);
+
+        const char *what() const noexcept override;
+    };
+
+    class BadSecondArgumentDoubleMixConverter : virtual public std::exception
+    {
+    private:
+        int argument_;
+
+    public:
+        BadSecondArgumentDoubleMixConverter(int argument);
+
+        const char *what() const noexcept override;
+    };
+
+    class RecurringSecondArgumentDoubleMixConverter : virtual public std::exception
+    {
+    private:
+        int argument_;
+
+    public:
+        RecurringSecondArgumentDoubleMixConverter(int argument);
+
+        const char *what() const noexcept override;
+    };
+
 }

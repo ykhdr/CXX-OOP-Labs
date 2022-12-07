@@ -15,4 +15,12 @@ namespace SoundProcessorExceptions
 
         const char *what() const noexcept override;
     };
+
+    class HelpArgument : virtual public std::exception
+    {
+    public:
+        HelpArgument() = default;
+
+        const char *what() const noexcept override;
+    };
 }

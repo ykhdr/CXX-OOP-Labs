@@ -2,8 +2,6 @@
 
 #include "WAVExceptions.hpp"
 
-using namespace WAVExceptions;
-
 WAVReader::WAVReader(std::string filePath)
 {
     open(std::move(filePath));
@@ -14,7 +12,7 @@ void WAVReader::open(std::string filePath)
     if (filePath.find(".wav") == std::string::npos)
     {
         // WAV exception about not format file
-        throw BadFileFormat(filePath);
+        throw WAVExceptions::BadFileFormat(filePath);
     }
     inputFilePath_ = std::move(filePath);
 
@@ -22,7 +20,7 @@ void WAVReader::open(std::string filePath)
     if (!inputFile_.good())
     {
         // WAV exception about bad file opening
-        throw BadFileOpening(inputFilePath_);
+        throw WAVExceptions::BadFileOpening(inputFilePath_);
     }
 
     readHeader();
@@ -37,7 +35,7 @@ void WAVReader::readHeader()
     if (!inputFile_.good() || riffChunk.chunkID != WAVSupportedFormat::RIFF)
     {
         // WAV exception about bad riffChunk format
-        throw BadChunkHeaderFormat(inputFilePath_, WAVSupportedFormat::RIFF);
+        throw WAVExceptions::BadChunkHeaderFormat(inputFilePath_, WAVSupportedFormat::RIFF);
     }
 
     WAVHeader::format format;
@@ -47,7 +45,7 @@ void WAVReader::readHeader()
     if (!inputFile_.good() || format != WAVSupportedFormat::WAVE)
     {
         // WAV exception aboud bad format sym
-        throw BadFormatHeader(inputFilePath_);
+        throw WAVExceptions::BadFormatHeader(inputFilePath_);
     }
 
     WAVHeader::Chunk fmtChunk;
@@ -56,7 +54,7 @@ void WAVReader::readHeader()
 
     if (!inputFile_.good() || fmtChunk.chunkID != WAVSupportedFormat::FMT_)
     {
-        throw BadChunkHeaderFormat(inputFilePath_,WAVSupportedFormat::FMT_);
+        throw WAVExceptions::BadChunkHeaderFormat(inputFilePath_,WAVSupportedFormat::FMT_);
     }
 
     WAVHeader::FMTChunkData fmtData {};
@@ -65,7 +63,7 @@ void WAVReader::readHeader()
 
     if (!inputFile_.good())
     {
-        throw BadReadingFile(inputFilePath_);
+        throw WAVExceptions::BadReadingFile(inputFilePath_);
     }
 
     if (fmtData.audioFormat != WAVSupportedFormat::AUDIO_FORMAT_PCM ||
@@ -75,7 +73,7 @@ void WAVReader::readHeader()
         fmtData.sampleRate != WAVSupportedFormat::SAMPLE_RATE)
     {
         // WAV excetpion about bad FMT data format
-        throw BadFMTChunkDataFormat(inputFilePath_);
+        throw WAVExceptions::BadFMTChunkDataFormat(inputFilePath_);
     }
 
     WAVHeader::Chunk dataChunk;
@@ -86,18 +84,17 @@ void WAVReader::readHeader()
     {
         if (!inputFile_.good())
         {
-            throw BadReadingFile(inputFilePath_);
+            throw WAVExceptions::BadReadingFile(inputFilePath_);
         }
 
         inputFile_.ignore(dataChunk.chunkSize);
         inputFile_.read((char *) &dataChunk, sizeof(dataChunk));
     }
-
 }
 
 bool WAVReader::readSample(SampleBuffer &sampleBuffer)
 {
-    inputFile_.read((char *) &sampleBuffer[0], sizeof(sampleBuffer[0]) * sampleBuffer.size());
+    inputFile_.read((char *) &sampleBuffer, sizeof(Sample) * sampleBuffer.size());
 
     if (inputFile_.gcount() == 0)
     {
