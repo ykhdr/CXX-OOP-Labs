@@ -16,7 +16,7 @@ MuteConverter::MuteConverter(ConverterParams params)
     secEnd_ = params.secondParam_;
 }
 
-void MuteConverter::convert(SampleBuffer &outputSample, SampleVector const &inputSamples)
+void MuteConverter::convert(SampleBuffer &outputSample, SampleVector const &)
 {
     if (currentSec_ >= secStart_ && currentSec_ <= secEnd_)
     {
