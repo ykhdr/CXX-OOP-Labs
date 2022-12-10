@@ -3,20 +3,20 @@
 
 MuteConverter::MuteConverter(ConverterParams params)
 {
-    if (params.first < 0)
+    if (params.firstParam_ < 0)
     {
-        throw ConverterExceptions::BadFirstArgumentMuteConverter(params.first);
+        throw ConverterExceptions::BadFirstArgumentMuteConverter(params.firstParam_);
     }
-    if (params.second < 0 || params.second <= params.first)
+    if (params.secondParam_ < 0 || params.secondParam_ <= params.firstParam_)
     {
-        throw  ConverterExceptions::BadSecondArgumentMuteConverter(params.second);
+        throw  ConverterExceptions::BadSecondArgumentMuteConverter(params.secondParam_);
     }
 
-    secStart_ = params.first;
-    secEnd_ = params.second;
+    secStart_ = params.firstParam_;
+    secEnd_ = params.secondParam_;
 }
 
-void MuteConverter::convert(SampleBuffer &outputSample, SampleVector &inputSamples)
+void MuteConverter::convert(SampleBuffer &outputSample, SampleVector const &inputSamples)
 {
     if (currentSec_ >= secStart_ && currentSec_ <= secEnd_)
     {

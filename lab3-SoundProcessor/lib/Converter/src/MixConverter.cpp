@@ -5,22 +5,22 @@
 
 MixConverter::MixConverter(ConverterParams params)
 {
-    if (params.first < 1)
+    if (params.firstParam_ < 1)
     {
         // throw exception about invalid id for mix
-        throw  ConverterExceptions::BadFirstArgumentMixConverter(params.first);
+        throw  ConverterExceptions::BadFirstArgumentMixConverter(params.firstParam_);
     }
-    if (params.second < 0)
+    if (params.secondParam_ < 0)
     {
         // throw exception about invalid second start
-        throw  ConverterExceptions::BadSecondArgumentMixConverter(params.second);
+        throw  ConverterExceptions::BadSecondArgumentMixConverter(params.secondParam_);
     }
 
-    idWAVForMix_ = params.first;
-    secStart_ = params.second;
+    idWAVForMix_ = params.firstParam_;
+    secStart_ = params.secondParam_;
 }
 
-void MixConverter::convert(SampleBuffer &outputSample, SampleVector &inputSamples)
+void MixConverter::convert(SampleBuffer &outputSample, SampleVector const &inputSamples)
 {
     if (currentSec_ >= secStart_)
     {

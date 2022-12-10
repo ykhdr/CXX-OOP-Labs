@@ -2,7 +2,7 @@
 
 #include "IConverter.hpp"
 
-#include "WAVUtil.hpp"
+#include "WAVTypes.hpp"
 
 class MixConverter : public IConverter
 {
@@ -16,5 +16,5 @@ private:
 public:
     MixConverter(ConverterParams);
 
-    void convert(SampleBuffer &outputSample, SampleVector &inputSamples) override;
+    void convert(SampleBuffer &outputSample, SampleVector const &inputSamples) override;
 };

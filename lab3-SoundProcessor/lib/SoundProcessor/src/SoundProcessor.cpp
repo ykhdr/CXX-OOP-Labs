@@ -9,12 +9,14 @@ namespace
     {
         std::cout << "\n\t\t\tSound Processor" << std::endl
                   << std::endl
-                  << "\t1   argument \t--\t '-c' for detecting config file" << std::endl
-                  << "\t2   argument \t--\t config file path" << std::endl
-                  << "\t3   argument \t--\t output file path" << std::endl
-                  << "\t... argument \t--\t input files path" << std::endl << std::endl
-                  << "\t\tConfig available params:" << std::endl
-                  << "\tMuting file \t\t--\t mute secStart secEnd" << std::endl
+                  << "\t1   argument \t\t--\t '-c' for detecting config file" << std::endl
+                  << "\t2   argument \t\t--\t config file path" << std::endl
+                  << "\t3   argument \t\t--\t output file path" << std::endl
+                  << "\t... argument \t\t--\t input files path" << std::endl
+                  << std::endl
+                  << "\t\t\tConfig available params:" << std::endl
+                  << std::endl
+                  << "\tMute file \t\t--\t mute secStart secEnd" << std::endl
                   << "\tMix files \t\t--\t mix $FileNumber secStart" << std::endl
                   << "\tDouble mix files \t--\t dmix $FirstFileNumber $SecondFileNumber" << std::endl
                   << "\tComment \t\t--\t # comment" << std::endl
@@ -24,9 +26,9 @@ namespace
 
 SoundProcessor::SoundProcessor(int &argc, const char **argv)
 {
-    if(argc == 1)
+    if (argc == 1)
     {
-        std::cout << "No params enterd. Enter -h or --help for help" << std::endl;
+        std::cout << "No params entered. Enter -h or --help for help" << std::endl;
         throw SoundProcessorExceptions::HelpArgument();
     }
     if (std::string_view(argv[1]) == "-h" || std::string_view(argv[1]) == "--help")
@@ -65,7 +67,7 @@ void SoundProcessor::run()
 
     WAVWriter wavOutputWriter(outputFilePath_);
 
-    SampleBuffer outputSample{};
+    SampleBuffer outputSample {};
 
     SampleVector defaultSamples(inputFilesPaths_.size());
 
@@ -73,39 +75,43 @@ void SoundProcessor::run()
     {
         outputSample = defaultSamples[0];
 
-        for (const auto &converter : pipeline)
+        for (const auto &converter: pipeline)
         {
             converter->convert(outputSample, defaultSamples);
         }
 
         wavOutputWriter.writeSample(outputSample);
     }
-
-    wavOutputWriter.fixHeader();
 }
 
 ConverterPipeline SoundProcessor::createPipeline(ConfigParamLine &params)
 {
     ConverterPipeline pipeline;
 
-    for (const auto &param : params)
+    for (const auto &param: params)
     {
-        if (param.first == "mute")
+        if (param.converterName_ == "mute")
         {
-            pipeline.push_back(MuteConverterCreator().create(param.second));
+            pipeline.push_back(MuteConverterCreator().create(param.converterParams_));
         }
-        else if (param.first == "mix")
+        else if (param.converterName_ == "mix")
         {
-            pipeline.push_back(MixConverterCreator().create(param.second));
+            pipeline.push_back(MixConverterCreator().create(param.converterParams_));
         }
-        else if (param.first == "dmix")
+        else if (param.converterName_ == "dmix")
         {
-            pipeline.push_back(DoubleMixConverterCreator().create(param.second));
+            if (param.converterParams_.firstParam_ > inputFilesPaths_.size()
+                || param.converterParams_.secondParam_ > inputFilesPaths_.size())
+            {
+                throw std::invalid_argument("bad dmix converter params");
+            }
+
+            pipeline.push_back(DoubleMixConverterCreator().create(param.converterParams_));
         }
         else
         {
             // throw exception about invalid convertor name
-            throw SoundProcessorExceptions::BadConverterName(param.first);
+            throw SoundProcessorExceptions::BadConverterName(param.converterName_);
         }
     }
     return pipeline;
@@ -115,7 +121,7 @@ WAVReaderVector SoundProcessor::createWAVReaderVector()
 {
     WAVReaderVector wavReaderVector;
 
-    for (const auto &inputFilesPath : inputFilesPaths_)
+    for (const auto &inputFilesPath: inputFilesPaths_)
     {
         wavReaderVector.emplace_back(inputFilesPath);
     }
@@ -125,9 +131,6 @@ WAVReaderVector SoundProcessor::createWAVReaderVector()
 
 bool SoundProcessor::updateSamples(SampleVector &defaultSamples)
 {
-
-    // defaultSamples.clear();
-
     if (!wavReaderVector_[0].readSample(defaultSamples[0]))
     {
         return false;

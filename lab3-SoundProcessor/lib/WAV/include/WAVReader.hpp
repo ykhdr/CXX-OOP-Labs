@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-#include "WAVUtil.hpp"
+#include "WAVTypes.hpp"
 
 class WAVReader;
 
@@ -20,10 +20,16 @@ private:
 
     void readHeader();
 
+    void readChunk(WAVHeader::Chunk &chunk);
+
+    void readFormat(WAVHeader::format &format);
+
+    void readChunkData(WAVHeader::FMTChunkData &chunkData);
+
 public:
     WAVReader() = default;
 
     WAVReader(std::string filePath);
 
-    bool readSample(SampleBuffer & sampleBuffer);
+    bool readSample(SampleBuffer &sampleBuffer);
 };

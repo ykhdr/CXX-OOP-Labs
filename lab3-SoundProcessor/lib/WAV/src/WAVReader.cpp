@@ -28,9 +28,8 @@ void WAVReader::open(std::string filePath)
 
 void WAVReader::readHeader()
 {
-    WAVHeader::Chunk riffChunk;
-
-    inputFile_.read((char *) &riffChunk, sizeof(riffChunk));
+    WAVHeader::Chunk riffChunk {};
+    readChunk(riffChunk);
 
     if (!inputFile_.good() || riffChunk.chunkID != WAVSupportedFormat::RIFF)
     {
@@ -38,28 +37,25 @@ void WAVReader::readHeader()
         throw WAVExceptions::BadChunkHeaderFormat(inputFilePath_, WAVSupportedFormat::RIFF);
     }
 
-    WAVHeader::format format;
-
-    inputFile_.read((char *) &format, sizeof(format));
+    WAVHeader::format format{};
+    readFormat(format);
 
     if (!inputFile_.good() || format != WAVSupportedFormat::WAVE)
     {
-        // WAV exception aboud bad format sym
+        // WAV exception about bad format sym
         throw WAVExceptions::BadFormatHeader(inputFilePath_);
     }
 
-    WAVHeader::Chunk fmtChunk;
-
-    inputFile_.read((char *) &fmtChunk, sizeof(fmtChunk));
+    WAVHeader::Chunk fmtChunk {};
+    readChunk(fmtChunk);
 
     if (!inputFile_.good() || fmtChunk.chunkID != WAVSupportedFormat::FMT_)
     {
-        throw WAVExceptions::BadChunkHeaderFormat(inputFilePath_,WAVSupportedFormat::FMT_);
+        throw WAVExceptions::BadChunkHeaderFormat(inputFilePath_, WAVSupportedFormat::FMT_);
     }
 
     WAVHeader::FMTChunkData fmtData {};
-
-    inputFile_.read((char *) &fmtData, sizeof(fmtData));
+    readChunkData(fmtData);
 
     if (!inputFile_.good())
     {
@@ -76,9 +72,8 @@ void WAVReader::readHeader()
         throw WAVExceptions::BadFMTChunkDataFormat(inputFilePath_);
     }
 
-    WAVHeader::Chunk dataChunk;
-
-    inputFile_.read((char *) &dataChunk, sizeof(dataChunk));
+    WAVHeader::Chunk dataChunk{};
+    readChunk(dataChunk);
 
     while (dataChunk.chunkID != WAVSupportedFormat::DATA)
     {
@@ -88,7 +83,7 @@ void WAVReader::readHeader()
         }
 
         inputFile_.ignore(dataChunk.chunkSize);
-        inputFile_.read((char *) &dataChunk, sizeof(dataChunk));
+        readChunk(dataChunk);
     }
 }
 
@@ -103,3 +98,62 @@ bool WAVReader::readSample(SampleBuffer &sampleBuffer)
 
     return inputFile_.gcount();
 }
+
+void WAVReader::readChunk(WAVHeader::Chunk &chunk)
+{
+    std::array<unsigned char, sizeof(WAVHeader::Chunk)> charBuffer {};
+    inputFile_.read((char *) &charBuffer[0], sizeof(charBuffer));
+
+    chunk.chunkID =
+            (charBuffer[3] << 24) |
+            (charBuffer[2] << 16) |
+            (charBuffer[1] << 8) |
+            (charBuffer[0]);
+    chunk.chunkSize =
+            (charBuffer[7] << 24) |
+            (charBuffer[6] << 16) |
+            (charBuffer[5] << 8) |
+            (charBuffer[4]);
+}
+
+void WAVReader::readFormat(WAVHeader::format &format)
+{
+    std::array<unsigned char, sizeof(WAVHeader::format)> charBuffer {};
+    inputFile_.read((char *) &charBuffer[0], sizeof(charBuffer));
+
+    format = (charBuffer[3] << 24) |
+             (charBuffer[2] << 16) |
+             (charBuffer[1] << 8) |
+             (charBuffer[0]);
+}
+
+void WAVReader::readChunkData(WAVHeader::FMTChunkData &chunkData)
+{
+    std::array<unsigned char, sizeof(WAVHeader::FMTChunkData)> charBuffer {};
+    inputFile_.read((char *) &charBuffer[0], sizeof(charBuffer));
+
+    chunkData.audioFormat =
+            (charBuffer[1] << 8) |
+            (charBuffer[0]);
+    chunkData.numChannels =
+            (charBuffer[3] << 8) |
+            (charBuffer[2]);
+    chunkData.sampleRate =
+            (charBuffer[7] << 24) |
+            (charBuffer[6] << 16) |
+            (charBuffer[5] << 8) |
+            (charBuffer[4]);
+    chunkData.byteRate =
+            (charBuffer[11] << 24) |
+            (charBuffer[10] << 16) |
+            (charBuffer[9] << 8) |
+            (charBuffer[8]);
+    chunkData.blockAlign =
+            (charBuffer[13] << 8) |
+            (charBuffer[12]);
+    chunkData.bitsPerSample =
+            (charBuffer[15] << 8) |
+            (charBuffer[14]);
+}
+
+

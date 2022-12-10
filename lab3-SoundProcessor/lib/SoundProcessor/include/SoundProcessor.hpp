@@ -19,7 +19,7 @@ class SoundProcessor
 
     WAVReaderVector wavReaderVector_;
 
-    static ConverterPipeline createPipeline(ConfigParamLine &params);
+    ConverterPipeline createPipeline(ConfigParamLine &params);
 
     WAVReaderVector createWAVReaderVector();
 

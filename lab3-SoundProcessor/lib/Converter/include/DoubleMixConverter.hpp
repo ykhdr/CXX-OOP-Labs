@@ -2,7 +2,7 @@
 
 #include "IConverter.hpp"
 
-#include "WAVUtil.hpp"
+#include "WAVTypes.hpp"
 
 class DoubleMixConverter : public IConverter
 {
@@ -14,6 +14,6 @@ private:
 public:
     DoubleMixConverter(ConverterParams);
 
-    void convert(SampleBuffer &outputSample, SampleVector &inputSamples) override;
+    void convert(SampleBuffer &outputSample, SampleVector const &inputSamples) override;
 };
 

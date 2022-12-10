@@ -15,5 +15,5 @@ private:
 public:
     MuteConverter(ConverterParams);
 
-    void convert(SampleBuffer &outputSample, SampleVector &inputSamples) override;
+    void convert(SampleBuffer &outputSample, SampleVector const &inputSamples) override;
 };

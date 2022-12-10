@@ -1,6 +1,6 @@
 #include "ConfigParser.hpp"
 #include "ConfigParserExceptions.hpp"
-
+#include "ConvertersConfigParsers.hpp"
 #include <iostream>
 
 /*
@@ -14,7 +14,7 @@
     your_converter <parameters>
 */
 
-ConfigParser::ConfigParser(const std::string& configPath_)
+ConfigParser::ConfigParser(const std::string &configPath_)
 {
     configFile_.open(configPath_, std::ios_base::binary);
 
@@ -33,41 +33,52 @@ void ConfigParser::readConfig()
 {
     std::string line;
 
-    while (configFile_ >> line)
+    while (std::getline(configFile_, line, '\n'))
     {
-        if (line == "#")
+        int i = 0;
+        while (line[i] == ' ')
         {
-            while (!configFile_.eof() && configFile_.get() != '\n');
+            ++i;
+        }
+        if(i > 0)
+        {
+            line = line.substr(i);
+        }
+
+        if (line[0] == '#')
+        {
             continue;
         }
 
-        config_.push_back(std::pair<std::string, ConverterParams>());
+        config_.push_back(ConfigParam());
 
-        config_[config_.size()-1].first = line;
-
-        for (int i = 0; i < 2; ++i)
+        std::string::size_type posName = line.find(' ');
+        if (posName == std::string::npos)
         {
-            if (configFile_.eof())
-            {
-                // exception about file's end / incorrect configFile
-                throw ConfigExceptions::BadReadingFile(configFilePath_);
-            }
+            throw ConfigExceptions::BadReadingFile(configFilePath_);
+        }
 
-            configFile_ >> line;
+        config_.back().converterName_ = line.substr(0, posName);
 
-            if(line[0] == '$')
-            {
-                line = line.substr(1);
-            }
+        if (config_.back().converterName_ == "mute")
+        {
+            config_.back().converterParams_ =
+                    MuteConverterParser().parseConverterConfig(std::move(line.substr(posName + 1)));
+        }
+        else if (config_.back().converterName_ == "mix")
+        {
+            config_.back().converterParams_ =
+                    MixConverterParser().parseConverterConfig(std::move(line.substr(posName + 1)));
 
-            if (i == 0)
-            {
-                config_[config_.size()-1].second.first = std::stoi(line);
-            }
-            else
-            {
-                config_[config_.size()-1].second.second = std::stoi(line);
-            }
+        }
+        else if (config_.back().converterName_ == "dmix")
+        {
+            config_.back().converterParams_ =
+                    DoubleMixConverterParser().parseConverterConfig(std::move(line.substr(posName + 1)));
+        }
+        else
+        {
+            throw std::invalid_argument("bad config arguments :" + line);
         }
     }
 }

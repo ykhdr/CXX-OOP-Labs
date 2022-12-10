@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-#include "WAVUtil.hpp"
+#include "WAVTypes.hpp"
 
 class WAVWriter
 {
@@ -13,6 +13,12 @@ private:
     std::string outputFilePath_;
 
     void writeHeader();
+
+    void writeChunk(WAVHeader::Chunk &chunk);
+
+    void writeFormat(WAVHeader::format &format);
+
+    void writeChunkData(WAVHeader::FMTChunkData &chunkData);
 
 public:
     WAVWriter() = default;
