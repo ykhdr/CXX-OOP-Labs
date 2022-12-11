@@ -2,84 +2,49 @@
 
 #include <exception>
 #include <string>
+#include <stdexcept>
+
 namespace WAVExceptions
 {
-    class BadFileFormat : virtual public std::exception
+    class BadFileFormat :  public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
     public:
-        BadFileFormat(std::string filePath);
-
-        const char *what() const noexcept override;
+        explicit BadFileFormat(const std::string& filePath);
     };
 
-    class BadFileOpening : virtual public std::exception
+    class BadFileOpening : public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
     public:
-        BadFileOpening(std::string filePath);
-
-        const char *what() const noexcept override;
+        explicit BadFileOpening(const std::string& filePath);
     };
 
-    class BadChunkHeaderFormat : virtual public std::exception
+    class BadChunkHeaderFormat :  public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
-        std::string chunkName_;
-
     public:
-        BadChunkHeaderFormat(std::string filePath, uint32_t chunkName);
-
-        const char *what() const noexcept override;
+        BadChunkHeaderFormat(const std::string& filePath, uint32_t chunkName);
     };
 
-    class BadFormatHeader : virtual public std::exception
+    class BadFormatHeader : public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
     public:
-        BadFormatHeader(std::string filePath);
-
-        const char *what() const noexcept override;
+        explicit BadFormatHeader(const std::string& filePath);
     };
 
-    class BadFMTChunkDataFormat : virtual public std::exception
+    class BadFMTChunkDataFormat : public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
     public:
-        BadFMTChunkDataFormat(std::string filePath);
-
-        const char *what() const noexcept override;
+        explicit BadFMTChunkDataFormat(const std::string& filePath);
     };
 
-    class BadReadingFile : virtual public std::exception
+    class BadReadingFile :public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
     public:
-        BadReadingFile(std::string filePath);
-
-        const char *what() const noexcept override;
+        explicit BadReadingFile(const std::string& filePath);
     };
 
-    class BadWritingFile : virtual public std::exception
+    class BadWritingFile : public std::invalid_argument
     {
-    private:
-        std::string filePath_;
-
     public:
-        BadWritingFile(std::string filePath);
-
-        const char *what() const noexcept override;
+        explicit BadWritingFile(const std::string& filePath);
     };
 }

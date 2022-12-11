@@ -1,85 +1,50 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
 
 namespace ConverterExceptions
 {
-
-    class BadFirstArgumentMixConverter : virtual public std::exception
+    class BadFirstArgumentMixConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        BadFirstArgumentMixConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit BadFirstArgumentMixConverter(int argument);
     };
 
-    class BadSecondArgumentMixConverter : virtual public std::exception
+    class BadSecondArgumentMixConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        BadSecondArgumentMixConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit BadSecondArgumentMixConverter(int argument);
     };
 
-    class BadFirstArgumentMuteConverter : virtual public std::exception
+    class BadFirstArgumentMuteConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        BadFirstArgumentMuteConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit BadFirstArgumentMuteConverter(int argument);
     };
 
-    class BadSecondArgumentMuteConverter : virtual public std::exception
+    class BadSecondArgumentMuteConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        BadSecondArgumentMuteConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit BadSecondArgumentMuteConverter(int argument);
     };
 
-    class BadFirstArgumentDoubleMixConverter : virtual public std::exception
+    class BadFirstArgumentDoubleMixConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        BadFirstArgumentDoubleMixConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit BadFirstArgumentDoubleMixConverter(int argument);
     };
 
-    class BadSecondArgumentDoubleMixConverter : virtual public std::exception
+    class BadSecondArgumentDoubleMixConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        BadSecondArgumentDoubleMixConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit BadSecondArgumentDoubleMixConverter(int argument);
     };
 
-    class RecurringSecondArgumentDoubleMixConverter : virtual public std::exception
+    class RecurringSecondArgumentDoubleMixConverter : public std::invalid_argument
     {
-    private:
-        int argument_;
-
     public:
-        RecurringSecondArgumentDoubleMixConverter(int argument);
-
-        const char *what() const noexcept override;
+        explicit RecurringSecondArgumentDoubleMixConverter(int argument);
     };
 
 }

@@ -2,56 +2,30 @@
 
 using namespace WAVExceptions;
 
-BadFileFormat::BadFileFormat(std::string filePath) : filePath_(std::move(filePath))
+BadFileFormat::BadFileFormat(const std::string &filePath) :
+        std::invalid_argument("Bad file format " + filePath)
 {}
 
-const char *BadFileFormat::what() const noexcept
-{
-    return std::string("Bad file format : " + filePath_).c_str();
-}
-
-BadFileOpening::BadFileOpening(std::string filePath) : filePath_(std::move(filePath))
+BadFileOpening::BadFileOpening(const std::string &filePath) :
+        std::invalid_argument("Bad file opening : " + filePath)
 {}
 
-const char *BadFileOpening::what() const noexcept
-{
-    return std::string("Bad file opening : " + filePath_).c_str();
-}
-
-BadChunkHeaderFormat::BadChunkHeaderFormat(std::string filePath, uint32_t chunkName) :
-        filePath_(std::move(filePath)), chunkName_(std::move(std::to_string(chunkName)))
+BadChunkHeaderFormat::BadChunkHeaderFormat(const std::string &filePath, uint32_t chunkName) :
+        std::invalid_argument("Bad " + std::to_string(chunkName) + " chunk format: " + filePath)
 {}
 
-const char *BadChunkHeaderFormat::what() const noexcept
-{
-    return std::string("Bad " + chunkName_ + " chunk format: " + filePath_).c_str();
-}
-
-BadFormatHeader::BadFormatHeader(std::string filePath) : filePath_(std::move(filePath))
+BadFormatHeader::BadFormatHeader(const std::string &filePath) :
+        std::invalid_argument("Bad header field format : " + filePath)
 {}
 
-const char *BadFormatHeader::what() const noexcept
-{
-    return std::string("Bad header field format : " + filePath_).c_str();
-}
+BadFMTChunkDataFormat::BadFMTChunkDataFormat(const std::string &filePath) :
+        std::invalid_argument("Bad FMT chunk data format : " + filePath)
+{}
 
-BadFMTChunkDataFormat::BadFMTChunkDataFormat(std::string filePath) : filePath_(std::move(filePath)){}
+BadReadingFile::BadReadingFile(const std::string &filePath) :
+        std::invalid_argument("Bad reading file :" + filePath)
+{}
 
-const char *BadFMTChunkDataFormat::what() const noexcept
-{
-    return std::string("Bad FMT chunk data format : " + filePath_).c_str();
-}
-
-BadReadingFile::BadReadingFile(std::string filePath) : filePath_(std::move(filePath)) {}
-
-const char *BadReadingFile::what() const noexcept
-{
-    return std::string("Bad reading file : " + filePath_).c_str();
-}
-
-BadWritingFile::BadWritingFile(std::string filePath) : filePath_(std::move(filePath)) {}
-
-const char *BadWritingFile::what() const noexcept
-{
-    return std::string("Bad writing in file : " + filePath_).c_str();
-}
+BadWritingFile::BadWritingFile(const std::string &filePath) :
+        std::invalid_argument("Bad writing in file " + filePath)
+{}
