@@ -57,7 +57,7 @@ SoundProcessor::SoundProcessor(int &argc, const char **argv)
 
 void SoundProcessor::run()
 {
-    ConfigParser configParser(configFilePath_);
+    ConfigParser configParser(configFilePath_, inputFilesPaths_.size());
 
     ConfigParamLine configParams = configParser.getConfig();
 

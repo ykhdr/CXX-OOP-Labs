@@ -4,23 +4,33 @@
 class ConverterParser
 {
 public:
-    virtual ConverterParams parseConverterConfig(const std::string &&line) = 0;
+    virtual ConverterParams parseConverterConfig(const std::vector<std::string_view> &&splitLine) = 0;
+
+    virtual ~ConverterParser() = default;
 };
 
-class MuteConverterParser : virtual public ConverterParser
+class MuteConverterParser :  public ConverterParser
 {
 public:
-    ConverterParams parseConverterConfig(const std::string &&line) override;
+    ConverterParams parseConverterConfig(const std::vector<std::string_view> &&splitLine) override;
 };
 
-class MixConverterParser : virtual public ConverterParser
+class MixConverterParser : public ConverterParser
 {
+private:
+    int numInputFiles_;
 public:
-    ConverterParams parseConverterConfig(const std::string &&line) override;
+    MixConverterParser(int numInputFiles_);
+
+    ConverterParams parseConverterConfig(const std::vector<std::string_view> &&splitLine) override;
 };
 
-class DoubleMixConverterParser : virtual public ConverterParser
+class DoubleMixConverterParser : public ConverterParser
 {
+private:
+    int numInputFiles_;
 public:
-    ConverterParams parseConverterConfig(const std::string &&line) override;
+    DoubleMixConverterParser(int numInputFiles_);
+
+    ConverterParams parseConverterConfig(const std::vector<std::string_view> &&splitLine) override;
 };

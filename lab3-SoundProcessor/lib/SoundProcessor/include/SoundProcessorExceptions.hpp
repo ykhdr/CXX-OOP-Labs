@@ -2,25 +2,19 @@
 
 #include <exception>
 #include <string>
+#include <stdexcept>
 
 namespace SoundProcessorExceptions
 {
-    class BadConverterName : virtual public std::exception
+    class BadConverterName : public std::invalid_argument
     {
-    private:
-        std::string name_;
-
     public:
-        BadConverterName(std::string name);
-
-        const char *what() const noexcept override;
+        explicit BadConverterName(const std::string &name);
     };
 
-    class HelpArgument : virtual public std::exception
+    class HelpArgument : public std::invalid_argument
     {
     public:
-        HelpArgument() = default;
-
-        const char *what() const noexcept override;
+        HelpArgument();
     };
 }

@@ -1,8 +1,9 @@
 #include "ConfigParser.hpp"
 #include "ConfigParserExceptions.hpp"
 #include "ConvertersConfigParsers.hpp"
-#include <iostream>
 
+#include <iostream>
+#include <vector>
 /*
     # заглушить первые 30 секунд input1
     mute 0 30
@@ -14,7 +15,31 @@
     your_converter <parameters>
 */
 
-ConfigParser::ConfigParser(const std::string &configPath_)
+namespace
+{
+    std::vector<std::string_view> splitString(std::string_view &&line)
+    {
+        std::string delimiter = " ";
+        std::vector<std::string_view> splitStringVector;
+        std::string::size_type pos = 0;
+
+        while ((pos = line.find(delimiter)) != std::string::npos)
+        {
+            splitStringVector.push_back(line.substr(0, pos));
+            line = line.substr(pos + 1);
+        }
+        if(!line.empty())
+        {
+            splitStringVector.push_back(line);
+        }
+
+
+        return splitStringVector;
+    }
+}
+
+
+ConfigParser::ConfigParser(const std::string &configPath_, int numInputFiles_) : numInputFiles_(numInputFiles_)
 {
     configFile_.open(configPath_, std::ios_base::binary);
 
@@ -32,49 +57,47 @@ ConfigParser::ConfigParser(const std::string &configPath_)
 void ConfigParser::readConfig()
 {
     std::string line;
+    std::string_view lineView;
 
     while (std::getline(configFile_, line, '\n'))
     {
-        int i = 0;
-        while (line[i] == ' ')
+        if (line.empty() || line[0] == ' ' || line[0] == '\t')
         {
-            ++i;
-        }
-        if(i > 0)
-        {
-            line = line.substr(i);
+            throw std::invalid_argument("unsupported config file format");
         }
 
-        if (line[0] == '#')
+        lineView = line;
+
+        if (lineView[0] == '#')
         {
             continue;
         }
 
-        config_.push_back(ConfigParam());
+        std::vector<std::string_view> splitLineVector = splitString(std::move(lineView));
 
-        std::string::size_type posName = line.find(' ');
-        if (posName == std::string::npos)
+        if (splitLineVector.size() < 3)
         {
-            throw ConfigExceptions::BadReadingFile(configFilePath_);
+            throw std::invalid_argument("bad config line with arguments");
         }
 
-        config_.back().converterName_ = line.substr(0, posName);
+        config_.push_back(ConfigParam());
+
+        config_.back().converterName_ = splitLineVector[0];
 
         if (config_.back().converterName_ == "mute")
         {
             config_.back().converterParams_ =
-                    MuteConverterParser().parseConverterConfig(std::move(line.substr(posName + 1)));
+                    MuteConverterParser().parseConverterConfig(std::move(splitLineVector));
         }
         else if (config_.back().converterName_ == "mix")
         {
             config_.back().converterParams_ =
-                    MixConverterParser().parseConverterConfig(std::move(line.substr(posName + 1)));
-
+                    MixConverterParser(numInputFiles_).parseConverterConfig(std::move(splitLineVector));
         }
         else if (config_.back().converterName_ == "dmix")
         {
             config_.back().converterParams_ =
-                    DoubleMixConverterParser().parseConverterConfig(std::move(line.substr(posName + 1)));
+                    DoubleMixConverterParser(numInputFiles_).parseConverterConfig(std::move(splitLineVector));
         }
         else
         {

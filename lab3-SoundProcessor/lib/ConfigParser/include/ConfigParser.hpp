@@ -19,12 +19,14 @@ private:
 
     std::string configFilePath_;
 
+    int numInputFiles_;
+
     ConfigParamLine config_;
 
     void readConfig();
 
 public:
-    ConfigParser(const std::string& configPath);
+    ConfigParser(const std::string& configPath, int numInputFiles);
 
     ConfigParamLine getConfig();
 };

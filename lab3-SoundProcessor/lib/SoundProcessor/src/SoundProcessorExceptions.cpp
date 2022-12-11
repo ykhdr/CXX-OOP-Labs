@@ -4,16 +4,9 @@
 
 using namespace SoundProcessorExceptions;
 
-BadConverterName::BadConverterName(std::string name) : name_(std::move(name))
-{
-}
+BadConverterName::BadConverterName(const std::string &name) : invalid_argument("Bad converter name: " + name)
+{}
 
-const char *BadConverterName::what() const noexcept
+HelpArgument::HelpArgument() : invalid_argument("")
 {
-    return std::string("Bad converter name : " + name_).c_str();
-}
-
-const char *HelpArgument::what() const noexcept
-{
-    return "";
 }

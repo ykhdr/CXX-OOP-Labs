@@ -1,61 +1,97 @@
 #include "ConvertersConfigParsers.hpp"
 
-ConverterParams MuteConverterParser::parseConverterConfig(const std::string &&line)
+ConverterParams MuteConverterParser::parseConverterConfig(const std::vector<std::string_view> &&splitLine)
 {
     ConverterParams params {};
 
-    std::string::size_type firstParamPos = line.find(' ');
+    try
+    {
+        params.firstParam_ = std::stoi(std::string(splitLine[1]));
+        params.secondParam_ = std::stoi(std::string(splitLine[2]));
 
-    if (firstParamPos == std::string::npos)
+        if(params.firstParam_ < 0 || params.secondParam_ < 0)
+        {
+            throw std::exception();
+        }
+
+        if(params.firstParam_ > params.secondParam_)
+        {
+            throw std::exception();
+        }
+    }
+    catch (const std::exception &ex)
     {
         throw std::invalid_argument("bad config argument for mute converter");
     }
 
-    params.firstParam_ = std::stoi(line.substr(0, firstParamPos));
-    params.secondParam_ = std::stoi(line.substr(firstParamPos));
-
     return params;
 }
 
-ConverterParams MixConverterParser::parseConverterConfig(const std::string &&line)
+MixConverterParser::MixConverterParser(int numInputFiles_) : numInputFiles_(numInputFiles_)
+{}
+
+ConverterParams MixConverterParser::parseConverterConfig(const std::vector<std::string_view> &&splitLine)
 {
     ConverterParams params {};
 
-    std::string::size_type firstParamPos = line.find(' ');
-
-    if (firstParamPos == std::string::npos || line[0] != '$')
+    try
     {
-        throw std::invalid_argument("bad config argument for mix converter");
-    }
+        if (splitLine[1][0] != '$')
+        {
+            throw std::exception();
+        }
 
-    params.firstParam_ = std::stoi(line.substr(1, firstParamPos)) - 1;
-    params.secondParam_ = std::stoi(line.substr(firstParamPos));
+        params.firstParam_ = std::stoi(std::string(splitLine[1].substr(1))) - 1;
+
+        if(params.firstParam_ >= numInputFiles_)
+        {
+            throw std::exception();
+        }
+
+        params.secondParam_ = std::stoi(std::string(splitLine[2]));
+
+        if(params.secondParam_ < 0)
+        {
+            throw std::exception();
+        }
+    }
+    catch (const std::exception &ex)
+    {
+        throw std::invalid_argument("bad config arguments for mix converter");
+    }
 
     return params;
 }
 
-ConverterParams DoubleMixConverterParser::parseConverterConfig(const std::string &&line)
+DoubleMixConverterParser::DoubleMixConverterParser(int numInputFiles_) : numInputFiles_(numInputFiles_)
+{}
+
+ConverterParams DoubleMixConverterParser::parseConverterConfig(const std::vector<std::string_view> &&splitLine)
 {
     ConverterParams params {};
 
-    std::string::size_type firstParamPos = line.find(' ');
-
-    if (firstParamPos == std::string::npos || line[0] != '$')
+    try
     {
-        throw std::invalid_argument("bad first config argument for double mix converter");
+        if(splitLine[1][0] != '$' || splitLine[2][0] != '$')
+        {
+            throw std::exception();
+        }
+
+        params.firstParam_ = std::stoi(std::string(splitLine[1].substr(1))) - 1;
+        params.secondParam_ = std::stoi(std::string(splitLine[2].substr(1))) - 1;
+
+        if(params.firstParam_ >= numInputFiles_ || params.secondParam_ >= numInputFiles_)
+        {
+            throw std::exception();
+        }
+
     }
-
-
-    params.firstParam_ = std::stoi(line.substr(1, firstParamPos)) - 1;
-
-    std::string secondArg = line.substr(firstParamPos + 1);
-
-    if (secondArg[0] != '$')
+    catch (const std::exception &ex)
     {
-        throw std::invalid_argument("bad second config argument for double mix converter");
+        throw std::invalid_argument("bad config arguments for double mix converter");
     }
-
-    params.secondParam_ = std::stoi(secondArg.substr(1)) - 1;
 
     return params;
 }
+
+
