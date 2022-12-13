@@ -8,7 +8,7 @@ project(${PROJECT_NAME} CXX)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-add_subdirectory(lib/tuplePrint)
+add_subdirectory(lib/tupleUtility)
 add_subdirectory(lib/CSVParser)
 
 target_link_libraries(${PROJECT_NAME} CSVParser)

@@ -1,7 +1,7 @@
 #include "fstream"
 #include <iostream>
 #include "CSVParser.hpp"
-#include "TuplePrint.hpp"
+#include "TupleUtility.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -17,10 +17,11 @@ int main(int argc, char const *argv[])
         if (argc == 2)
         {
             CSVParser<int, std::string> parser(file);
-//                for (const auto &rs: parser)
-//                {
-//                    std::cout << rs << std::endl;
-//                }
+                for (const auto &rs: parser)
+                {
+                    std::cout << rs;
+                    std::cout << std::endl;
+                }
         }
         else
         {

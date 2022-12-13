@@ -2,9 +2,8 @@ project(${PROJECT_NAME} CXX)
 
 include_directories(include)
 
-add_library(CSVParser STATIC
-        src/CSVParser.cpp)
+add_library(CSVParser INTERFACE)
 
-target_include_directories(CSVParser PUBLIC include)
+target_include_directories(CSVParser INTERFACE include)
 
-target_link_libraries(CSVParser tuplePrint)
+target_link_libraries(CSVParser INTERFACE tuplePrint)
