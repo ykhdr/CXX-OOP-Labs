@@ -179,7 +179,7 @@ private:
         {
             try
             {
-                m_ptr = std::make_shared<value_type>();
+                m_ptr = std::make_shared<value_type>(makeTuple<Args...>(m_parent.getRowCells(row)));
             }
             catch (const std::exception &ex)
             {
