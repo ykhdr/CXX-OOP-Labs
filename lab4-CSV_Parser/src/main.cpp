@@ -3,10 +3,31 @@
 #include "CSVParser.hpp"
 #include "TupleUtility.hpp"
 
+namespace
+{
+    void printHelp()
+    {
+        std::cout << "\n\t\t\tCSV Parser" << std::endl
+                  << std::endl
+                  << "\t1 argument \t--\t input file path" << std::endl
+                  << "\t2 argument \t--\t skip first lines count (default = 0)" << std::endl
+                  << "\t3 argument \t--\t custom column delimiter (default = ',')" << std::endl
+                  << "\t4 argument \t--\t custom row delimiter (default = '\\n')" << std::endl
+                  << "\t5 argument \t--\t custom escape symbol (default = '\"')" << std::endl
+                  << std::endl;
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     try
     {
+        if (std::string_view(argv[1]) == "--help" || std::string_view(argv[1]) == "-h")
+        {
+            printHelp();
+            return EXIT_SUCCESS;
+        }
+
         if (argc < 2 || argc > 6)
         {
             throw std::invalid_argument("Wrong number of parameters. Use -h or --help for help");
@@ -16,12 +37,12 @@ int main(int argc, char const *argv[])
 
         if (argc == 2)
         {
-            CSVParser<int, std::string> parser(file);
-                for (const auto &rs: parser)
-                {
-                    std::cout << rs;
-                    std::cout << std::endl;
-                }
+            CSVParser<std::string, int, std::string> parser(file);
+            for (const auto &rs: parser)
+            {
+                std::cout << rs;
+                std::cout << std::endl;
+            }
         }
         else
         {
@@ -37,35 +58,39 @@ int main(int argc, char const *argv[])
 
             if (argc == 3)
             {
-                CSVParser<int, std::string> parser(file, line_offset);
-//                for (const auto &rs: parser)
-//                {
-//                    std::cout << rs << std::endl;
-//                }
+                CSVParser<std::string, int, std::string> parser(file, line_offset);
+                for (const auto &row: parser)
+                {
+                    std::cout << row;
+                    std::cout << std::endl;
+                }
             }
-            else if(argc == 4)
+            else if (argc == 4)
             {
-                CSVParser<int, std::string> parser(file, line_offset,*argv[3]);
-//                for (const auto &rs: parser)
-//                {
-//                    std::cout << rs << std::endl;
-//                }
+                CSVParser<std::string, int, std::string> parser(file, line_offset, *argv[3]);
+                for (const auto &row: parser)
+                {
+                    std::cout << row;
+                    std::cout << std::endl;
+                }
             }
-            else if(argc == 5)
+            else if (argc == 5)
             {
-                CSVParser<int, std::string> parser(file, line_offset,*argv[3],*argv[4]);
-//                for (const auto &rs: parser)
-//                {
-//                    std::cout << rs << std::endl;
-//                }
+                CSVParser<std::string, int, std::string> parser(file, line_offset, *argv[3], *argv[4]);
+                for (const auto &row: parser)
+                {
+                    std::cout << row;
+                    std::cout << std::endl;
+                }
             }
-            else if(argc == 6)
+            else if (argc == 6)
             {
-                CSVParser<int, std::string> parser(file, line_offset, *argv[3], *argv[4], *argv[5]);
-//                for (const auto &rs: parser)
-//                {
-//                    std::cout << rs << std::endl;
-//                }
+                CSVParser<std::string, int, std::string> parser(file, line_offset, *argv[3], *argv[4], *argv[5]);
+                for (const auto &row: parser)
+                {
+                    std::cout << row;
+                    std::cout << std::endl;
+                }
             }
         }
     }

@@ -3,6 +3,7 @@
 #include <limits>
 #include <memory>
 #include <vector>
+#include <stdexcept>
 
 #include "TupleUtility.hpp"
 
@@ -17,7 +18,7 @@ private:
     int line_offset;
 
     char column_delimiter;
-    char line_delimiter;
+    char row_delimiter;
     char escape_sym;
 
     int current_line = 0;
@@ -25,7 +26,7 @@ private:
     std::string getRow()
     {
         std::string row;
-        std::getline(input_file, row, line_delimiter);
+        std::getline(input_file, row, row_delimiter);
 
         ++current_line;
 
@@ -34,7 +35,7 @@ private:
 
     std::vector<std::string> getRowCells(const std::string &row)
     {
-        std::vector<std::string> row_cells;
+        std::vector<std::string> row_cells(1);
         std::string cell;
 
         bool is_escape_sym = false;
@@ -55,10 +56,16 @@ private:
                 }
                 row_cells.back() = cell;
                 row_cells.emplace_back();
+                cell.clear();
                 continue;
             }
 
             cell += sym;
+        }
+
+        if (!cell.empty())
+        {
+            row_cells.back() = cell;
         }
 
         return row_cells;
@@ -74,7 +81,7 @@ public:
             input_file(input_file),
             line_offset(line_offset),
             column_delimiter(column_delimiter),
-            line_delimiter(line_delimiter),
+            row_delimiter(line_delimiter),
             escape_sym(escape_sym)
     {
         if (!input_file.is_open())
@@ -174,17 +181,28 @@ private:
         if (row.empty())
         {
             m_ptr = nullptr;
+            return;
         }
-        else
+
+        std::vector<std::string> rowCells = m_parent.getRowCells(row);
+        if (rowCells.size() > sizeof...(Args))
         {
-            try
-            {
-                m_ptr = std::make_shared<value_type>(makeTuple<Args...>(m_parent.getRowCells(row)));
-            }
-            catch (const std::exception &ex)
-            {
-                throw std::invalid_argument("SOMETHING");
-            }
+            throw std::invalid_argument("Too many arguments on " + std::to_string(m_parent.current_line) + " line");
+        }
+        if(rowCells.size() < sizeof...(Args))
+        {
+            throw std::invalid_argument("Too few arguments on " + std::to_string(m_parent.current_line) + " line");
+        }
+
+        try{
+            m_ptr = std::make_shared<value_type>(makeTuple<Args...>(m_parent.getRowCells(row)));
+
+        }
+        catch (const std::invalid_argument &ex)
+        {
+            std::string msg = ex.what();
+            msg +=  std::to_string(m_parent.current_line) + " row";
+            throw std::invalid_argument(msg);
         }
     }
 };
