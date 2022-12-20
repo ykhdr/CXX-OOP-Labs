@@ -7,11 +7,12 @@
 #include <string>
 #include <sstream>
 
-template<std::size_t>
-struct size_t_ {};
 
 namespace
 {
+    template<std::size_t>
+    struct size_t_ {};
+
     template<typename Ch, typename Tr, class Tuple>
     std::basic_ostream<Ch, Tr> &printTuple(std::basic_ostream<Ch, Tr> &os, const Tuple &t, size_t_<1>)
     {
@@ -88,10 +89,9 @@ namespace
 }
 
 template<typename Ch, typename Tr, typename... Types>
-auto operator<<(std::basic_ostream<Ch, Tr> &os, std::tuple<Types...> const &tp)
+std::basic_ostream<Ch, Tr>& operator<<(std::basic_ostream<Ch, Tr> &os, std::tuple<Types...> const &tp)
 {
-    printTuple(os, tp, size_t_<sizeof...(Types)>());
-    return &os;
+    return printTuple(os, tp, size_t_<sizeof...(Types)>());
 }
 
 template<typename... Types>

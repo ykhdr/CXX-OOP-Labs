@@ -98,8 +98,6 @@ public:
         }
     }
 
-    //CSVParser(const CSVParser<Args...> &) = delete;
-
     InputIterator begin()
     {
         return InputIterator(*this, InputIterator::Mode::begin);
@@ -185,6 +183,7 @@ private:
         }
 
         std::vector<std::string> rowCells = m_parent.getRowCells(row);
+
         if (rowCells.size() > sizeof...(Args))
         {
             throw std::invalid_argument("Too many arguments on " + std::to_string(m_parent.current_line) + " line");
@@ -194,9 +193,9 @@ private:
             throw std::invalid_argument("Too few arguments on " + std::to_string(m_parent.current_line) + " line");
         }
 
-        try{
-            m_ptr = std::make_shared<value_type>(makeTuple<Args...>(m_parent.getRowCells(row)));
-
+        try
+        {
+            m_ptr = std::make_shared<value_type>(makeTuple<Args...>(rowCells));
         }
         catch (const std::invalid_argument &ex)
         {

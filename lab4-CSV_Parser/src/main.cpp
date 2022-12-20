@@ -38,10 +38,9 @@ int main(int argc, char const *argv[])
         if (argc == 2)
         {
             CSVParser<std::string, int, std::string> parser(file);
-            for (const auto &rs: parser)
+            for (const auto &row: parser)
             {
-                std::cout << rs;
-                std::cout << std::endl;
+                std::cout << row << std::endl;
             }
         }
         else
@@ -61,8 +60,7 @@ int main(int argc, char const *argv[])
                 CSVParser<std::string, int, std::string> parser(file, line_offset);
                 for (const auto &row: parser)
                 {
-                    std::cout << row;
-                    std::cout << std::endl;
+                    std::cout << row << std::endl;
                 }
             }
             else if (argc == 4)
@@ -70,8 +68,7 @@ int main(int argc, char const *argv[])
                 CSVParser<std::string, int, std::string> parser(file, line_offset, *argv[3]);
                 for (const auto &row: parser)
                 {
-                    std::cout << row;
-                    std::cout << std::endl;
+                    std::cout << row << std::endl;
                 }
             }
             else if (argc == 5)
@@ -79,8 +76,7 @@ int main(int argc, char const *argv[])
                 CSVParser<std::string, int, std::string> parser(file, line_offset, *argv[3], *argv[4]);
                 for (const auto &row: parser)
                 {
-                    std::cout << row;
-                    std::cout << std::endl;
+                    std::cout << row << std::endl;
                 }
             }
             else if (argc == 6)
@@ -88,8 +84,7 @@ int main(int argc, char const *argv[])
                 CSVParser<std::string, int, std::string> parser(file, line_offset, *argv[3], *argv[4], *argv[5]);
                 for (const auto &row: parser)
                 {
-                    std::cout << row;
-                    std::cout << std::endl;
+                    std::cout << row << std::endl;
                 }
             }
         }
