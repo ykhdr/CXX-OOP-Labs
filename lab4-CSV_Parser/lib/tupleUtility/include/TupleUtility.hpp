@@ -7,7 +7,6 @@
 #include <string>
 #include <sstream>
 
-
 namespace
 {
     template<std::size_t>
@@ -53,11 +52,11 @@ namespace
     }
 
     template<typename... Types>
-    void fillTuple(std::tuple<Types...> &tp, const std::vector<std::string> &rowCells, size_t_<1>)
+    void fillTuple(std::tuple<Types...> *tp, const std::vector<std::string> &rowCells, size_t_<1>)
     {
         try
         {
-            std::get<0>(tp) = readValue<typename std::tuple_element<0, std::tuple<Types...>>::type>(rowCells[0]);
+            std::get<0>(*tp) = readValue<typename std::tuple_element<0, std::tuple<Types...>>::type>(rowCells[0]);
         }
         catch (const std::exception &ex)
         {
@@ -69,12 +68,12 @@ namespace
     }
 
     template<typename... Types, size_t N>
-    void fillTuple(std::tuple<Types...> &tp, const std::vector<std::string> &rowCells, size_t_<N>)
+    void fillTuple(std::tuple<Types...> *tp, const std::vector<std::string> &rowCells, size_t_<N>)
     {
         try
         {
-            std::get<N - 1>(tp) = readValue<typename std::tuple_element<N - 1, std::tuple<Types...>>::type>(
-                    rowCells.at(N - 1));
+            std::get<N - 1>(*tp) = readValue<typename std::tuple_element<N - 1, std::tuple<Types...>>::type>(
+                    rowCells[N-1]);
         }
         catch (const std::invalid_argument &ex)
         {
@@ -95,10 +94,7 @@ std::basic_ostream<Ch, Tr>& operator<<(std::basic_ostream<Ch, Tr> &os, std::tupl
 }
 
 template<typename... Types>
-std::tuple<Types...> makeTuple(const std::vector<std::string> &rowCells)
+void makeTuple(std::tuple<Types...>* tp, const std::vector<std::string> &rowCells)
 {
-    std::tuple<Types...> tp;
-    fillTuple(tp, rowCells, size_t_<sizeof...(Types)>());
-
-    return tp;
+    fillTuple(tp, rowCells, size_t_<sizeof ...(Types)>());
 }

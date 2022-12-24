@@ -1,5 +1,5 @@
-#include "fstream"
 #include <iostream>
+
 #include "CSVParser.hpp"
 #include "TupleUtility.hpp"
 
@@ -22,6 +22,12 @@ int main(int argc, char const *argv[])
 {
     try
     {
+        if(argc == 1)
+        {
+            std::cout << "Incorrectly params. Write --help or -h for help" << std::endl;
+            return EXIT_SUCCESS;
+        }
+
         if (std::string_view(argv[1]) == "--help" || std::string_view(argv[1]) == "-h")
         {
             printHelp();
@@ -38,7 +44,7 @@ int main(int argc, char const *argv[])
         if (argc == 2)
         {
             CSVParser<std::string, int, std::string> parser(file);
-            for (const auto &row: parser)
+            for (const auto row: parser)
             {
                 std::cout << row << std::endl;
             }

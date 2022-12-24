@@ -11,11 +11,8 @@ template<typename ...Args>
 class CSVParser
 {
 private:
-    class InputIterator;
 
     std::ifstream &input_file;
-
-    int line_offset;
 
     char column_delimiter;
     char row_delimiter;
@@ -37,9 +34,9 @@ private:
     {
         std::vector<std::string> row_cells(1);
         std::string cell;
-
         bool is_escape_sym = false;
-        for (char sym: row)
+
+        for (const char &sym: row)
         {
             if (sym == escape_sym)
             {
@@ -72,14 +69,15 @@ private:
     };
 
 public:
+    class InputIterator;
+
     explicit CSVParser(
             std::ifstream &input_file,
-            int line_offset = 0,
+            unsigned int line_offset = 0,
             char column_delimiter = ',',
             char line_delimiter = '\n',
             char escape_sym = '\"') :
             input_file(input_file),
-            line_offset(line_offset),
             column_delimiter(column_delimiter),
             row_delimiter(line_delimiter),
             escape_sym(escape_sym)
@@ -115,7 +113,7 @@ class CSVParser<Args...>::InputIterator
 public:
     using value_type = std::tuple<Args...>;
     using reference = std::tuple<Args...> &;
-    using pointer = std::shared_ptr<std::tuple<Args...>>;
+    using pointer = std::tuple<Args...> *;
 
     enum class Mode
     {
@@ -147,7 +145,6 @@ public:
 
     InputIterator &operator++()
     {
-
         updatePtr();
         return *this;
     }
@@ -170,12 +167,18 @@ public:
     }
 
 private:
-    CSVParser<Args...> m_parent;
-    pointer m_ptr;
+    CSVParser<Args...> &m_parent;
+    value_type tp;
+    pointer m_ptr = &tp;
 
     void updatePtr()
     {
         std::string row = m_parent.getRow();
+
+        if (row.empty() && !m_parent.input_file.eof())
+        {
+            throw std::invalid_argument(std::to_string(m_parent.current_line) + " row is empty");
+        }
         if (row.empty())
         {
             m_ptr = nullptr;
@@ -188,19 +191,19 @@ private:
         {
             throw std::invalid_argument("Too many arguments on " + std::to_string(m_parent.current_line) + " line");
         }
-        if(rowCells.size() < sizeof...(Args))
+        if (rowCells.size() < sizeof...(Args))
         {
             throw std::invalid_argument("Too few arguments on " + std::to_string(m_parent.current_line) + " line");
         }
 
         try
         {
-            m_ptr = std::make_shared<value_type>(makeTuple<Args...>(rowCells));
+            makeTuple<Args...>(m_ptr, rowCells);
         }
         catch (const std::invalid_argument &ex)
         {
             std::string msg = ex.what();
-            msg +=  std::to_string(m_parent.current_line) + " row";
+            msg += std::to_string(m_parent.current_line) + " row";
             throw std::invalid_argument(msg);
         }
     }
